@@ -32,7 +32,7 @@ BaseProjects requires the following libraries for building:
 - set PNG_LIBRARY_DEBUG (e.g. C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013/Debug/libpng16d.lib)
 - set PNG_LIBRARY_RELEASE (e.g. C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013/Release/libpng16.lib)
 - set PNG_PNG_INCLUDE_DIR (e.g. C:/Dev/3rdParty/libpng-1.6.24/;C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013)
-  Note that it is important here to point to the libpng source code AND the build folder containing the header file pnglibconf.h!
+  Note that it is important here to point to the libpng source folder AND the build folder containing the header file pnglibconf.h!
 - run configure
 - run generate
 - have fun building the code with a toolchain of your liking, e.g., visual studio and path/BaseProject/Build/BaseProject.sln!
