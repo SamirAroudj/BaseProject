@@ -34,6 +34,6 @@ BaseProjects requires the following libraries for building:
 - set PNG_PNG_INCLUDE_DIR (e.g. C:/Dev/3rdParty/libpng-1.6.24/)
 - run configure
 - run generate
-- have fun!
+- have fun building the code with a toolchain of your liking, e.g., visual studio and path/BaseProject/Build/BaseProject.sln!
   
 # Building for Linux
