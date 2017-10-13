@@ -4,7 +4,7 @@ Provides basic features, such as window creation, memory management, math stuff,
 # Required Tools and Libraries
 BaseProjects requires the following libraries for building:
 
-- CMake (for easier building under windows and linux): https://cmake.org/
+- CMake (for easier building under windows and linux, get also ccmake for linux): https://cmake.org/
 - glew (Modified BSD License, the Mesa 3-D License (MIT) and the Khronos License (MIT)): http://glew.sourceforge.net/
 - glut (e.g.: freeglut 3.0.0, X-Consortium license): http://freeglut.sourceforge.net/
 - libpng (http://www.libpng.org/pub/png/src/libpng-LICENSE.txt): http://www.libpng.org/pub/png/libpng.html
@@ -38,3 +38,15 @@ BaseProjects requires the following libraries for building:
 - have fun building the code with a toolchain of your liking, e.g., visual studio and path/BaseProject/Build/BaseProject.sln!
   
 # Building for Linux
+- download the source code with "git clone https://github.com/SamirAroudj/BaseProject.git" into some root folder path/BaseProject
+- create a build folder within the BaseProject root directory: path/BaseProject/Build
+- create a sub build folder for each target you want to build, e.g., path/BaseProject/Build/Debug or path/BaseProject/Build/Release
+- within the sub folder Build/target run "ccmake ../.."
+- run configure
+- set the CMAKE_BUILD_TYPE to your target configuration, e.g., Debug or Release
+- set TINYXML2_DEBUG_LIBRARY   (e.g.: somePath/Repos/tinyxml2/Build/Debug/libtinyxml2.so.3.0.0)
+- set TINYXML2_RELEASE_LIBRARY (e.g.: somePath/Repos/tinyxml2/Build/Release/libtinyxml2.so.3.0.0)
+- set TINYXML2_INCLUDE_DIR     (e.g.: somePath/Repos/tinyxml2 )
+- run configure
+- run generate
+- have fun building the code with a toolchain of your liking, e.g., using QtCreator, cmake and make
