@@ -13,10 +13,10 @@ BaseProjects requires the following libraries for building:
 - ZLib (license: https://zlib.net/zlib_license.html): https://zlib.net/
 
 # Building for Windows
-- download the source code with "git clone https://github.com/SamirAroudj/BaseProject.git" into some root folder "<path>/BaseProject"
-- create a build folder within the BaseProject root directory: <path>/BaseProject/Build
-- run CMake configure within <path>/BaseProject/Build as Build or binaries directory and <path>/BaseProject as source directory
-- set BASE_PROJECT_DIR to the root directory <path>/BaseProject into which you have cloned the repository
+- download the source code with "git clone https://github.com/SamirAroudj/BaseProject.git" into some root folder path/BaseProject
+- create a build folder within the BaseProject root directory: path/BaseProject/Build
+- run CMake configure within path/BaseProject/Build as Build or binaries directory and path/BaseProject as source directory
+- set BASE_PROJECT_DIR to the root directory path/BaseProject into which you have cloned the repository
 - run configure
 - set GLUT_INCLUDE_DIR (e.g.: C:/Dev/3rdParty/freeglut/include)
 - set GLUT_glut_LIBRARY (e.g.: C:/Dev/3rdParty/freeglut/lib/x64/freeglut.lib)
