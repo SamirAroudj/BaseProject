@@ -4,9 +4,10 @@ Provides basic features, such as window creation, memory management, math stuff,
 # Required Libraries
 BaseProjects requires the following libraries for building:
 
+- CMake (for easier building under windows and linux): https://cmake.org/
 - glew (Modified BSD License, the Mesa 3-D License (MIT) and the Khronos License (MIT)): http://glew.sourceforge.net/
 - glut (e.g.: freeglut 3.0.0, X-Consortium license): http://freeglut.sourceforge.net/
-- libpng (e.g.: ): 
+- libpng (http://www.libpng.org/pub/png/src/libpng-LICENSE.txt): http://www.libpng.org/pub/png/libpng.html
 - OpenGL libraries
 - tinyxml2 (ZLib license): https://github.com/leethomason/tinyxml2
 - ZLib (license: https://zlib.net/zlib_license.html): https://zlib.net/
@@ -33,5 +34,8 @@ BaseProjects requires the following libraries for building:
 - set PNG_LIBRARY_DEBUG (e.g. C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013/Debug/libpng16d.lib)
 - set PNG_LIBRARY_RELEASE (e.g. C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013/Release/libpng16.lib)
 - set PNG_PNG_INCLUDE_DIR (e.g. C:/Dev/3rdParty/libpng-1.6.24/)
+- run configure
+- run generate
+- have fun!
   
 # Building for Linux
