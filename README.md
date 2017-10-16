@@ -49,4 +49,4 @@ BaseProjects requires the following libraries for building:
 - set TINYXML2_INCLUDE_DIR     (e.g.: somePath/Repos/tinyxml2 )
 - run configure
 - run generate
-- have fun building the code with a toolchain of your liking! (e.g., simply "make -j" within the build target folder or using QtCreator or ...)
+- have fun building the code with a toolchain of your liking! (e.g., simply "make -j" within the build target configuration folder or using QtCreator or ...)
