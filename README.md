@@ -13,6 +13,7 @@ BaseProjects requires the following libraries for building:
 - ZLib (license: https://zlib.net/zlib_license.html): https://zlib.net/
 
 # Building for Windows
+- Do not use relative paths with CMake!
 - download the source code with "git clone https://github.com/SamirAroudj/BaseProject.git" into some root folder path/BaseProject
 - create a build folder within the BaseProject root directory: path/BaseProject/Build
 - run CMake configure within path/BaseProject/Build as Build or binaries directory and path/BaseProject as source directory
@@ -38,6 +39,7 @@ BaseProjects requires the following libraries for building:
 - have fun building the code with a toolchain of your liking! (e.g. visual studio and path/BaseProject/Build/BaseProject.sln)
   
 # Building for Linux
+- Do not use relative paths with CMake!
 - download the source code with "git clone https://github.com/SamirAroudj/BaseProject.git" into some root folder path/BaseProject
 - create a build folder within the BaseProject root directory: path/BaseProject/Build
 - create a sub build folder for each target you want to build, e.g., path/BaseProject/Build/Debug or path/BaseProject/Build/Release
