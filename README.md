@@ -25,17 +25,17 @@ BaseProjects requires the following libraries for building:
 - set GLEW_INCLUDE_DIR (e.g.: C:/Dev/3rdParty/glew-1.13.0/include)
 - set GLEW_LIBRARY (e.g.: C:/Dev/3rdParty/glew-1.13.0/lib/Release/x64/glew32.lib)
 - run configure
-- set ZLIB_INCLUDE_DIR (e.g. C:/Dev/3rdParty/zlib-1.2.8)
-- set ZLIB_LIBRARY_DEBUG (e.g. C:/Dev/3rdParty/zlib-1.2.8/Build/VS2013/Lib/Debug/zlibd.lib)
-- set ZLIB_LIBRARY_RELEASE (e.g. C:/Dev/3rdParty/zlib-1.2.8/Build/VS2013/Lib/Release/zlib.lib)
+- set ZLIB_INCLUDE_DIR (e.g.: C:/Dev/3rdParty/zlib-1.2.8)
+- set ZLIB_LIBRARY_DEBUG (e.g.: C:/Dev/3rdParty/zlib-1.2.8/Build/VS2013/Lib/Debug/zlibd.lib)
+- set ZLIB_LIBRARY_RELEASE (e.g.: C:/Dev/3rdParty/zlib-1.2.8/Build/VS2013/Lib/Release/zlib.lib)
 - run configure
-- set PNG_LIBRARY_DEBUG (e.g. C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013/Debug/libpng16d.lib)
-- set PNG_LIBRARY_RELEASE (e.g. C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013/Release/libpng16.lib)
-- set PNG_PNG_INCLUDE_DIR (e.g. C:/Dev/3rdParty/libpng-1.6.24/;C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013)
+- set PNG_LIBRARY_DEBUG (e.g.: C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013/Debug/libpng16d.lib)
+- set PNG_LIBRARY_RELEASE (e.g.: C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013/Release/libpng16.lib)
+- set PNG_PNG_INCLUDE_DIR (e.g.: C:/Dev/3rdParty/libpng-1.6.24/;C:/Dev/3rdParty/libpng-1.6.24/Build/VS2013)
   Note that it is important here to point to the libpng source folder AND the build folder containing the header file pnglibconf.h!
 - run configure
 - run generate
-- have fun building the code with a toolchain of your liking, e.g., visual studio and path/BaseProject/Build/BaseProject.sln!
+- have fun building the code with a toolchain of your liking! (e.g. visual studio and path/BaseProject/Build/BaseProject.sln)
   
 # Building for Linux
 - download the source code with "git clone https://github.com/SamirAroudj/BaseProject.git" into some root folder path/BaseProject
@@ -49,4 +49,4 @@ BaseProjects requires the following libraries for building:
 - set TINYXML2_INCLUDE_DIR     (e.g.: somePath/Repos/tinyxml2 )
 - run configure
 - run generate
-- have fun building the code with a toolchain of your liking, e.g., using QtCreator, cmake and make!
+- have fun building the code with a toolchain of your liking! (e.g., simply "make -j" within the build target folder or using QtCreator or ...)
