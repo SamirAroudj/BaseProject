@@ -55,6 +55,15 @@ Matrix3x3 BaseCamera3D::computeInverseRotationMatrix() const
 					 mView.m02,		mView.m12,		mView.m22);
 }
 
+Matrix3x3 BaseCamera3D::computeHNDCToNNRayDirWS() const
+{
+	// normalized device space -> view space -> world space
+	const Matrix3x3 invProj = computeInverseProjectionMatrix();
+	const Matrix3x3 invView = computeInverseRotationMatrix();
+
+	return invProj * invView;
+}
+
 void BaseCamera3D::lookAt(const Vector3 &positionWS, const Vector3 &targetWS, const Vector3 &upWS)
 {
 	lookAt(Vector4(positionWS.x, positionWS.y, positionWS.z, 1.0f), Vector4(targetWS.x, targetWS.y, targetWS.z, 1.0f), upWS);

@@ -56,6 +56,12 @@ namespace Graphics
 		@return Returns a matrix R^-1 which maps view space directions to world space directions, dVS * R^-1 = dWS. */
 		Math::Matrix3x3 computeInverseRotationMatrix() const;
 
+		/** Computes a matrix that converts a homogenous normalized device coordinates (NDC) position (x, y, z = 1) \in ([-1, 1], [-1, 1], 1)
+			to a non-normalized ray direction in world space coordinates.
+		@return Returns a matrix M which converts homogeneours (3D) normalized device coordinates \in ([-1, 1], [-1, 1], 1) to non-normalized ray directions.
+			||rayDir|| is not necessarily 1, posHNDC * M = not necessarily unit length rayDirWS. */
+		virtual Math::Matrix3x3 computeHNDCToNNRayDirWS() const;
+
 		/** Computes a matrix that converts a homogenous pixel position (px, py, z = 1) \in ([0, viewport width], [0, viewport height], 1) to a
 			non-normalized ray direction in world space coordinates.
 		@param imageSize Defines the width ([0]) and height ([1]) of the viewport for which the returned matrix computes ray directions.
@@ -63,7 +69,7 @@ namespace Graphics
 			If the parameter is set to false then rays for the upper left pixel corner are returned. 
 		@return Returns a matrix M which converts homogeneours (3D) pixel coordinates to non-normalized ray directions (||rayDir|| is not necessarily 1) posHPS * M = rayDirWS. */
 		virtual Math::Matrix3x3 computeHPSToNNRayDirWS(const Utilities::ImgSize &imageSize, const bool addPixelCenterOffset = true) const = 0;
-				
+
 		/** Computes and returns the matrix which transforms coordinates relative to the world space coordinate system into the pixel coordinate system of this camera for some resolution.
 			The pixel coordinates are not normalized! You must perform the perspective division after the matrix has been applied.
 		@param imageSize Defines the width ([0]) and height ([1]) of the viewport for which the returned matrix computes pixel coordinates.

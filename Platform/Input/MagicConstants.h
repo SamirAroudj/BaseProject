@@ -22,11 +22,11 @@ namespace Input
 
 	#ifdef _WINDOWS
 		/** The inverse of the maximum relative mouse motion is used to normalize and cap relative mouse motions retrieved from the mouse device for windows. */
-		const Real ONE_MAX_RELATIVE_MOUSE_MOTION = 1.0f / 180.0f;
+		const float ONE_MAX_RELATIVE_MOUSE_MOTION = 1.0f / 180.0f;
 
 		/** The default scale factor defines how the relative mouse motions are added to the absolute mouse position.
 			Should be smaller than 1.0f and greater than zero. */
-		const Real MOUSE_REALTIVE_TO_ABSOLUTE_SCALE = 0.15f;
+		const float MOUSE_REALTIVE_TO_ABSOLUTE_SCALE = 0.15f;
 	#endif // _WINDOWS
 
 	#ifdef _LINUX

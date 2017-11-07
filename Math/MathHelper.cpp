@@ -221,8 +221,8 @@ Real Math::transformCartesianToSpherical(Real &azimuthAngle, Real &polarAngle, c
 	if (length <= 0.0f)
 		length = cartesian.getLength();
 
-	const Real temp	= clamp(cartesian.y / length, 1.0f, -1.0f);
-	polarAngle		= acosr(temp);
+	const Real temp	= clamp(cartesian.y / length, (Real) 1.0f, (Real) -1.0f);
+	polarAngle = acosr(temp);
 
 	azimuthAngle	= atan2r(cartesian.z, cartesian.x);
 	if (azimuthAngle >= Math::TWO_PI)

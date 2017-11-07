@@ -41,42 +41,42 @@ namespace Input
 		/** Gets the absolute x-coordinate of the mouse which is between -1.0f and 1.0f.
 			-1.0f and 1.0f correspond to the left and right edge of the main window respectively.
 		@return The absolute x-coordinate is normalized to a range from -1.0f to 1.0f. */
-		Real getAbsoluteX() const { return mAbsoluteX; }
+		float getAbsoluteX() const { return mAbsoluteX; }
 
 		/** Gets the absolute y-coordinate of the mouse which is between -1.0f and 1.0f.
 			-1.0f and 1.0f correspond to the bottom and top edge of the main window respectively.
 		@return The absolute x-coordinate is normalized to a range from -1.0f to 1.0f.*/
-		Real getAbsoluteY() const { return mAbsoluteY; }
+		float getAbsoluteY() const { return mAbsoluteY; }
 
 		#ifdef _WINDOWS
 			/** Gets the scale factor to translate relative mouse motions along the x-axis into changes of the absolute x-coordinate.
 			*	It is smaller than 1.0f and bigger than 0.0f.
 			@return The factor which translates relative mouse motions along the x-axis into changes of the absolute x-coordinate is returned.
 					factor > 0.0f && factor <= 1.0f*/
-			Real getRelativeToAbsoluteScaleFactorX() const { return mRelativeToAbsoluteScaleFactorX; }
+			float getRelativeToAbsoluteScaleFactorX() const { return mRelativeToAbsoluteScaleFactorX; }
 
 			/** Gets the scale factor to translate relative mouse motions along the y-axis into changes of the absolute y-coordinate.
 			*	It is smaller than 1.0f and bigger than 0.0f.
 			@return The factor which translates relative mouse motions along the y-axis into changes of the absolute y-coordinate is returned.
 					factor > 0.0f && factor <= 1.0f*/
-			Real getRelativeToAbsoluteScaleFactorY() const { return mRelativeToAbsoluteScaleFactorY; }
+			float getRelativeToAbsoluteScaleFactorY() const { return mRelativeToAbsoluteScaleFactorY; }
 		#endif // _WINDOWS
 
 		/** Gets the normalized relative motion of the mouse along the x-axis. Ranges from -1.0f to 1.0f,
 		*	whereas negative values indicate mouse movements to the left of the user. The value is relative to the x-coordinates from the last update.	
 		@return The normalized relative mouse motion along the x-Axis is returned. ([-1.0f, 1.0f]) */
-		Real getRelativeXMotion() const { return mRelativeXMotion; }
+		float getRelativeXMotion() const { return mRelativeXMotion; }
 
 		/** Gets the normalized relative motion of the mouse along the y-axis. Ranges from -1.0f to 1.0f,
 		*	whereas negative values indicate mouse movements towards the user. The value is relative to the y-coordinate from the last update.
 		@return The normalized relative mouse motion along the y-Axis is returned. ([-1.0f, 1.0f])*/
-		Real getRelativeYMotion() const { return mRelativeYMotion; }
+		float getRelativeYMotion() const { return mRelativeYMotion; }
 
 		/** Gets the normalized relative motion of the mouse along the z-axis. Z-axis movements are caused by the mouse wheel.
 		*	Ranges from -1.0f to 1.0f whereas negative values indicate mouse wheel movements towards the user.
 		*	The value is relative to the z-coordinate from the last update.
 		@return The normalized relative mouse motion along the z-Axis is returned. ([-1.0f, 1.0f]) */
-		Real getRelativeZMotion() const { return mRelativeZMotion; }
+		float getRelativeZMotion() const { return mRelativeZMotion; }
 		
 		#ifdef _WINDOWS
 			/** Does windows specific initialization by means of direct input context.
@@ -128,7 +128,7 @@ namespace Input
 					-1.0f, 0.0f and 1.0f identify the left edge, center and right edge of the main window respectively.
 			@param absoluteY The new absolute y-coordinate must be normalized and relative to the main window. (coordinate \in [-1, 1])
 					-1.0f, 0.0f and 1.0f identify the bottom edge, center and top edge of the main window respectively.*/
-			void processMotionEvent(Real absoluteX, Real absoluteY);
+			void processMotionEvent(float absoluteX, float absoluteY);
 
 			/** Should be used to process mouse motion events from xlib. They are actually button 4 or button 5 events in xlib for some strange reason.
 			@param forward Set this to true if the mouse wheel is turned forward (away from the user, positive z motion).
@@ -148,7 +148,7 @@ namespace Input
 		/** Sets the absolute x-coordinate of the mouse which must be normalized (coordinate \in [-1, 1]).
 		@param absoluteX The new absolute x-coordinate must be normalized (coordinate \in [-1, 1]).
 				-1.0f, 0.0f and 1.0f identify the left edge, center and right edge of the main window respectively.*/
-		void setAbsoluteX(Real absoluteX)
+		void setAbsoluteX(float absoluteX)
 		{
 			assert(absoluteX >= -1.0f);
 			assert(absoluteX <=  1.0f);
@@ -158,7 +158,7 @@ namespace Input
 		/** Sets the absolute y-coordinate of the mouse which must be normalized (coordinate \in [-1, 1]).
 		@param absoluteY The new absolute y-coordinate must be normalized (coordinate \in [-1, 1]).
 				-1.0f, 0.0f and 1.0f identify the bottom edge, center and top edge of the main window respectively.*/
-		void setAbsoluteY(Real absoluteY)
+		void setAbsoluteY(float absoluteY)
 		{
 			assert(absoluteY >= -1.0f);
 			assert(absoluteY <=  1.0f);
@@ -174,7 +174,7 @@ namespace Input
 			*	The factor must be greater than 0.0f and smaller than 1.0f.
 			@param factor This is the factor to translate relative mouse motions along the x-axis into changes of the absolute x-coordinate.
 						  The factor must be greater than 0.0f and smaller than 1.0f.*/
-			void setRelativeToAbsoluteScaleFactorX(Real factor)
+			void setRelativeToAbsoluteScaleFactorX(float factor)
 			{
 				assert(factor > 0.0f && factor < 1.0f);
 				mRelativeToAbsoluteScaleFactorX = factor;
@@ -184,7 +184,7 @@ namespace Input
 			*	The factor must be greater than 0.0f and smaller than 1.0f.
 			@param factor The factor to translate relative mouse motions along the y-axis into changes of the absolute y-coordinate.
 						  The factor must be greater than 0.0f and smaller than 1.0f.*/
-			void setRelativeToAbsoluteScaleFactorY(Real factor)
+			void setRelativeToAbsoluteScaleFactorY(float factor)
 			{
 				assert(factor > 0.0f && factor < 1.0f);
 				mRelativeToAbsoluteScaleFactorY = factor;
@@ -206,30 +206,30 @@ namespace Input
 
 	private:
 		#ifdef _WINDOWS
-			LPDIRECTINPUTDEVICE8 mMouseDevice;			/// The Direct Input representation of the system mouse.
+			LPDIRECTINPUTDEVICE8 mMouseDevice;		/// The Direct Input representation of the system mouse.
 		#endif // _WINDOWS
 
-		Real			mRelativeXMotion;				/// the relative x coordinate motion which is betweeen -1.0f and 1.0f
-		Real			mRelativeYMotion;				/// the relative y coordinate motion which is between -1.0f and 1.0f
-		Real			mRelativeZMotion;				/// the relative z coordinate motion which is between -1.0f and 1.0f
+		float mRelativeXMotion;						/// the relative x coordinate motion which is betweeen -1.0f and 1.0f
+		float mRelativeYMotion;						/// the relative y coordinate motion which is between -1.0f and 1.0f
+		float mRelativeZMotion;						/// the relative z coordinate motion which is between -1.0f and 1.0f
 
-		Real			mAbsoluteX;						/// the absolute x coordinate of the mouse which is between -1.0f and 1.0f, -1 = left edge, 0 = center, 1 = right edge (of main window)
-		Real			mAbsoluteY;						/// the absolute y coordinate of the mouse which is between -1.0f and 1.0f, -1 = bottom edge, 0 = center, 1 = top edge (of main window)
+		float mAbsoluteX;							/// the absolute x coordinate of the mouse which is between -1.0f and 1.0f, -1 = left edge, 0 = center, 1 = right edge (of main window)
+		float mAbsoluteY;							/// the absolute y coordinate of the mouse which is between -1.0f and 1.0f, -1 = bottom edge, 0 = center, 1 = top edge (of main window)
 
 		#ifdef _WINDOWS
-            Real mRelativeToAbsoluteScaleFactorX;       /// Defines how the relative mouse motions along the x-Axis are added to the absolute position.
-                                                        /// Should be smaller than 1.0f.
-            Real mRelativeToAbsoluteScaleFactorY;       /// Defines how the relative mouse motions along the y-Axis are added to the absolute position.
-                                                        ///  Should be smaller than 1.0f.
+            float mRelativeToAbsoluteScaleFactorX;	/// Defines how the relative mouse motions along the x-Axis are added to the absolute position.
+													/// Should be smaller than 1.0f.
+            float mRelativeToAbsoluteScaleFactorY;	/// Defines how the relative mouse motions along the y-Axis are added to the absolute position.
+													///  Should be smaller than 1.0f.
 		#endif // _WINDOWS
 
-		unsigned char	mButtonStates;					/// Contains up to 8 button states from the last update with values like mButtonStates & 0x1 == 1 -> 
-														/// button 0 is down or mButtonStates & 0x1 == 0 -> button 0 is up.
-		unsigned char	mPreviousButtonStates;			/// Contains up to 8 button states from the second last update with values like mButtonStates & 0x1 == 1 ->
-														/// button 0 is down or mButtonStates & 0x1 == 0 -> button 0 is up.
+		unsigned char mButtonStates;				/// Contains up to 8 button states from the last update with values like mButtonStates & 0x1 == 1 -> 
+													/// button 0 is down or mButtonStates & 0x1 == 0 -> button 0 is up.
+		unsigned char mPreviousButtonStates;		/// Contains up to 8 button states from the second last update with values like mButtonStates & 0x1 == 1 ->
+													/// button 0 is down or mButtonStates & 0x1 == 0 -> button 0 is up.
 
 		// todo: move this
-		bool			mInUse;							/// true when this mouse is used by a player
+		bool mInUse;								/// true when this mouse is used by someone
 	};
 }
 

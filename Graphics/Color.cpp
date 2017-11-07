@@ -23,10 +23,10 @@ Color::Color()
 Color::Color(float red, float green, float blue, float alpha)
 {
 	assert(checkComponents(red, green, blue, alpha));
-	mComponents[0] = red;
-	mComponents[1] = green;
-	mComponents[2] = blue;
-	mComponents[3] = alpha;
+	mComponents[0] = Math::clamp<float>(red,   1.0f, 0.0f);
+	mComponents[1] = Math::clamp<float>(green, 1.0f, 0.0f);
+	mComponents[2] = Math::clamp<float>(blue,  1.0f, 0.0f);
+	mComponents[3] = Math::clamp<float>(alpha, 1.0f, 0.0f);
 }
 
 void Color::convertToHSL(float &H, float &S, float &L) const
@@ -104,14 +104,14 @@ Color Color::createFromHSL(float H, float S, float L, float alpha)
 	H = H / (float) Math::TWO_PI;
 
 	// clampling due to possible numerical errors
-	const float r = (float) Math::clamp(helperVariablesToRGB(p, q, H + (1.0f / 3.0f)), 1.0f, 0.0f); 
-	const float g = (float) Math::clamp(helperVariablesToRGB(p, q, H), 1.0f, 0.0f);
-	const float b = (float) Math::clamp(helperVariablesToRGB(p, q, H - (1.0f / 3.0f)), 1.0f, 0.0f); 
+	const float r = Math::clamp<float>(helperVariablesToRGB(p, q, H + (1.0f / 3.0f)), 1.0f, 0.0f); 
+	const float g = Math::clamp<float>(helperVariablesToRGB(p, q, H), 1.0f, 0.0f);
+	const float b = Math::clamp<float>(helperVariablesToRGB(p, q, H - (1.0f / 3.0f)), 1.0f, 0.0f); 
 
 	return Color(r, g, b, alpha);
 }
 
-Real Color::helperVariablesToRGB(Real p, Real q, Real t)
+float Color::helperVariablesToRGB(float p, float q, float t)
 {
 	if (t < 0.0f)
 		t += 1.0f;

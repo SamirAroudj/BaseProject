@@ -83,10 +83,7 @@ GraphicsManager::GraphicsManager(uint32 colorResolution, const Color &clearColor
 	glewInit();
 
 	// set clear color and clear depth
-	glClearColor((float) mClearColor.getRed(),
-				 (float) mClearColor.getGreen(),
-				 (float) mClearColor.getBlue(),
-				 (float) mClearColor.getAlpha());
+	setClearColor(clearColor);
 	glClearDepth(1.0f);
 	glDepthRange(0.0f, 1.0f);
 
@@ -239,4 +236,13 @@ void GraphicsManager::renderRenderGroups()
 	size_t numOfRenderGroups = mRenderGroups.size();
 	for (size_t i = numOfRenderGroups - 1; i >= 0; --i)
 		mRenderGroups[i]->render();
+}
+
+void GraphicsManager::setClearColor(const Color &color)
+{
+	mClearColor = color;
+	glClearColor((float) mClearColor.getRed(),
+				 (float) mClearColor.getGreen(),
+				 (float) mClearColor.getBlue(),
+				 (float) mClearColor.getAlpha());
 }

@@ -15,14 +15,14 @@ using namespace std;
 Real Vector4::getAngle(const Vector4 &rhs) const
 {
 	Real temp = this->dotProduct(rhs) / (this->getLength() * rhs.getLength());
-	clamp(temp, 1.0f, -1.0f);
+	clamp<Real>(temp, 1.0f, -1.0f);
 	return acosr(temp);
 }
 
 Real Vector4::getAngleWithNormalizedVectors(const Vector4 &rhs) const
 {
 	Real temp = this->dotProduct(rhs);
-	clamp(temp, 1.0f, -1.0f);
+	clamp<Real>(temp, 1.0f, -1.0f);
 	return acosr(temp);
 }
 

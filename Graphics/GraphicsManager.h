@@ -72,6 +72,10 @@ namespace Graphics
 		the RenderGroup instance with index 0 is the last RenderGroup to be rendered. */
 		void renderRenderGroups();
 
+		/** Defines with which color the back buffer is filled before rendering everything else.
+		@param Set this to the clear / background color with which the back buffer is filled before rendering.*/
+		void setClearColor(const Graphics::Color &color);
+
 	private:
 		/** Copy constructor is forbidden. */
 		GraphicsManager(const GraphicsManager &copy) : mClearColor(0, 0, 0, 0) { assert(false); }
@@ -92,14 +96,14 @@ namespace Graphics
 
 	private:
 		#ifdef _WINDOWS
-			HDC			mDeviceContext;					/// This device context from the OS is used for rendering.
-			HGLRC		mRenderingContext;				/// This is the OpenGL rendering context. (Windows)
+			HDC mDeviceContext;						/// This device context from the OS is used for rendering.
+			HGLRC mRenderingContext;				/// This is the OpenGL rendering context. (Windows)
 		#elif _LINUX
-			GLXContext	mRenderingContext;				/// This is the OpenGL rendering context. (LINUX)
+			GLXContext	mRenderingContext;			/// This is the OpenGL rendering context. (LINUX)
 		#endif // _WINDOWS
 
-		std::vector<RenderGroup *>	mRenderGroups;		/// Contains all render groups which are used for the purpose of render order definition.
-		Color						mClearColor;		/// The color buffer is set to mClearColor at the beginning of each frame rendering.
+		std::vector<RenderGroup *> mRenderGroups;	/// Contains all render groups which are used for the purpose of render order definition.
+		Color mClearColor;							/// The color buffer is set to mClearColor at the beginning of each frame rendering.
 	};
 }
 

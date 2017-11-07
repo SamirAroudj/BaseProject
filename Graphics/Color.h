@@ -115,7 +115,7 @@ namespace Graphics
 		@see createFromHSL implementation
 			and http://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
 			and https://en.wikipedia.org/wiki/HSL_and_HSV */
-		static Real helperVariablesToRGB(Real p, Real q, Real t);
+		static float helperVariablesToRGB(float p, float q, float t);
 
 	private:
 		/** Check the range of the colour components.

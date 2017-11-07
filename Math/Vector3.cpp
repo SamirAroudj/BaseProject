@@ -26,14 +26,14 @@ void Vector3::createBasis(Vector3 &b0, Vector3 &b1, Vector3 &b2, bool normalized
 Real Vector3::getAngle(const Vector3 &rhs) const
 {
 	Real temp = this->dotProduct(rhs) / (this->getLength() * rhs.getLength());
-	clamp(temp, 1.0f, -1.0f);
+	clamp<Real>(temp, 1.0f, -1.0f);
 	return acosr(temp);
 }
 
 Real Vector3::getAngleWithNormalizedVectors(const Vector3 &rhs) const
 {
 	Real temp = this->dotProduct(rhs);
-	clamp(temp, 1.0f, -1.0f);
+	clamp<Real>(temp, 1.0f, -1.0f);
 	return acosr(temp);
 }
 

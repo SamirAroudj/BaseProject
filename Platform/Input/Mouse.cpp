@@ -27,7 +27,7 @@ Mouse::Mouse() :
 		mRelativeToAbsoluteScaleFactorY  = MOUSE_REALTIVE_TO_ABSOLUTE_SCALE;
 		mRelativeToAbsoluteScaleFactorX  = MOUSE_REALTIVE_TO_ABSOLUTE_SCALE;
 		if (Platform::Window::exists())
-			mRelativeToAbsoluteScaleFactorX *= Platform::Window::getSingleton().getAspectRatio();
+			mRelativeToAbsoluteScaleFactorX *= (float) Platform::Window::getSingleton().getAspectRatio();
 	#endif // _WINDOWS
 
 // todo implement flexible mapping some day?
@@ -214,8 +214,8 @@ void Mouse::update()
 		// update the absolute x and y coordinates of the mouse and clamp them to -1.0f or 1.0f
 		mAbsoluteX += mRelativeXMotion * mRelativeToAbsoluteScaleFactorX;		
 		mAbsoluteY += mRelativeYMotion * mRelativeToAbsoluteScaleFactorY;
-		mAbsoluteX = Math::clamp(mAbsoluteX, 1.0f, -1.0f);
-		mAbsoluteY = Math::clamp(mAbsoluteY, 1.0f, -1.0f);
+		mAbsoluteX = Math::clamp<float>(mAbsoluteX, 1.0f, -1.0f);
+		mAbsoluteY = Math::clamp<float>(mAbsoluteY, 1.0f, -1.0f);
 
 		// update buttons
 		mPreviousButtonStates	= mButtonStates;
@@ -230,7 +230,7 @@ void Mouse::update()
 void Mouse::clampRelativeMotion()
 {
 	// cap the values to -1.0f or 1.0f
-	mRelativeXMotion = Math::clamp(mRelativeXMotion, 1.0f, -1.0f);
-	mRelativeYMotion = Math::clamp(mRelativeYMotion, 1.0f, -1.0f);
-	mRelativeZMotion = Math::clamp(mRelativeZMotion, 1.0f, -1.0f);
+	mRelativeXMotion = Math::clamp<float>(mRelativeXMotion, 1.0f, -1.0f);
+	mRelativeYMotion = Math::clamp<float>(mRelativeYMotion, 1.0f, -1.0f);
+	mRelativeZMotion = Math::clamp<float>(mRelativeZMotion, 1.0f, -1.0f);
 }

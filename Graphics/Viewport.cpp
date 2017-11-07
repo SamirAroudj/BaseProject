@@ -26,7 +26,7 @@ Matrix3x3 Viewport::computeInverseMatrix(const ImgSize &viewportSize, const bool
 {
 	Matrix3x3 invM;
 
-	// map ([0, viewPortSize[0]] x [0, viewPortSize[1]]) to (sizeOfNDCCube * [-0.5, 0.5]) 
+	// map ([0, viewPortSize[0]] x [0, viewPortSize[1]]) to (sizeOfNDCCube * [-pp.x, 1 - pp.x] x [-pp.y, 1 - pp.y]) 
 	invM.m00 = sizeOfNDCCube / viewportSize[0];
 	invM.m20 = -sizeOfNDCCube * principlePoint.x;
 

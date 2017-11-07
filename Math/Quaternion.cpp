@@ -127,7 +127,7 @@ Quaternion Quaternion::sLerp(const Quaternion &q0, const Quaternion &q1, Real t1
 
 	// angle between both vectors
 	const Real dotProduct = q0.dotProduct(q1);
-	const Real alpha0 = clamp(acosr(dotProduct), 1.0f, 0.0f);
+	const Real alpha0 = clamp<Real>(acosr(dotProduct), 1.0f, 0.0f);
 	if (alpha0 < EPSILON)
 		return q0;
 

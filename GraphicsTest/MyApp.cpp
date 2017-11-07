@@ -185,5 +185,8 @@ void MyApp::update()
 	if (keyboard.isKeyDown(KEY_UP))
 		mSprites[3]->setDepth(mSprites[3]->getDepth() + deltaTime);
 	if (keyboard.isKeyDown(KEY_DOWN))
-		mSprites[3]->setDepth(Math::clamp(mSprites[3]->getDepth() - deltaTime, 2.0f, 0.0f));
+	{
+		const Real temp = mSprites[3]->getDepth() - deltaTime;
+		mSprites[3]->setDepth(Math::clamp((float) temp, 2.0f, 0.0f));
+	}
 }

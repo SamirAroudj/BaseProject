@@ -43,14 +43,14 @@ Real Vector2::computeDistanceTo(Real &t, const Vector2 &p0, const Vector2 &p1) c
 Real Vector2::getAngle(const Vector2 &rhs) const
 {
 	Real temp = this->dotProduct(rhs) / (this->getLength() * rhs.getLength());
-	clamp(temp, 1.0f, -1.0f);
+	clamp<Real>(temp, 1.0f, -1.0f);
 	return acosr(temp);
 }
 
 Real Vector2::getAngleWithNormalizedVectors(const Vector2 &rhs) const
 {
 	Real temp = this->dotProduct(rhs);
-	clamp(temp, 1.0f, -1.0f);
+	clamp<Real>(temp, 1.0f, -1.0f);
 	return acosr(temp);
 }
 

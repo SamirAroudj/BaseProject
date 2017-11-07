@@ -19,13 +19,14 @@ namespace Math
 	class Matrix3x3;
 	class Matrix4x4;
 	class Quaternion;
-
-	/** Clamps a real value to an interval.
+	
+	/** Clamps a value to an interval.
 	@param value This value is clamped to be inside [minValue, maxValue].
 	@param maxValue The returned value is at most equal to maxValue.
 	@param minValue Thre returned value is at least equal to minValue.
 	@return The returned value is restricted to [maxValue, minValue] or not changed if it is already in the interval. */
-	inline Real clamp(Real value, Real maxValue, Real minValue);
+	template <class T>
+	inline T clamp(T value, T maxValue, T minValue);
 
 	/** Computes the determinant of a 2x2 matrix.
 	@param m00 Element at row 1 and column 1.
@@ -201,7 +202,8 @@ namespace Math
 	///   inline function definitions   ////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	inline Real clamp(Real value, Real maxValue, Real minValue)
+	template <class T>
+	inline T clamp(T value, T maxValue, T minValue)
 	{
 		assert(maxValue >= minValue);
 

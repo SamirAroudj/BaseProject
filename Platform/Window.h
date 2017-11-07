@@ -60,6 +60,9 @@ namespace Platform
 		/** Frees requested resources. */
 		virtual ~Window();
 
+		/** Hides the mouse cursor which is normally shown by the operating system. */
+		void hideOperatingSystemCursor();
+
 		/** Gets the aspect ratio (width / height) of the window.
 		@return The aspect ratio (width / height) of the window. */
 		inline Real getAspectRatio() const;

@@ -114,6 +114,21 @@ Platform::Window::Window
 		return true;
 	}
 
+	void Window::hideOperatingSystemCursor()
+	{
+		#ifdef _WINDOWS
+			// keep cursor within window area where it is hidden thanks to ShowCursor
+			RECT windowRectangle;
+			GetWindowRect(Window::getSingleton().getWindowHandle(), &windowRectangle);
+			ClipCursor(&windowRectangle);
+		
+			while(ShowCursor(false)>=0);
+		#else
+			assert(false);
+			cerr << "Not implemented: hideOperatingSystemCursor()" << endl;
+		#endif
+	}
+
 	void Window::registerWindowType(HINSTANCE applicationHandle) const
 	{
 		// create a window description connected to the function windowProcedure
