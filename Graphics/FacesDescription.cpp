@@ -17,6 +17,7 @@ using namespace Graphics;
 const char *const FacesDescription::SEMANTIC_IDENTIFIERS[FacesDescription::SEMANTICS_COUNT] =
 {
 	"vertex_indices",
+	"flags",
 	"unknown",
 	"invalid"
 };

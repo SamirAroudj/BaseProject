@@ -121,44 +121,80 @@ void PlyFile::loadFaceStructure(FacesDescription &structure)
 	{
 		// is there another face property?
 		readTextLine(mLineParts, mLine, DELIMETERS);
-		if (mLineParts[0] != HEADER_PROPERTY)
+		if (mLineParts[0] != HEADER_PROPERTY) // property
 			break;
 
 		// per face vertex index list?
-		if (mLineParts[1] != HEADER_LIST)
-			break;
-
-		// get list size type from line parts
-		const uint32 sizeType = find(ElementsDescription::TYPE_IDENTIFIERS, ElementsDescription::TYPE_COUNT, mLineParts[2]);
-		if (sizeType >= ElementsDescription::TYPE_COUNT)
-		{
-			// unclear data type in list -> um problema grande since the face property type sizes in bytes must be known
-			string error = "Could not recognize list size data type in ply header mLine: ";
-			error += mLine;
-			throw FileCorruptionException(error, mName);
-		}
-		
-		// get list element type from line parts
-		const uint32 listElementType = find(ElementsDescription::TYPE_IDENTIFIERS, ElementsDescription::TYPE_COUNT, mLineParts[3]);
-		if (listElementType >= ElementsDescription::TYPE_COUNT)
-		{
-			// unclear data type in list -> um problema grande since the face property type sizes in bytes must be known
-			string error = "Could not recognize list element type in ply header mLine: ";
-			error += mLine;
-			throw FileCorruptionException(error, mName);
-		}
-		
-		// get property semantic, e.g. vertex indices
-		uint32 semantic = find(FacesDescription::SEMANTIC_IDENTIFIERS, FacesDescription::SEMANTICS_COUNT, mLineParts[4]);
-		if (semantic >= FacesDescription::SEMANTIC_UNKNOWN)
-		{
-			semantic = FacesDescription::SEMANTIC_UNKNOWN;
-			cout << "Found unsupported / unkwon face property semantic " << mLineParts[4] << endl;
-		}
-
-		// update faces description
-		structure.add((ElementsDescription::TYPES) sizeType, (ElementsDescription::TYPES) listElementType, (FacesDescription::SEMANTICS) semantic);
+		if (mLineParts[1] == HEADER_LIST) // list
+			loadFaceStructureListProperty(structure);
+		else // single element property
+			loadFaceStructureSingleProperty(structure);
 	}
+}
+
+void PlyFile::loadFaceStructureListProperty(FacesDescription &structure)
+{
+	// property list ...
+	assert(mLineParts[0] == HEADER_PROPERTY);
+	assert(mLineParts[1] == HEADER_LIST);
+
+	// get list size type from line parts
+	const uint32 sizeType = find(ElementsDescription::TYPE_IDENTIFIERS, ElementsDescription::TYPE_COUNT, mLineParts[2]);
+	if (sizeType >= ElementsDescription::TYPE_COUNT)
+	{
+		// unclear data type in list -> um problema grande since the face property type sizes in bytes must be known
+		string error = "Could not recognize list size data type in ply header mLine: ";
+		error += mLine;
+		throw FileCorruptionException(error, mName);
+	}
+		
+	// get list element type from line parts
+	const uint32 listElementType = find(ElementsDescription::TYPE_IDENTIFIERS, ElementsDescription::TYPE_COUNT, mLineParts[3]);
+	if (listElementType >= ElementsDescription::TYPE_COUNT)
+	{
+		// unclear data type in list -> um problema grande since the face property type sizes in bytes must be known
+		string error = "Could not recognize list element type in ply header mLine: ";
+		error += mLine;
+		throw FileCorruptionException(error, mName);
+	}
+		
+	// get property semantic, e.g. vertex indices
+	uint32 semantic = find(FacesDescription::SEMANTIC_IDENTIFIERS, FacesDescription::SEMANTICS_COUNT, mLineParts[4]);
+	if (semantic >= FacesDescription::SEMANTIC_UNKNOWN)
+	{
+		semantic = FacesDescription::SEMANTIC_UNKNOWN;
+		cout << "Found unsupported / unkwon face property semantic " << mLineParts[4] << endl;
+	}
+
+	// update faces description
+	structure.add((ElementsDescription::TYPES) sizeType, (ElementsDescription::TYPES) listElementType, (FacesDescription::SEMANTICS) semantic);
+}
+
+void PlyFile::loadFaceStructureSingleProperty(FacesDescription &structure)
+{
+	// property ...
+	assert(mLineParts[0] == HEADER_PROPERTY);
+
+	// get element type from line parts
+	const uint32 type = find(ElementsDescription::TYPE_IDENTIFIERS, ElementsDescription::TYPE_COUNT, mLineParts[1]);
+	if (type >= ElementsDescription::TYPE_COUNT)
+	{
+		// unclear data type -> um problema grande since the face property type size in bytes must be known
+		string error = "Could not recognize the type of a single type face property in ply header mLine: ";
+		error += mLine;
+		throw FileCorruptionException(error, mName);
+	}
+		
+	// get property semantic, e.g. flags
+	uint32 semantic = find(FacesDescription::SEMANTIC_IDENTIFIERS, FacesDescription::SEMANTICS_COUNT, mLineParts[2]);
+	if (semantic >= FacesDescription::SEMANTIC_UNKNOWN)
+	{
+		semantic = FacesDescription::SEMANTIC_UNKNOWN;
+		cout << "Found unsupported / unkwon semantic for a single type property for faces: " << mLineParts[2] << endl;
+	}
+
+	// update faces description
+	structure.add((ElementsDescription::TYPES) type, (FacesDescription::SEMANTICS) semantic);
 }
 
 void PlyFile::loadVertexStructure(VerticesDescription &structure)
@@ -178,6 +214,7 @@ void PlyFile::loadVertexStructure(VerticesDescription &structure)
 		if (mLineParts[0] != HEADER_PROPERTY)
 			break;
 
+		// single element vertex property
 		// get data type from line parts
 		const uint32 type = find(ElementsDescription::TYPE_IDENTIFIERS, ElementsDescription::TYPE_COUNT, mLineParts[1]);
 		if (type >= ElementsDescription::TYPE_COUNT)
@@ -223,19 +260,19 @@ void PlyFile::loadTriangles(vector<uint32> &indices, const FacesDescription &fac
 			// some list?
 			const ElementsDescription::TYPES listSizeType = listSizeTypes[propertyIdx];
 			if (ElementsDescription::TYPE_INVALID == listSizeType)
-				continue;
-
-			readFaceProperty(indices, listSizeType, types[propertyIdx], semantics[propertyIdx]);
+				readFaceSingleProperty(types[propertyIdx], semantics[propertyIdx]);
+			else
+				readFaceListProperty(indices, listSizeType, types[propertyIdx], semantics[propertyIdx]);
 		}
 	}
 }
 
-void PlyFile::readFaceProperty(vector<uint32> &indices,
+void PlyFile::readFaceListProperty(vector<uint32> &indices,
 	const ElementsDescription::TYPES listSizeType, const ElementsDescription::TYPES type, const uint32 semantic)
 {
 	// read & check list size
 	uint32 listSize = (uint32) read<uint32>(listSizeType);
-	if (listSize > 4)
+	if (listSize > 4 || listSize < 3)
 		throw FileCorruptionException("Unsupported index list size for a face.", mName);
 
 	// read all indices of the face
@@ -270,6 +307,13 @@ void PlyFile::readFaceProperty(vector<uint32> &indices,
 			indices.push_back(index3);
 		}
 	}
+}
+
+void PlyFile::readFaceSingleProperty(const ElementsDescription::TYPES type, const uint32 semantic)
+{
+	// single properties of faces are ignored
+	char trash[32];
+	read(trash, type);
 }
 
 void PlyFile::read(void *destination, const ElementsDescription::TYPES type)

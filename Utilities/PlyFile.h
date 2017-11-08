@@ -57,13 +57,22 @@ namespace Utilities
 	private:
 		/** todo */
 		void loadFaceStructure(Graphics::FacesDescription &structure);
+		
+		/** todo */
+		void loadFaceStructureListProperty(Graphics::FacesDescription &structure);
+		
+		/** todo */
+		void loadFaceStructureSingleProperty(Graphics::FacesDescription &structure);
 
 		/** todo */
 		void loadVertexStructure(Graphics::VerticesDescription &structure);
 
 		/** todo */
-		void readFaceProperty(std::vector<uint32> &indices,
+		void readFaceListProperty(std::vector<uint32> &indices,
 			const Graphics::ElementsDescription::TYPES listSizeType, const Graphics::ElementsDescription::TYPES  type, const uint32 semantic);
+
+		/** todo */
+		void readFaceSingleProperty(const Graphics::ElementsDescription::TYPES type, const uint32 semantic);
 
 		/** todo */
 		void saveTriangleMeshHeader(const Encoding encoding, const Graphics::ElementsDescription::TYPES outputPrecision,
