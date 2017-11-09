@@ -45,11 +45,22 @@ Path &Path::appendChild(const Path &subFolder)
 	return *this;
 }
 
-Path &Path::extendLastName(const string &extension)
+Path &Path::extendLeafName(const string &extension)
 {
 	Path newPath(mPath + extension);
 	mPath = newPath.mPath;
 	return *this;
+}
+
+string Path::getLeafName() const
+{
+	// only a leaf / no inner nodes / no '/'?
+	const size_t position = mPath.find_last_of('/');
+	if (string::npos == position)
+		return mPath;
+
+	// return string after last '/'
+	return mPath.substr(position + 1);
 }
 
 bool Path::getParent(Path &parent) const

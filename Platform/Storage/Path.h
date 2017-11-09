@@ -18,7 +18,7 @@ namespace Storage
 	{
 	public:
 		static inline Path appendChild(const Path &parent, const Path &child);
-		static inline Path extendLastName(const Path &path, const std::string &extension);
+		static inline Path extendLeafName(const Path &path, const std::string &extension);
 	
 	public:
 		Path();
@@ -30,7 +30,8 @@ namespace Storage
 
 		bool getParent(Path &parent) const;
 
-		Path &extendLastName(const std::string &extension);
+		Path &extendLeafName(const std::string &extension);
+		std::string getLeafName() const;
 
 		inline const std::string &getString() const;
 		inline const char *getCString() const;
@@ -66,10 +67,10 @@ namespace Storage
 		return appendChild(subPath);
 	}
 
-	inline Path Path::extendLastName(const Path &path, const std::string &extension)
+	inline Path Path::extendLeafName(const Path &path, const std::string &extension)
 	{
 		Path totalPath(path);
-		totalPath.extendLastName(extension);
+		totalPath.extendLeafName(extension);
 		return totalPath;
 	}
 	
