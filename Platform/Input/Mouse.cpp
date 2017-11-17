@@ -149,7 +149,7 @@ bool Mouse::isButtonUp(Button button) const
 		}
 	}
 
-	void Mouse::processMotionEvent(Real absoluteX, Real absoluteY)
+	void Mouse::processMotionEvent(float absoluteX, float absoluteY)
 	{
 		// check input values
 		absoluteX = Math::clamp(absoluteX, 1.0f, -1.0f);

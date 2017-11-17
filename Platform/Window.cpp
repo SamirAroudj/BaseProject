@@ -474,8 +474,8 @@ Platform::Window::~Window()
 				Mouse &mouse = (Mouse &) InputManager::getSingleton().getMouse();
 
 				// get pointer coordinates relative to event window
-				Real x =   2.0f * (Real) event.xmotion.x / mSize[0] - 1.0f;
-				Real y = -(2.0f * (Real) event.xmotion.y / mSize[1] - 1.0f);
+				float x =   2.0f * (Real) event.xmotion.x / mSize[0] - 1.0f;
+				float y = -(2.0f * (Real) event.xmotion.y / mSize[1] - 1.0f);
 
 				// is necessary due to possible window movements
 				Math::clamp(x, 1.0f, -1.0f);
