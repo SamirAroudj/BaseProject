@@ -21,8 +21,26 @@ namespace Graphics
 	class Color
 	{
 	public:
+		/** Linearly interpolates between c0 and c1.
+			Computes c = c0 * f0 + c1 * f1 with 1.0f = f0 + f1.
+		@param c0 Set this to the first color to interpolate between. It is relative to f0.
+		@param c1 Set this to the second color to interpolate between. It is relative to (1.0f - f0).
+		@param f0 Set this to a interpolation factor in [0, 1] whereas f0 = 0.0f means only c1 is returned and f0 = 1.0f means c0 is returned. 
+		@return returns c = c0 * f0 + c1 * f1 with 1.0f = f0 + f1. */
+		static Color interpolateLinearly(const Color &c0, const Color &c1, const Real f0);
+
+	public:
 		/** Creates opaque black. ([0, 0, 0, 0]) */
 		Color();
+		
+		/** Creates a color based on a red, green, blue and alpha component.
+			Reasonable values for each parameter reach from 0.0f to 1.0f.
+			See additive color mixing and alpha blending to find out more.
+			Sets alpha to 1.0f for an opaque color.
+		@param red Specifies how much red the color contains. 0.0f = no red; 1.0f = as much red as possible.
+		@param green Specifies how much green the color contains. 0.0f = no green; 1.0f = as much green as possible.
+		@param blue Specifies how much blue the color contains. 0.0f = no blue; 1.0f = as much blue as possible. */
+		Color(float red, float green, float blue);
 
 		/** Creates a color based on a red, green, blue and alpha component.
 			Reasonable values for each parameter reach from 0.0f to 1.0f.

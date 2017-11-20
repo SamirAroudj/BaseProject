@@ -28,6 +28,7 @@ set(headerFiles
 	${componentPath}/Camera2D.h
 	${componentPath}/Camera3D.h
 	${componentPath}/Color.h
+	${componentPath}/ColorMap.h
 	${componentPath}/ElementsDescription.h
 	${componentPath}/FacesDescription.h
 	${componentPath}/GraphicsManager.h
@@ -51,6 +52,7 @@ set(sourceFiles
 	${componentPath}/Camera2D.cpp
 	${componentPath}/Camera3D.cpp
 	${componentPath}/Color.cpp
+	${componentPath}/ColorMap.cpp
 	${componentPath}/ElementsDescription.cpp
 	${componentPath}/FacesDescription.cpp
 	${componentPath}/GraphicsManager.cpp

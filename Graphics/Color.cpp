@@ -12,12 +12,34 @@
 using namespace Graphics;
 using namespace Math;
 
+
+Color Color::interpolateLinearly(const Color &c0, const Color &c1, const Real temp0)
+{
+	// interpolation factors
+	const float f0 = Math::clamp((float) temp0, 1.0f, 0.0f);
+	const float f1 = 1.0f - f0;
+
+	Color c;
+	c.mComponents[0] = c0.mComponents[0] * f0 + c1.mComponents[0] * f1;
+	c.mComponents[1] = c0.mComponents[1] * f0 + c1.mComponents[1] * f1;
+	c.mComponents[2] = c0.mComponents[2] * f0 + c1.mComponents[2] * f1;
+	c.mComponents[3] = c0.mComponents[3] * f0 + c1.mComponents[3] * f1;
+
+	return c;
+}
+
 Color::Color()
 {
 	mComponents[0] = 0.0f;
 	mComponents[1] = 0.0f;
 	mComponents[2] = 0.0f;
 	mComponents[3] = 0.0f;
+}
+
+Color::Color(float red, float green, float blue) :
+	Color(red, green, blue, 1.0f)
+{
+
 }
 
 Color::Color(float red, float green, float blue, float alpha)
