@@ -10,8 +10,9 @@
 	#include <Windows.h>
 #endif // _WINDOWS
 
-#include <sstream>
 #include <cstring>
+#include <iterator>
+#include <sstream>
 #include "Utilities/HelperFunctions.h"
 
 using namespace std;

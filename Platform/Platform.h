@@ -9,7 +9,7 @@
 #define _PLATFORM_H_
 
 #ifdef _WINDOWS
-	#define snprintf _snprintf
+
 #endif
 
 #endif // _PLATFORM_H_
