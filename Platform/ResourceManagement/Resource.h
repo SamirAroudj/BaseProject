@@ -28,6 +28,9 @@ namespace ResourceManagement
 		{
 			assert(msResources.empty());
 			msResources.shrink_to_fit();
+
+			delete [] msResourcePath;
+			msResourcePath = NULL;
 		}
 
 		/** Obtain the name of the Resource object.
