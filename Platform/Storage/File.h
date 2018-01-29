@@ -72,6 +72,10 @@ namespace Storage
 		@return A reference to the file handle is returned. */
 		FILE &getHandle() { return *mHandle; }
 
+		/** Returns the path and local name used to create the file.
+		@return Returns the Path object identifying where the file is stored.*/
+		inline const Path &getName() const;
+
 		/** Reads data (elementCount blocks of size elementSize) from the file represented by this object.
 		@param buffer Data is written to this buffer which should have a size of at least bufferSize >= elementSize * elementCount.
 		@param bufferSize Specifies the size of the array buffer in bytes.
@@ -259,6 +263,15 @@ namespace Storage
         FILE *mHandle;						/// points to the file on mass storage
 		char mBuffer[READING_BUFFER_SIZE];	/// temporary buffer for reading text
 	};
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///   inline function definitions   ////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	inline const Path &File::getName() const
+	{
+		return mName;
+	}
 }
 
 #endif // _STORAGE_FILE_H_
