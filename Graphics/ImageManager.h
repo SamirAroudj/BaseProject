@@ -20,9 +20,6 @@ namespace Graphics
 	class ImageManager : public Patterns::Singleton<ImageManager>
 	{
 	public:
-		static void convertDepthMap(uint8 *pixels, const Real *depthMap, const uint32 pixelCount, const uint32 channelCount, const Real minDepth, const Real maxDepth);
-
-	public:
 		/** Creates a unique instance of the ImageManager. There can only be one ImageManager. */
 		ImageManager() { }
 
@@ -102,9 +99,6 @@ namespace Graphics
 		@param rhs Assign operator is forbidden for safe programming & singleton reasons.
 		@return Assign operator is forbidden for safe programming & singleton reasons.  */
 		ImageManager &operator =(const ImageManager &rhs) { assert(false); return *this; }
-
-	public:
-		static const uint8 SPECIAL_PINK_COLOR[4]; /// Special color value which can be used to for example identify actually unset/invalid pixels.
 	};
 }
 

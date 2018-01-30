@@ -29,31 +29,6 @@ using namespace std;
 using namespace Storage;
 using namespace Utilities;
 
-const uint8 ImageManager::SPECIAL_PINK_COLOR[4] = { 255, 51, 255, 0 };
-
-void ImageManager::convertDepthMap(uint8 *pixels, const Real *depthMap, const uint32 pixelCount, const uint32 channelCount, const Real minDepth, const Real maxDepth)
-{
-	// convert depths into color values
-	const Real depthRange = maxDepth - minDepth;
-	const Real colorScaleFactor = 255 / depthRange;
-
-	for (int64 pixelIdx = 0; pixelIdx < pixelCount; ++pixelIdx)
-	{
-		uint8 *pixel = pixels + pixelIdx * channelCount;
-
-		// invalid value?
-		for (uint32 channelIdx = 0; channelIdx < channelCount; ++channelIdx)
-			pixel[channelIdx] = ImageManager::SPECIAL_PINK_COLOR[channelIdx];
-		if (0 > depthMap[pixelIdx])
-			continue;
-
-		// gray according to depth
-		const uint8 value = static_cast<uint8>(colorScaleFactor * (depthMap[pixelIdx] - minDepth));
-		for (uint32 channelIdx = 0; channelIdx < channelCount; ++channelIdx)
-			pixel[channelIdx] = value;
-	}
-}
-
 ImageManager::~ImageManager()
 {
 
