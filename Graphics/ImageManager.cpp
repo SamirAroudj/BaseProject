@@ -332,71 +332,74 @@ void ImageManager::savePNG(File &file, const Real *pixels, const uint32 channelC
 void ImageManager::savePNG(File &file, const uint8 *pixels, const uint32 channelCount, const ImgSize &size, int32 compressionLevel)
 {
 	assert(pixels);
-	
-	// structs for writing
-	png_structp pngBody = NULL;
-	png_infop pngHeader = NULL;
-	png_bytepp rowPointers = NULL;
+	if (!pixels || size[0] <= 0 || size[1] <= 0)
+		throw Exception("Invalid data for png file output!");
+
+	// bit depth & color type / format
+	const png_byte bitDepth = 8;
+	png_byte colorType;
+
+	switch (channelCount)
+	{
+		case 0: colorType = PNG_COLOR_TYPE_PALETTE; break;
+		case 1: colorType = PNG_COLOR_TYPE_GRAY; break;
+		case 2: colorType = PNG_COLOR_TYPE_GRAY_ALPHA; break;
+		case 3: colorType = PNG_COLOR_TYPE_RGB; break;
+		case 4: colorType = PNG_COLOR_TYPE_RGB_ALPHA; break;
+		default:
+			throw Exception("Unsupported color type for png file creation.");
+	}
+
+	// png body, header & data source
+	png_struct *png = NULL;
+	png_info *pngHeader = NULL;
+	png_byte **rowPointers = new png_byte *[size[1]];
+
+	// set pixels as row-wise png data source
+	const uint8 *rowPointer = pixels;
+	const uint32 rowOffset = size[0] * channelCount;
+	for (uint32 rowIdx = 0; rowIdx < size[1]; ++rowIdx, rowPointer += rowOffset)
+		rowPointers[rowIdx] = (png_byte *) rowPointer;
 
 	try
 	{
 		// create body and header & prepare writing
-		// create struct for writing without user error or error or warning function pointers
-		png_structp pngBody = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-		if (!pngBody)
+		png = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL); // create struct for writing without user error or error or warning function pointers
+		if (!png)
 			throw Exception("Could not create png_struct for png file creation.");
 
-		png_infop pngHeader = png_create_info_struct(pngBody);
+		pngHeader = png_create_info_struct(png);
 		if (!pngHeader)
 			throw Exception("Could not create png_info for png file creation.");
 
-		png_init_io(pngBody, &file.getHandle());
-
-
-		// choose color type
-		uint32 colorType;
-		switch (channelCount)
-		{
-			case 1: colorType = PNG_COLOR_TYPE_GRAY; break;
-			case 2: colorType = PNG_COLOR_TYPE_GRAY_ALPHA; break;
-			case 3: colorType = PNG_COLOR_TYPE_RGB; break;
-			case 4: colorType = PNG_COLOR_TYPE_RGB_ALPHA; break;
-			default:
-				throw Exception("Unsupported color type for png file creation.");
-		}
-
-		// set png meta data
-		const uint32 bitDepth = 8;
-		png_set_compression_level(pngBody, compressionLevel);
-		png_set_IHDR(pngBody, pngHeader, size[0], size[1], bitDepth, colorType, PNG_INTERLACE_NONE,
+		// set png header / meta data
+		png_set_IHDR(png, pngHeader, size[0], size[1], bitDepth, colorType, PNG_INTERLACE_NONE,
 			PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+		//png_write_info(png, pngHeader);
+		//png_set_compression_level(png, compressionLevel);
 
-
-		// set png data source
-		rowPointers = new png_bytep[size[1]];
-		const uint8 *rowPointer = pixels;
-		const uint32 rowOffset = size[0] * channelCount;
-		for (uint32 rowIdx = 0; rowIdx < size[1]; ++rowIdx, rowPointer += rowOffset)
-			rowPointers[rowIdx] = (png_byte *) rowPointer;
-
+		// prepare IO
+		png_init_io(png, &file.getHandle());
+		png_set_rows(png, pngHeader, rowPointers);
 
 		// actually write the data to the file
-		png_set_rows(pngBody, pngHeader, rowPointers);
-		png_write_png(pngBody, pngHeader, PNG_TRANSFORM_IDENTITY, NULL);
-		png_write_end(pngBody, pngHeader);
+		png_write_png(png, pngHeader, PNG_TRANSFORM_IDENTITY, NULL);
+
+		//png_write_image(png, rowPointers);
+		//png_write_end(png, pngHeader);
 
 		// free memory
-		png_destroy_write_struct(&pngBody, &pngHeader);
 		delete [] rowPointers;
+		png_destroy_write_struct(&png, &pngHeader);
 
 		rowPointers = NULL;
-		pngBody = NULL;
 		pngHeader = NULL;
+		png = NULL;
 	}
 	catch (Exception &exception)
 	{
 		// free memory
-        png_destroy_write_struct(&pngBody, &pngHeader);
+        png_destroy_write_struct(&png, &pngHeader);
 		delete [] rowPointers;
 
 		throw exception;
