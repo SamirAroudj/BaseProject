@@ -22,16 +22,16 @@ using namespace Utilities;
 const Viewport *Viewport::sActiveViewport = NULL;
 const Real Viewport::MAX_DEPTH = 1.0f;
 
-Matrix3x3 Viewport::computeInverseMatrix(const ImgSize &viewportSize, const bool considerPixelCenterOffset, const Vector2 &principlePoint, const Real sizeOfNDCCube)
+Matrix3x3 Viewport::computeInverseMatrix(const ImgSize &viewportSize, const bool considerPixelCenterOffset, const Vector2 &principalPoint, const Real sizeOfNDCCube)
 {
 	Matrix3x3 invM;
 
 	// map ([0, viewPortSize[0]] x [0, viewPortSize[1]]) to (sizeOfNDCCube * [-pp.x, 1 - pp.x] x [-pp.y, 1 - pp.y]) 
 	invM.m00 = sizeOfNDCCube / viewportSize[0];
-	invM.m20 = -sizeOfNDCCube * principlePoint.x;
+	invM.m20 = -sizeOfNDCCube * principalPoint.x;
 
 	invM.m11 = -sizeOfNDCCube / viewportSize[1];
-	invM.m21 = sizeOfNDCCube * principlePoint.y;
+	invM.m21 = sizeOfNDCCube * principalPoint.y;
 
 	invM.m22 = 1.0f;
 
@@ -45,17 +45,17 @@ Matrix3x3 Viewport::computeInverseMatrix(const ImgSize &viewportSize, const bool
 	return invM;
 }
 
-Matrix4x4 Viewport::computeMatrix(const ImgSize &viewportSize, const bool considerPixelCenterOffset, const Vector2 &principlePoint, const Real sizeOfNDCCube)
+Matrix4x4 Viewport::computeMatrix(const ImgSize &viewportSize, const bool considerPixelCenterOffset, const Vector2 &principalPoint, const Real sizeOfNDCCube)
 {
 	const Real invSize = 1.0f / sizeOfNDCCube;
 	Matrix4x4 M;
 
 	// map (sizeOfNDCCube * [-0.5, 0.5]) to (viewPortSize * [-0.5, 0.5] + pp * viewPortSize)
 	M.m00 = invSize * viewportSize[0];
-	M.m30 = principlePoint.x * viewportSize[0];
+	M.m30 = principalPoint.x * viewportSize[0];
 
 	M.m11 = -invSize * viewportSize[1];
-	M.m31 = principlePoint.y * viewportSize[1];
+	M.m31 = principalPoint.y * viewportSize[1];
 
 	M.m22 = MAX_DEPTH / 2;
 	M.m32 = MAX_DEPTH / 2;
@@ -74,14 +74,14 @@ Matrix4x4 Viewport::computeMatrix(const ImgSize &viewportSize, const bool consid
 
 Vector2 Viewport::transformNDCToPC(const Vector2 &pNDC, const ImgSize &resolution, const bool addPixelCenterOffset)
 {
-	const Vector2 principlePoint(0.5f, 0.5f);
-	return transformNDCToPC(pNDC, resolution, addPixelCenterOffset, principlePoint, 2.0f);
+	const Vector2 principalPoint(0.5f, 0.5f);
+	return transformNDCToPC(pNDC, resolution, addPixelCenterOffset, principalPoint, 2.0f);
 }
 
 Vector2 Viewport::transformNDCToPC(const Vector2 &pNDC, const ImgSize &resolution,
-	const bool addPixelCenterOffset, const Vector2 &principlePoint, const Real sizeOfNDCCube)
+	const bool addPixelCenterOffset, const Vector2 &principalPoint, const Real sizeOfNDCCube)
 {
-	const Vector2 temp = Vector2(pNDC.x, -pNDC.y) / sizeOfNDCCube + principlePoint;
+	const Vector2 temp = Vector2(pNDC.x, -pNDC.y) / sizeOfNDCCube + principalPoint;
 	Vector2 pPC(temp.x * resolution[0],
 				temp.y * resolution[1]);
 

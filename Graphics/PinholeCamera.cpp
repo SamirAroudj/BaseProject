@@ -12,9 +12,9 @@ using namespace Graphics;
 using namespace Math;
 using namespace Utilities;
 
-PinholeCamera::PinholeCamera(const Quaternion &orientation, const Vector4 &positionWS, const Real focalLength, const Vector2 &principlePoint, const Real aspectRatio) :
+PinholeCamera::PinholeCamera(const Quaternion &orientation, const Vector4 &positionWS, const Real focalLength, const Vector2 &principalPoint, const Real aspectRatio) :
 	BaseCamera3D(Matrix4x4::createProjectionRealWorld(focalLength, aspectRatio), aspectRatio),
-	mPrinciplePoint(principlePoint), mFocalLength(focalLength)
+	mPrincipalPoint(principalPoint), mFocalLength(focalLength)
 {
 	setOrientation(orientation);
 	setPosition(positionWS.x, positionWS.y, positionWS.z, positionWS.w);
@@ -42,13 +42,13 @@ Matrix3x3 PinholeCamera::computeHPSToNNRayDirWS(const ImgSize &imageSize, const 
 Matrix3x3 PinholeCamera::computeInverseViewportMatrix(const ImgSize &imageSize, const bool addPixelCenterOffset) const
 {
 	const Real sizeOfNDCCube = 1.0f;
-	return Viewport::computeInverseMatrix(imageSize, addPixelCenterOffset, mPrinciplePoint, sizeOfNDCCube);
+	return Viewport::computeInverseMatrix(imageSize, addPixelCenterOffset, mPrincipalPoint, sizeOfNDCCube);
 }
 
 Matrix4x4 PinholeCamera::computeWorldSpaceToPixelSpaceMatrix(const ImgSize &imageSize, const bool considerPixelCenterOffset) const
 {
 	const Real sizeOfNDCCube = 1.0f;
-	const Matrix4x4 viewport = Viewport::computeMatrix(imageSize, considerPixelCenterOffset, mPrinciplePoint, sizeOfNDCCube);
+	const Matrix4x4 viewport = Viewport::computeMatrix(imageSize, considerPixelCenterOffset, mPrincipalPoint, sizeOfNDCCube);
 
 	return mView * mProjection * viewport;
 }

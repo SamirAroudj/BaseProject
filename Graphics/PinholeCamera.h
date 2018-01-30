@@ -23,9 +23,9 @@ namespace Graphics
 			Must be a right handed unit quaternion. (length = 1).
 		@param positionWS Set this to world space coordiantes of the camera center.
 		@param focalLength Set this to the focal length of the camera.
-		@param principlePoint Defines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5).
+		@param principalPoint Defines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5).
 		@param aspectRatio Set this to the ratio of width to height of the images for the pinhole camera. aspectRatio = width in pixels / height in pixels. */
-		PinholeCamera(const Math::Quaternion &orientation, const Math::Vector4 &positionWS, const Real focalLength, const Math::Vector2 &principlePoint, const Real aspectRatio);
+		PinholeCamera(const Math::Quaternion &orientation, const Math::Vector4 &positionWS, const Real focalLength, const Math::Vector2 &principalPoint, const Real aspectRatio);
 
 		/** Destroys the camera. */
 		virtual ~PinholeCamera();
@@ -58,9 +58,9 @@ namespace Graphics
 		@return The focal length of the camera is returned. */
 		inline Real getFocalLength() const;
 
-		/** Returns the principle point of the camera which defines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5).
-		@return Returns the principle point efines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5). */
-		inline const Math::Vector2 &getPrinciplePoint() const;
+		/** Returns the principal point of the camera which defines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5).
+		@return Returns the principal point efines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5). */
+		inline const Math::Vector2 &getPrincipalPoint() const;
 		
 		/** Set camera's image plane aspect ratio, aspect ratio = width / height.
 		@param aspectRatio This is the ratio of width to height of the camera image plane.  Must be positive.*/
@@ -70,9 +70,9 @@ namespace Graphics
 		@param focalLength Set this to the new focal length value which must be positive. */
 		inline void setFocalLength(const Real focalLength);
 		
-		/** Set a new principle point.
-		@param principlePoint Defines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5). */
-		inline void setPrinciplePoint(const Math::Vector2 &principlePoint);
+		/** Set a new principal point.
+		@param principalPoint Defines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5). */
+		inline void setPrincipalPoint(const Math::Vector2 &principalPoint);
 
 		/** Sets the corresponding members and updates the internal projection matrix.
 		@param focalLength Set this to the new focal length value which must be positive.
@@ -80,7 +80,7 @@ namespace Graphics
 		inline void setProjectionProperties(const Real focalLength, const Real aspectRatio);
 
 	private:		
-		Math::Vector2 mPrinciplePoint;	/// Defines the principle point which is used to define the center of the image for mWSToPS.
+		Math::Vector2 mPrincipalPoint;	/// Defines the principal point which is used to define the center of the image for mWSToPS.
 		Real mFocalLength;				/// Contains the focal length of the camera.
 	};
 
@@ -93,9 +93,9 @@ namespace Graphics
 		return mFocalLength;
 	}
 
-	inline const Math::Vector2 &PinholeCamera::getPrinciplePoint() const
+	inline const Math::Vector2 &PinholeCamera::getPrincipalPoint() const
 	{
-		return mPrinciplePoint;
+		return mPrincipalPoint;
 	}
 
 	inline void PinholeCamera::setFocalLength(const Real focalLength)
@@ -105,9 +105,9 @@ namespace Graphics
 		mProjection = Math::Matrix4x4::createProjectionRealWorld(focalLength, mAspectRatio);
 	}
 		
-	inline void PinholeCamera::setPrinciplePoint(const Math::Vector2 &principlePoint)
+	inline void PinholeCamera::setPrincipalPoint(const Math::Vector2 &principalPoint)
 	{
-		mPrinciplePoint = principlePoint;
+		mPrincipalPoint = principalPoint;
 	}
 
 	inline void PinholeCamera::setProjectionProperties(const Real focalLength, const Real aspectRatio)
