@@ -37,7 +37,7 @@ namespace Graphics
 		/** Initializes the camera with the entered projection properties.
 			It is initially placed at the origin.
 		@param projection Defines the projection properties of the camera. See Matrix4x4::create... functions.
-		@param aspectRatio This is the ratio of width to height of the camera's image plane. Must be positive.*/
+		@param aspectRatio This is the width to height rati of the camera which is differently interpreted depending on the camera type. Must be positive.*/
 		BaseCamera3D(const Math::Matrix4x4 &projection, const Real aspectRatio);
 
 		/** Destroys the camera. */
@@ -130,8 +130,8 @@ namespace Graphics
 		@param deltaAngle Defines how far the camera rolls in radians. */
 		void roll(Real deltaAngle);
 
-		/** Sets the aspect ratio of the camera image plane width to its height.
-		@param aspectRatio Set this to the ratio of the image plane width to its height. Must be positive. */
+		/** Sets the aspect ratio of the camera (always width / height) which is differently interpreted depending on the type of camera.
+		@param aspectRatio Set this to the aspect ratio you want to store. Is differently interpreted depending on the type of camera Must be positive. */
 		virtual void setAspectRatio(const Real aspectRatio) = 0;
 
 		/** Sets the camera orientation according to the entered quaternion which must represent an orientation / rotation.
@@ -183,7 +183,7 @@ namespace Graphics
 		Math::Vector4 mPosition;		/// origin of the camera = projection center (usually in world coordinates)
 		Math::Quaternion mOrientation;	/// orientation definition = rotation applied to standard orientation
 										/// (standard orientation means rotation of view matrix = identity matrix)
-		Real mAspectRatio;				/// ratio of camera screen width to height, aspect ratio (screen width / screen height)
+		Real mAspectRatio;				/// ratio (of camera screen width to height, aspect ratio (screen width / screen height) for Camera3D or pixel width to pixel height for PinholeCamera)
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

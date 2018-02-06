@@ -24,8 +24,8 @@ namespace Graphics
 		@param positionWS Set this to world space coordiantes of the camera center.
 		@param focalLength Set this to the focal length of the camera.
 		@param principalPoint Defines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5).
-		@param aspectRatio Set this to the ratio of width to height of the images for the pinhole camera. aspectRatio = width in pixels / height in pixels. */
-		PinholeCamera(const Math::Quaternion &orientation, const Math::Vector4 &positionWS, const Real focalLength, const Math::Vector2 &principalPoint, const Real aspectRatio);
+		@param pixelAspectRatio Set this to the ratio of pixel width to pixel height of the pinhole camera. pixelAspectRatio = pixel width / pixel height. */
+		PinholeCamera(const Math::Quaternion &orientation, const Math::Vector4 &positionWS, const Real focalLength, const Math::Vector2 &principalPoint, const Real pixelAspectRatio);
 
 		/** Destroys the camera. */
 		virtual ~PinholeCamera();
@@ -62,9 +62,9 @@ namespace Graphics
 		@return Returns the principal point efines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5). */
 		inline const Math::Vector2 &getPrincipalPoint() const;
 		
-		/** Set camera's image plane aspect ratio, aspect ratio = width / height.
-		@param aspectRatio This is the ratio of width to height of the camera image plane.  Must be positive.*/
-		virtual void setAspectRatio(const Real aspectRatio);
+		/** Set camera's pixel aspect ratio = pixel width / pixel height.
+		@param pixelAspectRatio This is the ratio of pixel width to pixel height w.r.t. the camera image sensor.  Must be positive.*/
+		virtual void setAspectRatio(const Real pixelAspectRatio);
 
 		/** Replaces the focal length of the camera. Must be positive.
 		@param focalLength Set this to the new focal length value which must be positive. */
@@ -76,8 +76,8 @@ namespace Graphics
 
 		/** Sets the corresponding members and updates the internal projection matrix.
 		@param focalLength Set this to the new focal length value which must be positive.
-		@param aspectRatio This is the ratio of width to height of the camera image plane.  Must be positive.*/
-		inline void setProjectionProperties(const Real focalLength, const Real aspectRatio);
+		@param pixelAspectRatio This is the ratio of pixel width to pixel height of the camera sensor.  Must be positive.*/
+		inline void setProjectionProperties(const Real focalLength, const Real pixelAspectRatio);
 
 	private:		
 		Math::Vector2 mPrincipalPoint;	/// Defines the principal point which is used to define the center of the image for mWSToPS.
@@ -110,10 +110,10 @@ namespace Graphics
 		mPrincipalPoint = principalPoint;
 	}
 
-	inline void PinholeCamera::setProjectionProperties(const Real focalLength, const Real aspectRatio)
+	inline void PinholeCamera::setProjectionProperties(const Real focalLength, const Real pixelAspectRatio)
 	{
 		mFocalLength = focalLength;
-		setAspectRatio(aspectRatio);
+		setAspectRatio(pixelAspectRatio);
 	}
 }
 

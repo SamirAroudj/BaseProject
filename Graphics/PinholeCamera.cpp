@@ -12,8 +12,8 @@ using namespace Graphics;
 using namespace Math;
 using namespace Utilities;
 
-PinholeCamera::PinholeCamera(const Quaternion &orientation, const Vector4 &positionWS, const Real focalLength, const Vector2 &principalPoint, const Real aspectRatio) :
-	BaseCamera3D(Matrix4x4::createProjectionRealWorld(focalLength, aspectRatio), aspectRatio),
+PinholeCamera::PinholeCamera(const Quaternion &orientation, const Vector4 &positionWS, const Real focalLength, const Vector2 &principalPoint, const Real pixelAspectRatio) :
+	BaseCamera3D(Matrix4x4::createProjectionRealWorld(focalLength, pixelAspectRatio), pixelAspectRatio),
 	mPrincipalPoint(principalPoint), mFocalLength(focalLength)
 {
 	setOrientation(orientation);
@@ -53,9 +53,9 @@ Matrix4x4 PinholeCamera::computeWorldSpaceToPixelSpaceMatrix(const ImgSize &imag
 	return mView * mProjection * viewport;
 }
 
-void PinholeCamera::setAspectRatio(const Real aspectRatio)
+void PinholeCamera::setAspectRatio(const Real pixelAspectRatio)
 {
-	assert(aspectRatio > 0.0f);
-	mAspectRatio = aspectRatio;
+	assert(pixelAspectRatio > 0.0f);
+	mAspectRatio = pixelAspectRatio;
 	mProjection = Matrix4x4::createProjectionRealWorld(mFocalLength, mAspectRatio);
 }

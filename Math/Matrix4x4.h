@@ -67,11 +67,12 @@ namespace Math
 		@param aspectRatio Set this to the ratio of the image plane width to its height. Must be positive.*/
 		static Matrix4x4 createProjectionFovRHOpenGL(const Real fovY, const Real aspectRatio, const Real zNear, const Real zFar);
 
-		/** Computes a 4x4 projection matrix for a real world camera (pinhole model) which maps view space camera coordinates to homogenous (no z-division) device coordinates (non normalized device coordinates).
-			If you also apply the z-devision and transformation to your wanted viewport then you get pixel coordinates, e.g., for an undistorted image.
+		/** Computes a 4x4 projection matrix for a real world camera (pinhole model)
+			which maps view space camera coordinates to homogenous (no z-division) device coordinates (non normalized device coordinates).
+			If you also apply the z-division and transformation to your wanted viewport then you get pixel coordinates, e.g., for an undistorted image.
 		@param focalLength Set this to the focalLength with which the target image was captured.
-		@param aspectRatio Set this to the ratio of the image plane width to its height. Must be positive. */
-		static Matrix4x4 createProjectionRealWorld(const Real focalLength, const Real aspectRatio);
+		@param pixelAspectRatio Set this to the ratio of the general pixel width to pixel height. Must be positive. */
+		static Matrix4x4 createProjectionRealWorld(const Real focalLength, const Real pixelAspectRatio);
 
 		static Matrix4x4 createRotationX(const Real radian);
 		static Matrix4x4 createRotationY(const Real radian);
