@@ -28,9 +28,21 @@ namespace Utilities
 	@return Returns true if booleanText is element of { "t", "true", "yes", "y", "1" } otherwise false is returned. */
 	bool convertToBoolean(const std::string &booleanText);
 
-	/** Returns the */
+	/** Returns the value in the input string called value as type T object according to the specification in variableFormat.
+	@param value Contains the object value as string which should be converted to teh same value but with type T.
+	@param variableFormat Defines how the value is represented in the string value. See scanf from <cstdio> for this format parameter.
+	@see See int scanf(const char *format, ...); from <cstdio> for formating. */
 	template <class T>
 	T convert(const std::string &value, const char *variableFormat);
+
+	/** Converts an array of elementCount InputType elements in inputArray to elementCount OutputType elements.
+		The input array is freed and a new array for the converted type is returned.
+	@param inputArray Set this to the array of elements you want to convert whereas each element must have the second template parameter as type.
+		inputArray is freed and the pointer is set to NULL.
+	@param elementCount Set this to the number of elements / InputType objects in the array inputArray.
+	@return Returns an array of elementCount elements / objects of type OutputType (first template parameter) which was created from inputArray.*/
+	template <class OutputType, class InputType>
+	OutputType *convert(void *&inputArray, const uint32 elementCount);
 
 	/** Searches for an element in a container, deletes its first occurance and swaps it with the last element in the container. (O(n) for linear search and O(1) for deletion)
 		Does not preserve the order of the elements.
@@ -133,6 +145,26 @@ namespace Utilities
 		T temp;
 		sscanf(value.c_str(), variableFormat, &temp);
 		return temp;
+	}
+
+	template <class OutputType, class InputType>
+	OutputType *convert(void *&inputArray, const uint32 elementCount)
+	{
+		// allocate elementCount elements of the output type
+		OutputType *outputArray = new OutputType[elementCount];
+
+		// convert each element
+		InputType *temp = (InputType *) inputArray;
+		for (uint32 eleIdx = 0; eleIdx < elementCount; ++eleIdx)
+			outputArray[eleIdx] = temp[eleIdx];
+	
+		// free input
+		delete [] temp;
+		temp = NULL;
+		inputArray = NULL;
+
+		// return converted input
+		return outputArray;
 	}
 
 	template <class T>
