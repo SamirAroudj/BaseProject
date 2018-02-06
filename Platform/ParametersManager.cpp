@@ -10,6 +10,7 @@
 #include "Platform/Storage/File.h"
 #include "Utilities/HelperFunctions.h"
 
+using namespace Math;
 using namespace Patterns;
 using namespace Platform;
 using namespace std;
@@ -52,7 +53,7 @@ void ParametersManager::loadFromFile(const Path &fileName, const string &nameSpa
 		// get tokens / line parts
 		Utilities::split(lineParts, textLine, DELIMETERS);
 		
-		// get tokens: type name = value\n	
+		// get tokens: type name = paramAsText;\n	e.g., uint8 foo = 42;
 		const string type = lineParts[0];
 		string name = lineParts[1];
 		if (!beginning.empty())
@@ -67,7 +68,7 @@ void ParametersManager::loadFromFile(const Path &fileName, const string &nameSpa
 
 		// get parameter value
 		// everything between '=' and '\n' is supposed to be the parameter value
-		const size_t searchStart = lineParts[0].size() + 1 + lineParts[1].size();
+		const size_t searchStart = lineParts[0].size() + 1 + lineParts[1].size(); // type name
 		const size_t valueStart = textLine.find(" = ", searchStart) + 3;
 		const size_t valueEnd = textLine.find_last_of(";");
 		const string value = textLine.substr(valueStart, valueEnd - valueStart);
@@ -76,32 +77,63 @@ void ParametersManager::loadFromFile(const Path &fileName, const string &nameSpa
 	}
 }
 
-void ParametersManager::loadParameter(const std::string &type, const std::string &name, const std::string value)
+void ParametersManager::loadParameter(const std::string &type, const std::string &name, const std::string paramAsText)
 {
-	if (type == "string")
-		set(value, name);
-	else if (type == "bool")
-		set(convertToBoolean(value), name);
+	// booleans
+	if (type == "bool")
+		set(convertToBoolean(paramAsText), name);
+
+	// signed integers
 	else if (type == "int8")
-		set(convert<int8>(value, "%d"), name);
+		set(convert<int8>(paramAsText), name);
 	else if (type == "int16")
-		set(convert<int16>(value, "%d"), name);
+		set(convert<int16>(paramAsText), name);
 	else if (type == "int32")
-		set(convert<int32>(value, "%d"), name);
+		set(convert<int32>(paramAsText), name);
 	else if (type == "int64")
-		set(convert<int64>(value, "%d"), name);
+		set(convert<int64>(paramAsText), name);
+
+	// floating point parameters
 	else if (type == "Real")
-		set(convert<Real>(value, REAL_IT), name);
+		set(convert<Real>(paramAsText), name);
+
+	// text
+	else if (type == "string")
+		set(paramAsText, name);
+
+	// unsigned integers
 	else if (type == "uint8")
-		set(convert<uint8>(value, "%u"), name);
+		set(convert<uint8>(paramAsText), name);
 	else if (type == "uint16")
-		set(convert<uint16>(value, "%u"), name);
+		set(convert<uint16>(paramAsText), name);
 	else if (type == "uint32")
-		set(convert<uint32>(value, "%u"), name);
+		set(convert<uint32>(paramAsText), name);
 	else if (type == "uint64")
-		set(convert<uint64>(value, "%u"), name);
+		set(convert<uint64>(paramAsText), name);
+
+	// (math) vectors
+	else if (type == "Vector2")
+	{
+		Vector2 temp;
+		convert<Real>(&temp.x, 2, paramAsText);
+		set(temp, name);
+	}
+	else if (type == "Vector3")
+	{
+		Vector3 temp;
+		convert<Real>(&temp.x, 3, paramAsText);
+		set(temp, name);
+	}
+	else if (type == "Vector4")
+	{
+		Vector4 temp;
+		convert<Real>(&temp.x, 4, paramAsText);
+		set(temp, name);
+	}
 	else
+	{
 		assert(false); // todo log this
+	}
 }
 
 ParametersManager::~ParametersManager()
@@ -269,7 +301,46 @@ bool ParametersManager::get(uint64 &parameter, const string &name) const
 	return true;
 }
 
-bool ParametersManager::set(const bool parameter, const string &name)
+bool ParametersManager::get(Vector2 &parameter, const string &name) const
+{
+	map<string, Vector2>::const_iterator it = mVector2s.find(name);
+	if (it == mVector2s.end())
+	{
+		parameter.set(REAL_MAX, REAL_MAX);
+		return false;
+	}
+
+	parameter = it->second;
+	return true;
+}
+
+bool ParametersManager::get(Vector3 &parameter, const string &name) const
+{
+	map<string, Vector3>::const_iterator it = mVector3s.find(name);
+	if (it == mVector3s.end())
+	{
+		parameter.set(REAL_MAX, REAL_MAX, REAL_MAX);
+		return false;
+	}
+
+	parameter = it->second;
+	return true;
+}
+
+bool ParametersManager::get(Vector4 &parameter, const string &name) const
+{
+	map<string, Vector4>::const_iterator it = mVector4s.find(name);
+	if (it == mVector4s.end())
+	{
+		parameter.set(REAL_MAX, REAL_MAX, REAL_MAX, REAL_MAX);
+		return false;
+	}
+
+	parameter = it->second;
+	return true;
+}
+
+bool ParametersManager::set(const bool &parameter, const string &name)
 {
 	auto iterator = mBooleans.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -279,7 +350,7 @@ bool ParametersManager::set(const bool parameter, const string &name)
 	return false;
 }
 
-bool ParametersManager::set(const int8 parameter, const string &name)
+bool ParametersManager::set(const int8 &parameter, const string &name)
 {
 	auto iterator = mInt8s.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -289,7 +360,7 @@ bool ParametersManager::set(const int8 parameter, const string &name)
 	return false;
 }
 
-bool ParametersManager::set(const int16 parameter, const string &name)
+bool ParametersManager::set(const int16 &parameter, const string &name)
 {
 	auto iterator = mInt16s.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -299,7 +370,7 @@ bool ParametersManager::set(const int16 parameter, const string &name)
 	return false;
 }
 
-bool ParametersManager::set(const int32 parameter, const string &name)
+bool ParametersManager::set(const int32 &parameter, const string &name)
 {
 	auto iterator = mInt32s.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -309,7 +380,7 @@ bool ParametersManager::set(const int32 parameter, const string &name)
 	return false;
 }
 
-bool ParametersManager::set(const int64 parameter, const string &name)
+bool ParametersManager::set(const int64 &parameter, const string &name)
 {
 	auto iterator = mInt64s.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -320,7 +391,7 @@ bool ParametersManager::set(const int64 parameter, const string &name)
 }
 
 
-bool ParametersManager::set(const Real parameter, const string &name)
+bool ParametersManager::set(const Real &parameter, const string &name)
 {
 	auto iterator = mReals.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -340,7 +411,7 @@ bool ParametersManager::set(const string &parameter, const string &name)
 	return false;
 }
 
-bool ParametersManager::set(const uint8 parameter, const string &name)
+bool ParametersManager::set(const uint8 &parameter, const string &name)
 {
 	auto iterator = mUint8s.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -350,7 +421,7 @@ bool ParametersManager::set(const uint8 parameter, const string &name)
 	return false;
 }
 
-bool ParametersManager::set(const uint16 parameter, const string &name)
+bool ParametersManager::set(const uint16 &parameter, const string &name)
 {
 	auto iterator = mUint16s.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -360,7 +431,7 @@ bool ParametersManager::set(const uint16 parameter, const string &name)
 	return false;
 }
 
-bool ParametersManager::set(const uint32 parameter, const string &name)
+bool ParametersManager::set(const uint32 &parameter, const string &name)
 {
 	auto iterator = mUint32s.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -370,7 +441,7 @@ bool ParametersManager::set(const uint32 parameter, const string &name)
 	return false;
 }
 
-bool ParametersManager::set(const uint64 parameter, const string &name)
+bool ParametersManager::set(const uint64 &parameter, const string &name)
 {
 	auto iterator = mUint64s.insert(make_pair(name, parameter));
 	if (iterator.second)
@@ -379,3 +450,34 @@ bool ParametersManager::set(const uint64 parameter, const string &name)
 	iterator.first->second = parameter;
 	return false;
 }
+
+bool ParametersManager::set(const Vector2 &parameter, const string &name)
+{
+	auto iterator = mVector2s.insert(make_pair(name, parameter));
+	if (iterator.second)
+		return true;
+
+	iterator.first->second = parameter;
+	return false;
+}
+
+bool ParametersManager::set(const Vector3 &parameter, const string &name)
+{
+	auto iterator = mVector3s.insert(make_pair(name, parameter));
+	if (iterator.second)
+		return true;
+
+	iterator.first->second = parameter;
+	return false;
+}
+
+bool ParametersManager::set(const Vector4 &parameter, const string &name)
+{
+	auto iterator = mVector4s.insert(make_pair(name, parameter));
+	if (iterator.second)
+		return true;
+
+	iterator.first->second = parameter;
+	return false;
+}
+

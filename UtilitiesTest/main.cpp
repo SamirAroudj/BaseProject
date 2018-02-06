@@ -52,8 +52,7 @@ void test(const string &name, bool value)
 			regex_search(integers[i], matches, regInt);
 
 			// convert matches
-			int32 result = 0;
-			sscanf(matches.str(0).c_str(), "%d", &result);
+			int32 result = convert<int32>(matches.str(0));
 
 			// output
 			ostringstream stream;
@@ -81,7 +80,7 @@ void testReals()
 		{
 			// convert matches
 			string number = matches.str(0);
-			sscanf(number.c_str(), "%f", &result);
+			result = convert<float>(number);
 		}
 
 		// test
@@ -115,8 +114,8 @@ void testVector2()
 			// convert matches
 			string n0 = matches.str(1);
 			string n1 = matches.str(2);
-			sscanf(n0.c_str(), "%f", results);
-			sscanf(n1.c_str(), "%f", results + 1);
+			results[0] = convert<float>(n0);
+			results[1] = convert<float>(n1);
 		}
 
 		// test

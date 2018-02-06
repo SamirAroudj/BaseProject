@@ -113,8 +113,7 @@ void PlyFile::loadFaceStructure(FacesDescription &structure)
 	structure.setEncoding(mEncoding);
 
 	// read number of faces
-	uint32 faceCount;
-	sscanf(mLineParts[2].c_str(), "%d", &faceCount);
+	uint32 faceCount = convert<uint32>(mLineParts[2]);
 	structure.setElementCount(faceCount);
 
 	while (hasLeftData())
@@ -203,8 +202,7 @@ void PlyFile::loadVertexStructure(VerticesDescription &structure)
 	structure.setEncoding(mEncoding);
 
 	// load vertex count
-	uint32 vertexCount;
-	sscanf(mLineParts[2].c_str(), "%d", &vertexCount);
+	uint32 vertexCount = convert<uint32>(mLineParts[2]);
 	structure.setElementCount(vertexCount);
 
 	while (hasLeftData())

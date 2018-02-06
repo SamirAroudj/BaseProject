@@ -18,6 +18,7 @@ set(cmakeFiles
 
 # header files
 set(headerFiles
+	${componentPath}/Conversions.h
 	${componentPath}/HelperFunctions.h
 	${componentPath}/Licenser.h
 	${componentPath}/MagicConstants.h
@@ -31,6 +32,7 @@ set(headerFiles
 
 # source files
 set(sourceFiles
+	${componentPath}/Conversions.cpp
 	${componentPath}/HelperFunctions.cpp
 	${componentPath}/Licenser.cpp
 	${componentPath}/PlyFile.cpp

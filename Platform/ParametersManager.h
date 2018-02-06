@@ -11,6 +11,9 @@
 
 #include <map>
 #include <string>
+#include "Math/Vector2.h"
+#include "Math/Vector3.h"
+#include "Math/Vector4.h"
 #include "Patterns/Singleton.h"
 #include "Platform/DataTypes.h"
 #include "Platform/Storage/Path.h"
@@ -122,6 +125,27 @@ namespace Platform
 		@return Returns true if the searched parameter was found and returned accordingly or false if it does not exist and cannot be returned.*/
 		bool get(uint64 &parameter, const std::string &name) const;
 
+		/** Math::Vector2 parameter retrieval function.
+		@param parameter Is set to the value of the parameter "Math::Vector2 name" if it exists or Math::Vector2(REAL_MAX, REAL_MAX) otherwise.
+		@param name Set this to the unique Math::Vector2 parameter name to identify the Math::Vector2 parameter you want to get.
+			There might be parameters with the same name but different type.
+		@return Returns true if the searched parameter was found and returned accordingly or false if it does not exist and cannot be returned.*/
+		bool get(Math::Vector2 &parameter, const std::string &name) const;
+
+		/** Math::Vector3 parameter retrieval function.
+		@param parameter Is set to the value of the parameter "Math::Vector3 name" if it exists or Math::Vector3(REAL_MAX, REAL_MAX, REAL_MAX) otherwise.
+		@param name Set this to the unique Math::Vector3 parameter name to identify the Math::Vector3 parameter you want to get.
+			There might be parameters with the same name but different type.
+		@return Returns true if the searched parameter was found and returned accordingly or false if it does not exist and cannot be returned.*/
+		bool get(Math::Vector3 &parameter, const std::string &name) const;
+
+		/** Math::Vector4 parameter retrieval function.
+		@param parameter Is set to the value of the parameter "Math::Vector4 name" if it exists or Math::Vector4(REAL_MAX, REAL_MAX, REAL_MAX, REAL_MAX) otherwise.
+		@param name Set this to the unique Math::Vector4 parameter name to identify the Math::Vector4 parameter you want to get.
+			There might be parameters with the same name but different type.
+		@return Returns true if the searched parameter was found and returned accordingly or false if it does not exist and cannot be returned.*/
+		bool get(Math::Vector4 &parameter, const std::string &name) const;
+
 		/* Creates and sets all parameters according to the content of the file parametersFile.
 			Existing parameters are overwritten.
 		@param parametersFile Set this to the name of the file containing all parameter descriptions you want to load.
@@ -144,42 +168,42 @@ namespace Platform
 		@param name Set this to the unique bool parameter name to identify the bool parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const bool parameter, const std::string &name);
+		bool set(const bool &parameter, const std::string &name);
 
 		/** int8 parameter creation / overwriting function.
 		@param parameter Set this to the desired value for the "int8 name" parameter.
 		@param name Set this to the unique int8 parameter name to identify the int8 parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const int8 parameter, const std::string &name);
+		bool set(const int8 &parameter, const std::string &name);
 		
 		/** int16 parameter creation / overwriting function.
 		@param parameter Set this to the desired value for the "int16 name" parameter.
 		@param name Set this to the unique int16 parameter name to identify the int16 parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const int16 parameter, const std::string &name);
+		bool set(const int16 &parameter, const std::string &name);
 
 		/** int32 parameter creation / overwriting function.
 		@param parameter Set this to the desired value for the "int32 name" parameter.
 		@param name Set this to the unique int32 parameter name to identify the int32 parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const int32 parameter, const std::string &name);
+		bool set(const int32 &parameter, const std::string &name);
 
 		/** int64 parameter creation / overwriting function.
 		@param parameter Set this to the desired value for the "int64 name" parameter.
 		@param name Set this to the unique int64 parameter name to identify the int64 parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const int64 parameter, const std::string &name);
+		bool set(const int64 &parameter, const std::string &name);
 		
 		/** Real parameter creation / overwriting function.
 		@param parameter Set this to the desired value for the "Real name" parameter.
 		@param name Set this to the unique Real parameter name to identify the Real parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const Real parameter, const std::string &name);
+		bool set(const Real &parameter, const std::string &name);
 
 		/** string parameter creation / overwriting function.
 		@param parameter Set this to the desired value for the "string name" parameter.
@@ -193,28 +217,46 @@ namespace Platform
 		@param name Set this to the unique uint8 parameter name to identify the uint8 parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const uint8 parameter, const std::string &name);
+		bool set(const uint8 &parameter, const std::string &name);
 		
 		/** uint16 parameter creation / overwriting function.
 		@param parameter Set this to the desired value for the "uint16 name" parameter.
 		@param name Set this to the unique uint16 parameter name to identify the uint16 parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const uint16 parameter, const std::string &name);
+		bool set(const uint16 &parameter, const std::string &name);
 		
 		/** uint32 parameter creation / overwriting function.
 		@param parameter Set this to the desired value for the "uint32 name" parameter.
 		@param name Set this to the unique uint32 parameter name to identify the uint32 parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const uint32 parameter, const std::string &name);
+		bool set(const uint32 &parameter, const std::string &name);
 		
 		/** uint64 parameter creation / overwriting function.
 		@param parameter Set this to the desired value for the "uint64 name" parameter.
 		@param name Set this to the unique uint64 parameter name to identify the uint64 parameter you want to create or overwrite.
 			There might be parameters with the same name but different type.
 		@return Returns true if the parameter was created and false if it already existed and thus was overwritten. */
-		bool set(const uint64 parameter, const std::string &name);
+		bool set(const uint64 &parameter, const std::string &name);
+
+		/** Math::Vector2 parameter creation / overwriting function.
+		@param parameter Set this to the desired value for the "Vector2 name" parameter.
+		@param name Set this to the unique Vector2 parameter name to identify the Vector2 parameter you want to create or overwrite.
+			There might be paramaters with the same name but different type.*/
+		bool set(const Math::Vector2 &parameter, const std::string &name);
+		
+		/** Math::Vector3 parameter creation / overwriting function.
+		@param parameter Set this to the desired value for the "Vector3 name" parameter.
+		@param name Set this to the unique Vector3 parameter name to identify the Vector3 parameter you want to create or overwrite.
+			There might be paramaters with the same name but different type.*/
+		bool set(const Math::Vector3 &parameter, const std::string &name);
+
+		/** Math::Vector4 parameter creation / overwriting function.
+		@param parameter Set this to the desired value for the "Vector4 name" parameter.
+		@param name Set this to the unique Vector4 parameter name to identify the Vector4 parameter you want to create or overwrite.
+			There might be paramaters with the same name but different type.*/
+		bool set(const Math::Vector4 &parameter, const std::string &name);
 
 	protected:
 		/** Loads and stores a parameter from text description.
@@ -228,18 +270,26 @@ namespace Platform
 
 	private:
 		std::map<std::string, bool> mBooleans;			/// Contains all bool parameters uniquely identified by their name.
-		std::map<std::string, int8> mInt8s;				/// Conatins all int8 parameters uniquely identified by their name.
-		std::map<std::string, int16> mInt16s;			/// Conatins all int16 parameters uniquely identified by their name.
-		std::map<std::string, int32> mInt32s;			/// Conatins all int32 parameters uniquely identified by their name.
-		std::map<std::string, int64> mInt64s;			/// Conatins all int64 parameters uniquely identified by their name.
 
-		std::map<std::string, Real> mReals;				/// Conatins all Real parameters uniquely identified by their name.
-		std::map<std::string, std::string> mStrings;	/// Conatins all string parameters uniquely identified by their name.
+		// signed integers
+		std::map<std::string, int8> mInt8s;				/// Contains all int8 parameters uniquely identified by their name.
+		std::map<std::string, int16> mInt16s;			/// Contains all int16 parameters uniquely identified by their name.
+		std::map<std::string, int32> mInt32s;			/// Contains all int32 parameters uniquely identified by their name.
+		std::map<std::string, int64> mInt64s;			/// Contains all int64 parameters uniquely identified by their name.
+
+		std::map<std::string, Real> mReals;				/// Contains all Real parameters uniquely identified by their name.
+		std::map<std::string, std::string> mStrings;	/// Contains all string parameters uniquely identified by their name.
 		
-		std::map<std::string, uint8> mUint8s;			/// Conatins all uint8 parameters uniquely identified by their name.
-		std::map<std::string, uint16> mUint16s;			/// Conatins all uint16 parameters uniquely identified by their name.
-		std::map<std::string, uint32> mUint32s;			/// Conatins all uint32 parameters uniquely identified by their name.
-		std::map<std::string, uint64> mUint64s;			/// Conatins all uint64 parameters uniquely identified by their name.
+		// unsigned integers
+		std::map<std::string, uint8> mUint8s;			/// Contains all uint8 parameters uniquely identified by their name.
+		std::map<std::string, uint16> mUint16s;			/// Contains all uint16 parameters uniquely identified by their name.
+		std::map<std::string, uint32> mUint32s;			/// Contains all uint32 parameters uniquely identified by their name.
+		std::map<std::string, uint64> mUint64s;			/// Contains all uint64 parameters uniquely identified by their name.
+
+		// (math) vectors
+		std::map<std::string, Math::Vector2> mVector2s; /// Contains all Math::Vector2 parameters uniquely identified by their name.
+		std::map<std::string, Math::Vector3> mVector3s; /// Contains all Math::Vector3 parameters uniquely identified by their name.
+		std::map<std::string, Math::Vector4> mVector4s; /// Contains all Math::Vector4 parameters uniquely identified by their name.
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

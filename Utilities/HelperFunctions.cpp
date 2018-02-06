@@ -18,11 +18,6 @@
 using namespace std;
 using namespace Utilities;
 
-bool Utilities::convertToBoolean(const string &text)
-{
-	return text == "t" || text == "true" || text == "yes" || text == "y" || text == "1";
-}
-
 bool Utilities::containsAny(const string &container, const char * const *elements, const uint32 elementCount)
 {
 	for (uint32 i = 0; i < elementCount; ++i)

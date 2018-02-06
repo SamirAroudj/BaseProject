@@ -57,12 +57,8 @@ using namespace Utilities;
 		// convert 2 sub matches to Real data types
 		string n0 = matches.str(1);
 		string n1 = matches.str(2);
-		float temp[2];
-
-		sscanf(n0.c_str(), "%f", temp);
-		sscanf(n1.c_str(), "%f", temp + 1);
-		r1 = temp[0];
-		r2 = temp[1];
+		r1 = convert<float>(n0);
+		r2 = convert<float>(n1);
 
 		return (uint32) (matches.prefix().length() + matches.length(0));
 	}
