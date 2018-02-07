@@ -26,12 +26,17 @@ namespace Math
 	class Matrix4x4
 	{
 	public:
-		Matrix4x4()
-		{
-			setToIdentity();
-		}
+		/** Sets the matrix to the identity transformation:\n
+		1 0 0 0 \n
+		0 1 0 0 \n
+		0 0 1 0 \n
+		0 0 0 1 \n */
+		inline Matrix4x4();
 
+		/** Copy constructor.
+		@param rhs The new matrix will exactly look like rhs. */
 		Matrix4x4(const Matrix4x4 &rhs);
+
 		//Matrix4x4(const Real *values); too dangerous since you forget to think about weather the values are in row or column major order
 		Matrix4x4(	Real v11, Real v12, Real v13, Real v14,
 					Real v21, Real v22, Real v23, Real v24,
@@ -79,28 +84,44 @@ namespace Math
 		static Matrix4x4 createRotationZ(const Real radian);
 		static Matrix4x4 createTranslation(const Vector3 &translation);
 
-		Matrix4x4 &operator =(const Matrix4x4 &rhs);
-		//Matrix4x4 &operator =(const Real *values); too dangerous since you forget to think about weather the values are in row or column major order
-
-		/** Compares two matrices to check for equality.
-		@param rhs The left-hand side matrix is compared to rhs.
-		@returns The operator returns true if all entries of this matrix are approximately equal to corresponding the elements of rhs.  (see Math::EPSILON)*/
-		inline bool operator ==(const Matrix4x4 &rhs) const
-		{
-			return this->equals(rhs);
-		}
-
-
 		/** Compares two matrices to check for equality.
 		@param rhs The left-hand side matrix is compared to rhs.
 		@param epsilon Set this to define the threshold until which two floating point numbers are considered to be equal.
 		@returns The operator returns true if all entries of this matrix are approximately equal to corresponding the elements of rhs.  (see Math::EPSILON)*/
 		bool equals(const Matrix4x4 &rhs, const Real epsilon = EPSILON) const;
 
-		bool operator !=(const Matrix4x4 &rhs) const
-		{
-			return !(*this == rhs);
-		}
+		inline void addTranslation(const Vector3 &translation);
+		inline void addTranslation(Real x, Real y, Real z);
+
+		/** Computes the Frobenius inner product of the two matrices which is analogous to the inner product of two vectors. (= sum of pairwise component products)
+		@param rhs Computes the Frobenius inner product of rhs and the left hand side matrix. The Frobenius inner product is commutative.
+		@return The Frobenius inner product (~= skalar product of both matrices) is returned. */
+		Real frobeniusProduct(const Matrix4x4 &rhs) const;
+
+		inline const Real * getData() const;
+
+		Real getDeterminant() const;
+
+		/** Returns a specific row vector of this matrix. For example, 0th row vector = (x = m00, y = m01, z = m02, w = m03) for rowVectorIdx = 0.
+		@param target Is filled with the specified matrix row entries. For example, row vector 2 (x = m20, y = m21, z = m22, w = m23) for rowVectorIdx = 2.
+		@param rowVectorIdx Specifies which row vector is returned. For this Matrix4x4 object only values in { 0, 1, 2, 3 } make sense. */
+		void getRowVector(Vector4 &target, uint32 rowVectorIdx) const;
+
+		/** Returns the trace of the matrix. The trace of a matrix is the sum of its diagonal elements.
+		@return Returns the trace of the matrix. The trace of a matrix is the sum of its diagonal elements.*/
+		inline Real getTrace() const;
+
+		/** Sets the values of this matrix to exactly the values of rhs.
+		@param rhs The left hand side matrix elements are set to the elements of the right hand set matrix called rhs.
+		@return Returns the reference to this matrix after it was set to rhs. */
+		Matrix4x4 &operator =(const Matrix4x4 &rhs);
+
+		/** Compares two matrices to check for equality.
+		@param rhs The left-hand side matrix is compared to rhs.
+		@returns The operator returns true if all entries of this matrix are approximately equal to corresponding the elements of rhs.  (see Math::EPSILON)*/
+		inline bool operator ==(const Matrix4x4 &rhs) const;
+		
+		inline bool operator !=(const Matrix4x4 &rhs) const;
 		
 		/** Adds two matrices and returns the result. The addition is done componentwise: result(i, j) = this(i, j) + rhs(i, j)
 		@param rhs The result is rhs + this.
@@ -122,57 +143,27 @@ namespace Math
 
 		Matrix4x4 operator *(const Matrix4x4 &rhs) const;
 		
-		Real &operator()(unsigned short int row, unsigned short int column)
-		{
-			assert(row < 4 && column < 4);
-			return values[row][column];
-		}
+		inline Real &operator()(unsigned short int row, unsigned short int column);
 
-		Real operator()(unsigned short int row, unsigned short int column) const	
-		{
-			assert(row < 4 && column < 4);
-			return values[row][column];
-		}
+		inline Real operator()(unsigned short int row, unsigned short int column) const;
 
-		void addTranslation(const Vector3 &translation);
-		void addTranslation(Real x, Real y, Real z);
+		inline void setColumn(const Math::Vector4 &newColumn, const uint32 columnIdx);
+		inline void setColumn(const Real &v0, const Real &v1, const Real &v2, const Real &v3, const uint32 columnIdx);
+		
+		inline void setDiagonal(const Math::Vector4 &newDiagonal);
+		inline void setDiagonal(const Real &v0, const Real &v1, const Real &v2, const Real &v3);
 
-		/** Computes the Frobenius inner product of the two matrices which is analogous to the inner product of two vectors. (= sum of pairwise component products)
-		@param rhs Computes the Frobenius inner product of rhs and the left hand side matrix. The Frobenius inner product is commutative.
-		@return The Frobenius inner product (~= skalar product of both matrices) is returned. */
-		Real frobeniusProduct(const Matrix4x4 &rhs) const;
-
-		const Real * getData() const { return *values; }
-
-		Real getDeterminant() const;
-
-		/** Returns a specific row vector of this matrix. For example, 0th row vector = (x = m00, y = m01, z = m02, w = m03) for rowVectorIdx = 0.
-		@param target Is filled with the specified matrix row entries. For example, row vector 2 (x = m20, y = m21, z = m22, w = m23) for rowVectorIdx = 2.
-		@param rowVectorIdx Specifies which row vector is returned. For this Matrix4x4 object only values in { 0, 1, 2, 3 } make sense. */
-		void getRowVector(Vector4 &target, uint32 rowVectorIdx) const;
-
-		/** Returns the trace of the matrix. The trace of a matrix is the sum of its diagonal elements.
-		@return Returns the trace of the matrix. The trace of a matrix is the sum of its diagonal elements.*/
-		Real getTrace() const { return m00 + m11 + m22 + m33; }
+		inline void setRow(const Math::Vector4 &newRow, const uint32 rowIdx);
+		inline void setRow(const Real &v0, const Real &v1, const Real &v2, const Real &v3, const uint32 rowIdx);
 
 		/** Sets every diagonal entry to one and all others to zero. */
-		void setToIdentity()
-		{
-			m01 = m02 = m03 = 0.0f;
-			m10 = m12 = m13 = 0.0f;
-			m20 = m21 = m23 = 0.0f;
-			m30 = m31 = m32 = 0.0f;
-			m00 = m11 = m22 = m33 = 1.0f;
-		}
+		inline void setToIdentity();
 
 		/** Sets every matrix component to zero. */
-		void setToZero()
-		{ 
-			m00 = m01 = m02 = m03 = 0.0f;
-			m10 = m11 = m12 = m13 = 0.0f;
-			m20 = m21 = m22 = m23 = 0.0f;
-			m30 = m31 = m32 = m33 = 0.0f;
-		}
+		inline void setToZero();
+
+		inline void setTranslation(const Math::Vector3 &translation);
+		inline void setTranslation(const Real &x, const Real &y, const Real &z);
 
 		/** Swaps rows and columns, every row becomes a column with the same number.
 			(= Every column becomes a row, for i != j swaps mij and mji.) */
@@ -191,6 +182,104 @@ namespace Math
 			};
 		};
 	};
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///   inline function definitions   ////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	inline Matrix4x4::Matrix4x4()
+	{
+		setToIdentity();
+	}
+
+	inline void Matrix4x4::addTranslation(Real x, Real y, Real z)
+	{
+		m30 += x;
+		m31 += y;
+		m32 += z;
+	}
+
+	inline const Real *Matrix4x4::getData() const
+	{
+		return *values;
+	}
+
+	inline Real Matrix4x4::getTrace() const
+	{
+		return m00 + m11 + m22 + m33;
+	}
+
+	inline bool Matrix4x4::operator !=(const Matrix4x4 &rhs) const
+	{
+		return !(*this == rhs);
+	}
+	
+	inline bool Matrix4x4::operator ==(const Matrix4x4 &rhs) const
+	{
+		return this->equals(rhs);
+	}
+		
+	inline Real &Matrix4x4::operator()(unsigned short int row, unsigned short int column)
+	{
+		assert(row < 4 && column < 4);
+		return values[row][column];
+	}
+
+	inline Real Matrix4x4::operator()(unsigned short int row, unsigned short int column) const	
+	{
+		assert(row < 4 && column < 4);
+		return values[row][column];
+	}
+
+	inline void Matrix4x4::setColumn(const Real &v0, const Real &v1, const Real &v2, const Real &v3, const uint32 columnIdx)
+	{
+		assert(columnIdx <= 3);
+		values[0][columnIdx] = v0;
+		values[1][columnIdx] = v1;
+		values[2][columnIdx] = v2;
+		values[3][columnIdx] = v3;
+	}
+
+	inline void Matrix4x4::setDiagonal(const Real &v0, const Real &v1, const Real &v2, const Real &v3)
+	{
+		m00 = v0;
+		m11 = v1;
+		m22 = v2;
+		m33 = v3;
+	}
+
+	inline void Matrix4x4::setRow(const Real &v0, const Real &v1, const Real &v2, const Real &v3, const uint32 rowIdx)
+	{
+		assert(rowIdx <= 3);
+		values[rowIdx][0] = v0;
+		values[rowIdx][1] = v1;
+		values[rowIdx][2] = v2;
+		values[rowIdx][3] = v3;
+	}
+	
+	void Matrix4x4::setToIdentity()
+	{
+		m01 = m02 = m03 = 0.0f;
+		m10 = m12 = m13 = 0.0f;
+		m20 = m21 = m23 = 0.0f;
+		m30 = m31 = m32 = 0.0f;
+		m00 = m11 = m22 = m33 = 1.0f;
+	}
+
+	inline void Matrix4x4::setToZero()
+	{ 
+		m00 = m01 = m02 = m03 = 0.0f;
+		m10 = m11 = m12 = m13 = 0.0f;
+		m20 = m21 = m22 = m23 = 0.0f;
+		m30 = m31 = m32 = m33 = 0.0f;
+	}
+
+	inline void Matrix4x4::setTranslation(const Real &x, const Real &y, const Real &z)
+	{
+		m30 = x;
+		m31 = y;
+		m32 = z;
+	}
 }
 
 std::ostream &operator <<(std::ostream &os, const Math::Matrix4x4 &m);

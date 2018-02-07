@@ -44,37 +44,9 @@ Matrix4x4::Matrix4x4(	Real v11, Real v12, Real v13, Real v14,
 
 }
 
-void Matrix4x4::transpose()
+inline void Matrix4x4::addTranslation(const Vector3 &translation)
 {
-	// m00, m11, m22, m33 don't change
-	swap(m01, m10);
-	swap(m02, m20);
-	swap(m03, m30);
-	swap(m12, m21);
-	swap(m13, m31);
-	swap(m23, m32);
-}
-
-Real Matrix4x4::getDeterminant() const
-{
-	return
-		  computeDeterminant(m00, m01, m10, m11) * computeDeterminant(m22, m23, m32, m33)
-		- computeDeterminant(m00, m02, m10, m12) * computeDeterminant(m21, m23, m31, m33)
-		+ computeDeterminant(m00, m03, m10, m13) * computeDeterminant(m21, m22, m31, m32)
-		+ computeDeterminant(m01, m02, m11, m12) * computeDeterminant(m20, m23, m30, m33)
-		- computeDeterminant(m01, m03, m11, m13) * computeDeterminant(m20, m22, m30, m32)
-		+ computeDeterminant(m02, m03, m12, m13) * computeDeterminant(m20, m21, m30, m31);
-}
-
-void Matrix4x4::getRowVector(Vector4 &target, uint32 rowVectorIdx) const
-{
-	assert(rowVectorIdx >= 0);
-	assert(rowVectorIdx <= 3);
-
-	target.x = values[rowVectorIdx][0];
-	target.y = values[rowVectorIdx][1];
-	target.z = values[rowVectorIdx][2];
-	target.w = values[rowVectorIdx][3];
+	addTranslation(translation.x, translation.y, translation.z);
 }
 
 Matrix4x4 Matrix4x4::createFromMajorRowArray(const Real * data)
@@ -261,13 +233,65 @@ Matrix4x4 Matrix4x4::createRotationZ(const Real radian)
 						0.0f,	0.0f,	0.0f,	1.0f);
 }
 
-
 Matrix4x4 Matrix4x4::createTranslation(const Vector3 &translation)
 {
 	return Matrix4x4(	1.0f,			0.0f,			0.0f,			0.0f,
 						0.0f,			1.0f,			0.0f,			0.0f,
 						0.0f,			0.0f,			1.0f,			0.0f,
 						translation.x,	translation.y,	translation.z,	1.0f);
+}
+
+bool Matrix4x4::equals(const Matrix4x4 &rhs, const Real epsilon) const
+{
+	return	(epsilon > fabsr(m00 - rhs.m00)) &&
+			(epsilon > fabsr(m01 - rhs.m01)) &&
+			(epsilon > fabsr(m02 - rhs.m02)) &&
+			(epsilon > fabsr(m03 - rhs.m03)) &&
+
+			(epsilon > fabsr(m10 - rhs.m10)) &&
+			(epsilon > fabsr(m11 - rhs.m11)) &&
+			(epsilon > fabsr(m12 - rhs.m12)) &&
+			(epsilon > fabsr(m13 - rhs.m13)) &&
+
+			(epsilon > fabsr(m20 - rhs.m20)) &&
+			(epsilon > fabsr(m21 - rhs.m21)) &&
+			(epsilon > fabsr(m22 - rhs.m22)) &&
+			(epsilon > fabsr(m23 - rhs.m23)) &&
+			
+			(epsilon > fabsr(m30 - rhs.m30)) &&
+			(epsilon > fabsr(m31 - rhs.m31)) &&
+			(epsilon > fabsr(m32 - rhs.m32)) &&
+			(epsilon > fabsr(m33 - rhs.m33));
+}
+
+Real Matrix4x4::frobeniusProduct(const Matrix4x4 &rhs) const
+{
+	return	m00 * rhs.m00 + m01 * rhs.m01 + m02 * rhs.m02 + m03 * rhs.m03 +
+			m10 * rhs.m10 + m11 * rhs.m11 + m12 * rhs.m12 + m13 * rhs.m13 +
+			m20 * rhs.m20 + m21 * rhs.m21 + m22 * rhs.m22 + m23 * rhs.m23 +
+			m30 * rhs.m30 + m31 * rhs.m31 + m32 * rhs.m32 + m33 * rhs.m33;
+}
+
+Real Matrix4x4::getDeterminant() const
+{
+	return
+		  computeDeterminant(m00, m01, m10, m11) * computeDeterminant(m22, m23, m32, m33)
+		- computeDeterminant(m00, m02, m10, m12) * computeDeterminant(m21, m23, m31, m33)
+		+ computeDeterminant(m00, m03, m10, m13) * computeDeterminant(m21, m22, m31, m32)
+		+ computeDeterminant(m01, m02, m11, m12) * computeDeterminant(m20, m23, m30, m33)
+		- computeDeterminant(m01, m03, m11, m13) * computeDeterminant(m20, m22, m30, m32)
+		+ computeDeterminant(m02, m03, m12, m13) * computeDeterminant(m20, m21, m30, m31);
+}
+
+void Matrix4x4::getRowVector(Vector4 &target, uint32 rowVectorIdx) const
+{
+	assert(rowVectorIdx >= 0);
+	assert(rowVectorIdx <= 3);
+
+	target.x = values[rowVectorIdx][0];
+	target.y = values[rowVectorIdx][1];
+	target.z = values[rowVectorIdx][2];
+	target.w = values[rowVectorIdx][3];
 }
 
 Matrix4x4 &Matrix4x4::operator =(const Matrix4x4 &rhs)
@@ -318,30 +342,6 @@ Matrix4x4 &Matrix4x4::operator =(const Matrix4x4 &rhs)
 	m33 = values[15];
 }*/
 
-
-bool Matrix4x4::equals(const Matrix4x4 &rhs, const Real epsilon) const
-{
-	return	(epsilon > fabsr(m00 - rhs.m00)) &&
-			(epsilon > fabsr(m01 - rhs.m01)) &&
-			(epsilon > fabsr(m02 - rhs.m02)) &&
-			(epsilon > fabsr(m03 - rhs.m03)) &&
-
-			(epsilon > fabsr(m10 - rhs.m10)) &&
-			(epsilon > fabsr(m11 - rhs.m11)) &&
-			(epsilon > fabsr(m12 - rhs.m12)) &&
-			(epsilon > fabsr(m13 - rhs.m13)) &&
-
-			(epsilon > fabsr(m20 - rhs.m20)) &&
-			(epsilon > fabsr(m21 - rhs.m21)) &&
-			(epsilon > fabsr(m22 - rhs.m22)) &&
-			(epsilon > fabsr(m23 - rhs.m23)) &&
-			
-			(epsilon > fabsr(m30 - rhs.m30)) &&
-			(epsilon > fabsr(m31 - rhs.m31)) &&
-			(epsilon > fabsr(m32 - rhs.m32)) &&
-			(epsilon > fabsr(m33 - rhs.m33));
-}
-
 Matrix4x4 Matrix4x4::operator +(const Matrix4x4 &rhs) const
 {
 	return Matrix4x4(	m00 + rhs.m00, m01 + rhs.m01, m02 + rhs.m02, m03 + rhs.m03,
@@ -383,7 +383,6 @@ Matrix4x4 Matrix4x4::operator -(const Matrix4x4 &rhs) const
 						m30 - rhs.m30, m31 - rhs.m31, m22 - rhs.m32, m33 - rhs.m23);
 }
 
-
 Matrix4x4 Matrix4x4::operator *(Real scalar) const
 {
 	return Matrix4x4(	scalar * m00, scalar * m01, scalar * m02, scalar * m03,
@@ -424,26 +423,35 @@ Matrix4x4 Matrix4x4::operator *(const Matrix4x4 &b) const
 						m30 * b.m03 + m31 * b.m13 + m32 * b.m23 + m33 * b.m33);
 }
 
-void Matrix4x4::addTranslation(const Vector3 &translation)
+inline void Matrix4x4::setColumn(const Math::Vector4 &newColumn, const uint32 columnIdx)
 {
-	m30 += translation.x;
-	m31 += translation.y;
-	m32 += translation.z;
+	setColumn(newColumn.x, newColumn.y, newColumn.z, newColumn.w, columnIdx);
 }
 
-void Matrix4x4::addTranslation(Real x, Real y, Real z)
+inline void Matrix4x4::setDiagonal(const Math::Vector4 &newDiagonal)
 {
-	m30 += x;
-	m31 += y;
-	m32 += z;
+	setDiagonal(newDiagonal.x, newDiagonal.y, newDiagonal.z, newDiagonal.w);
 }
 
-Real Matrix4x4::frobeniusProduct(const Matrix4x4 &rhs) const
+inline void Matrix4x4::setRow(const Math::Vector4 &newRow, const uint32 rowIdx)
 {
-	return	m00 * rhs.m00 + m01 * rhs.m01 + m02 * rhs.m02 + m03 * rhs.m03 +
-			m10 * rhs.m10 + m11 * rhs.m11 + m12 * rhs.m12 + m13 * rhs.m13 +
-			m20 * rhs.m20 + m21 * rhs.m21 + m22 * rhs.m22 + m23 * rhs.m23 +
-			m30 * rhs.m30 + m31 * rhs.m31 + m32 * rhs.m32 + m33 * rhs.m33;
+	setRow(newRow.x, newRow.y, newRow.z, newRow.w, rowIdx);
+}
+
+inline void Matrix4x4::setTranslation(const Math::Vector3 &translation)
+{
+	setTranslation(translation.x, translation.y, translation.z);
+}
+
+void Matrix4x4::transpose()
+{
+	// m00, m11, m22, m33 don't change
+	swap(m01, m10);
+	swap(m02, m20);
+	swap(m03, m30);
+	swap(m12, m21);
+	swap(m13, m31);
+	swap(m23, m32);
 }
 
 ostream &operator <<(ostream &os, const Matrix4x4 &m)
