@@ -34,6 +34,12 @@ namespace Storage
             APPEND_READING_AND_WRITING  /// Open a file for reading and writing at its end.
 		};
 
+	public:
+		/** Loads the complete content of a text (not binary) file and stores it in fileContent.
+		@param fileContent This string will be filled with the complete text of the specified file.
+		@param fileName Specifies the file from which the text is loaded. */
+		static void loadTextFile(std::string &fileContent, const Storage::Path &fileName);
+
     public:
 		/** Opens or creates a specific file.
 		@param fileName The name and path of the file the access of which is requested.

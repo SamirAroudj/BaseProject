@@ -25,6 +25,18 @@ const uint32 File::INVALID_VERSION = (uint32) - 1;
 	uint32 File::sOpenFilesCount = 0;
 #endif // _DEBUG
 
+void File::loadTextFile(string &fileContent, const Path &fileName)
+{
+	char buffer[File::READING_BUFFER_SIZE];
+	File file(fileName, File::OPEN_READING, false);
+
+	while (file.hasLeftData())
+	{
+		const uint32 charCount = file.read(buffer, File::READING_BUFFER_SIZE, sizeof(char), File::READING_BUFFER_SIZE);
+		fileContent.append(buffer, charCount);
+	}	
+}
+
 File::File(const Path &fileName, const File::FileMode mode, const bool binaryFile, const uint32 fileVersion) :
 	mName(fileName)
 {
