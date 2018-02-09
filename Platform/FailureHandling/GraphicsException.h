@@ -21,11 +21,11 @@ namespace FailureHandling
 		/** Creates an exception and stores some information, such as the reason and an error code for identification.
 		@param message The message should describe why this exception is created.
 		@param errorCode The error code should be retrieved by the underlying graphics API and identify the particular problem.*/
-		GraphicsException(const std::string &message, int32 errorCode) : Exception(message), mErrorCode(errorCode) { }
+		inline GraphicsException(const std::string &message, int32 errorCode);
 
 		/** Gets the error code identifying the particualr problem.
 		@return The returned error code identifies the exception and is usually retrieved by the underlying graphics API. */
-		int32 getErrorCode() const { return mErrorCode; }
+		inline int32 getErrorCode() const;
 
 	private:
 		int32 mErrorCode; /// The error code identifies the particular problem and should be retrieved by the underlying graphics API.
@@ -36,6 +36,21 @@ namespace FailureHandling
 	@param exception This is the exception the message and source of which is printed.
 	@return Returns the outputstream with the exception description.*/
 	std::ostream &operator<<(std::ostream &os, const GraphicsException &exception);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///   inline function definitions   ////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	inline GraphicsException::GraphicsException(const std::string &message, int32 errorCode) :
+		Exception(message), mErrorCode(errorCode)
+	{
+
+	}
+
+	inline int32 GraphicsException::getErrorCode() const
+	{
+		return mErrorCode;
+	}
 }
 
 #endif // _EXCEPTION_HANDLING_H_
