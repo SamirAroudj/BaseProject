@@ -37,6 +37,14 @@ namespace Graphics
 		/** Destroy the one and only manager object and shut this graphics system down. */
 		virtual ~GraphicsManager();
 
+		/** Checks wheather the program is valid and was linked successfully.
+		@param programIdx Identifies a specific rendering program which must have been created and linked. (flexible rendering pipeline)*/
+		void checkProgram(const uint32 programIdx) const;
+
+		/** Checks wheather a shader was successfully compiled.
+		@param shaderIdx Identifies the shader to be checked. Set this to the identifier of a shader which you already tried to compile. Can be any shader, vertex, fragment etc. */
+		void checkShader(const uint32 shaderIdx) const;
+
 		/** Clears back, depth and stencil buffers and resets model view transformations.*/
 		void clearBackAndDepthStencilBuffer();
 
@@ -93,6 +101,9 @@ namespace Graphics
 			@param colorResolution The function tries to choose a format which supports the entered color resolution. */
 			void choosePixelFormat(uint32 colorResolution);
 		#endif // _WINDOWS
+
+	public:
+		static const char *OPENGL_LOG_FILE_NAME;
 
 	private:
 		#ifdef _WINDOWS

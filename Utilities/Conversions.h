@@ -155,7 +155,7 @@ namespace Utilities
 		// convert each element
 		InputType *temp = (InputType *) inputArray;
 		for (uint32 eleIdx = 0; eleIdx < elementCount; ++eleIdx)
-			outputArray[eleIdx] = temp[eleIdx];
+			outputArray[eleIdx] = (OutputType) temp[eleIdx];
 	
 		// free input
 		delete [] temp;

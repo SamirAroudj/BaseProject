@@ -7,6 +7,7 @@
  */
 #include <GL/glew.h>
 #include "Platform/FailureHandling/GraphicsException.h"
+#include "Platform/Storage/File.h"
 #include "Graphics/GraphicsManager.h"
 #include "Graphics/Texture.h"
 #include "Platform/Window.h"
@@ -14,6 +15,41 @@
 using namespace FailureHandling;
 using namespace Graphics;
 using namespace Platform;
+using namespace Storage;
+using namespace std;
+
+const char *GraphicsManager::OPENGL_LOG_FILE_NAME = "OpenGL.log";
+
+#ifdef _DEBUG
+	void OpenGLErrorCallbackFun(GLenum source, GLenum type, GLuint ID, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
+	{
+		// output error to file
+		{
+			// todo log this properly
+			// error message
+			string text = "Message:\n";
+			text += message;
+			text += "\n";
+
+			// write to file
+			File errorFile(GraphicsManager::OPENGL_LOG_FILE_NAME, File::APPEND_WRITING, false);
+			errorFile.write(text.c_str(), sizeof(char), text.size());
+		}
+
+		// output error to error output
+		{
+			cerr << "OpenGL error callback function:";
+			cerr << "\nID: " << ID;
+			cerr << std::hex;
+			cerr << "\ntype: " << type;
+			cerr << "\nseverity: " << severity;
+			cerr << "\n" << message;
+			cerr << endl;
+		}
+
+		//throw GraphicsException(message, type);
+	}
+#endif // _DEBUG
 
 GraphicsManager::GraphicsManager(uint32 colorResolution, const Color &clearColor) : mClearColor(clearColor)
 {
@@ -91,6 +127,20 @@ GraphicsManager::GraphicsManager(uint32 colorResolution, const Color &clearColor
     glMatrixMode(GL_MODELVIEW);													
 	glLoadIdentity();
 	glEnable(GL_TEXTURE_2D);
+
+	#ifdef _DEBUG
+		// create clean log file and enable debug output for OpenGL
+		const string startMessage = "OpenGL version string: ";
+		const GLubyte *version = glGetString(GL_VERSION);
+
+		File file(OPENGL_LOG_FILE_NAME, File::CREATE_WRITING, false);
+		file.write(startMessage.c_str(), sizeof(char), startMessage.length());
+		file.write(version, sizeof(GLubyte), strlen((const char *) version));
+		file.write("\n", sizeof(char), 1);
+
+		glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback((GLDEBUGPROC) OpenGLErrorCallbackFun, NULL);
+	#endif // _DEBUG
 }
 
 #ifdef _WINDOWS
@@ -170,6 +220,95 @@ GraphicsManager::~GraphicsManager()
 		glXDestroyContext(window.getDisplay(), mRenderingContext);
 
 	#endif // _WINDOWS
+}
+
+void GraphicsManager::checkProgram(const uint32 programIdx) const
+{
+	// check program
+	glValidateProgram(programIdx);
+
+	// valid program?
+	GLint valid = GL_FALSE;
+	glGetProgramiv(programIdx, GL_VALIDATE_STATUS, &valid);
+	if (GL_TRUE == valid)
+		return;
+
+	// get link status & log entry on failure
+	GLint linked = GL_FALSE;
+	glGetProgramiv(programIdx, GL_LINK_STATUS, &linked);
+	if (GL_TRUE != linked)
+	{
+		// todo log this properly
+		cerr << "Program could not be linked!" << endl;
+	}
+
+	// get program log length
+	GLint infoLogLength = 0;
+	glGetProgramiv(programIdx, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+	// get program log
+	GLsizei actualLength;
+	char *log = new char[infoLogLength];
+	glGetProgramInfoLog(programIdx, infoLogLength, &actualLength, log);
+
+	// output log
+	{
+		string message = "GraphicsManager::checkProgram:\n";
+
+		// write to file
+		File errorFile(GraphicsManager::OPENGL_LOG_FILE_NAME, File::APPEND_WRITING, false);
+		errorFile.write(message.c_str(), sizeof(char), message.length());
+		errorFile.write(log, sizeof(char), infoLogLength);
+	}
+
+	// cerr & exception
+	cerr << "glGetProgramInfoLog:\n";
+	cerr << log << endl;
+	GraphicsException exception(log, programIdx);
+
+	delete [] log;
+	log = NULL;
+
+	throw exception;
+}
+
+void GraphicsManager::checkShader(const uint32 shaderID) const
+{
+	// compiled?
+	GLint compiled = GL_FALSE;
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compiled);
+	if (GL_TRUE == compiled)
+		return;
+
+	// get shader log length
+	GLint infoLogLength = 0;
+	glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+	// get shader log
+	GLsizei actualLength;
+	char *log = new char[infoLogLength];
+	glGetShaderInfoLog(shaderID, infoLogLength, &actualLength, log);
+
+	// output log
+	// todo log this porperly
+	{
+		string message = "GraphicsManager::checkShader:\n";
+
+		// write to file
+		File errorFile(GraphicsManager::OPENGL_LOG_FILE_NAME, File::APPEND_WRITING, false);
+		errorFile.write(message.c_str(), sizeof(char), message.length());
+		errorFile.write(log, sizeof(char), infoLogLength);
+	}
+
+	// cerr & exception
+	cerr << "glGetShaderInfoLog:\n";
+	cerr << log << endl;
+	GraphicsException exception(log, shaderID);
+
+	delete [] log;
+	log = NULL;
+
+	throw exception;
 }
 
 void GraphicsManager::clearBackAndDepthStencilBuffer()
