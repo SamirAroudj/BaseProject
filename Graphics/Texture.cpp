@@ -22,11 +22,12 @@ using namespace Graphics;
 using namespace Math;
 using namespace ResourceManagement;
 using namespace std;
+using namespace Storage;
 using namespace Utilities;
 
 // static member definitions of base class Resource<Texture> of class Texture
 template <>
-const char *Texture::Resource<Texture>::msResourcePath = PATH_TO_TEXTURES;
+Path Texture::Resource<Texture>::msResourcePath(PATH_TO_TEXTURES);
 
 template <>
 vector<Texture *> Texture::Resource<Texture>::msResources(0);
@@ -189,18 +190,18 @@ void Texture::bind() const
 	glBindTexture(GL_TEXTURE_2D, mIdentifier);
 }
 
-Texture::Texture(const string &name, const TextureHeader *header, const uint8 *pixelData) : 
-	UserResource(name), mTileSize(1.0f, 1.0f)
+Texture::Texture(const string &relativeName, const TextureHeader *header, const uint8 *pixelData) : 
+	UserResource(relativeName), mTileSize(1.0f, 1.0f)
 {
 	// load texture data from file
 	if (NULL == header)
 	{
-		string fullName(msResourcePath + name);	// load the texture by means of the image manager
-		mIdentifier = ImageManager::getSingleton().loadTileTexture(mTileSize, fullName);
+		Path absoluteName = Path::appendChild(msResourcePath, relativeName);	// load the texture by means of the image manager
+		mIdentifier = ImageManager::getSingleton().loadTileTexture(mTileSize, absoluteName);
 		if (0 == mIdentifier)
 		{
 			string message = "Could not load an image.\n";
-			throw FileAccessException(message, fullName, 5);
+			throw FileAccessException(message, absoluteName, 5);
 		}
 	}
 	// initialize new texture with entered data

@@ -31,6 +31,10 @@ namespace Storage
 		bool getParent(Path &parent) const;
 
 		Path &extendLeafName(const std::string &extension);
+
+		/** Frees the memory in which the actual data of the path (with dynamic length) is stored. */
+		void freeMemory();
+
 		std::string getLeafName() const;
 
 		inline const std::string &getString() const;

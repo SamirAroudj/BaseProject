@@ -45,6 +45,13 @@ Path &Path::appendChild(const Path &subFolder)
 	return *this;
 }
 
+void Path::freeMemory()
+{
+	// explicitly free path characters - freedom for all characters!
+	mPath.clear();
+	mPath.shrink_to_fit();
+}
+
 Path &Path::extendLeafName(const string &extension)
 {
 	Path newPath(mPath + extension);

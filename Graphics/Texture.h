@@ -122,12 +122,12 @@ namespace Graphics
 	private:
 		/** Constructor is private in order to avoid duplicated textures.
 			To get access to a texture call the request function.
-		@param name Contains only the name of the texture (no path since this is stored in the resource path of the base class).
+		@param relativeName Contains the relative name of the texture whereas the name should be relative to the texture resources folder. See Texture::msResourcePath.
 		@param header Set header to NULL to load texture data from file.
 					  Set this to a header data structure if you don't want to load data from file but initialize the texture to be created with some pixel data.
 					  pixelData must not be NULL in this case.
 		@param pixelData Set this to the data to initialize the texture with if you don't want to load data from file. Header must not be NULL in this case. */
-		Texture(const std::string &name, const TextureHeader *header, const uint8 *pixelData);
+		Texture(const std::string &relativeName, const TextureHeader *header, const uint8 *pixelData);
 
 		/** Destroys the texture. That is, requested resources are freed. */
 		virtual ~Texture();
