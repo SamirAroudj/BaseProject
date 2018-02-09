@@ -44,21 +44,21 @@ namespace Math
 	#define glColor3rv glColor3dv
 	#define glColor4r glColor4d
 	#define glColor4rv glColor4dv
-	#define glRasterPos2r glRasterPos2d
+	#define glGetRealv glGetDoublev
 	#define glLightrv glLightdv
 	#define glLoadMatrixr glLoadMatrixd
-	#define glScaler glScaled
-	#define glTranslater glTranslated
-	#define glLoadMatrixdr glLoadMatrixd
 	#define glMultMatrixr glMultMatrixd
+	#define glNormal3r glNormal3d
+	#define glNormal3rv glNormal3dv
+	#define glRasterPos2r glRasterPos2d
+	#define glScaler glScaled
 	#define glTexCoord2r glTexCoord2d
+	#define glTranslater glTranslated
+	#define glUniformMatrix4rv glUniformMatrix4dv
 	#define glVertex2r glVertex2d
 	#define glVertex3r glVertex3d
 	#define glVertex2rv glVertex2dv
 	#define glVertex3rv glVertex3dv
-	#define glNormal3r glNormal3d
-	#define glNormal3rv glNormal3dv
-	#define glGetRealv glGetDoublev
 
 	// standard floating point defines
 	#define REAL_MAX DBL_MAX
@@ -107,21 +107,21 @@ namespace Math
 	#define glColor3rv glColor3fv
 	#define glColor4r glColor4f
 	#define glColor4rv glColor4fv
-	#define glRasterPos2r glRasterPos2f
+	#define glGetRealv glGetFloatv
 	#define glLightrv glLightfv
 	#define glLoadMatrixr glLoadMatrixf
-	#define glScaler glScalef
-	#define glTranslater glTranslatef
-	#define glLoadMatrixdr glLoadMatrixf
 	#define glMultMatrixr glMultMatrixf
+	#define glNormal3r glNormal3f
+	#define glNormal3rv glNormal3fv
+	#define glRasterPos2r glRasterPos2f
+	#define glScaler glScalef
 	#define glTexCoord2r glTexCoord2f
+	#define glTranslater glTranslatef
+	#define glUniformMatrix4rv glUniformMatrix4fv
 	#define glVertex2r glVertex2f
 	#define glVertex3r glVertex3f
 	#define glVertex2rv glVertex2fv
 	#define glVertex3rv glVertex3fv
-	#define glNormal3r glNormal3f
-	#define glNormal3rv glNormal3fv
-	#define glGetRealv glGetFloatv
 
 	// standard floating point defines
 	#define REAL_MAX FLT_MAX
