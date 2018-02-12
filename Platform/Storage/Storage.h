@@ -5,9 +5,8 @@
  * This software may be modified and distributed under the terms
  * of the BSD 3-Clause license. See the License.txt file for details.
  */
-#include "Graphics/MagicConstants.h"
-#include "Platform/Storage/Storage.h"
-
-const char *Graphics::PATH_TO_TEXTURES = DATA_DIRECTORY "Textures/";
-
-const Graphics::Color Graphics::BACK_BUFFER_CLEAR_COLOR(0.8f, 0.1f, 0.8f, 0.0f);
+namespace Storage
+{
+	/** Defines the root folder where all the data for the application is stored. */
+	#define DATA_DIRECTORY "Data/"
+}

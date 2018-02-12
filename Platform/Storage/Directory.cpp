@@ -17,7 +17,7 @@
 #include <cassert>
 #include "Platform/FailureHandling/DirectoryAccessException.h"
 #include "Platform/Storage/Directory.h"
-#include "Utilities/HelperFunctions.h"
+#include "Platform/Utilities/HelperFunctions.h"
 
 using namespace FailureHandling;
 using namespace Storage;

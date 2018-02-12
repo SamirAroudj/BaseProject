@@ -6,8 +6,8 @@
  * of the BSD 3-Clause license. See the License.txt file for details.
  */
 
-#include "RenderGroup.h"
-#include "Utilities/HelperFunctions.h"
+#include "Graphics/RenderGroup.h"
+#include "Platform/Utilities/HelperFunctions.h"
 
 using namespace Graphics;
 using namespace std;

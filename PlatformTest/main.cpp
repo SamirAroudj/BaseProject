@@ -16,11 +16,12 @@
 #include "Platform/Input/InputManager.h"
 #include "Platform/Multithreading/Manager.h"
 #include "Platform/ResourceManagement/MemoryManager.h"
-#include "Platform/TimePeriod.h"
+#include "Platform/Timing/TimePeriod.h"
 
 using namespace Input;
 using namespace Platform;
 using namespace std;
+using namespace Timing;
 
 #ifdef MEMORY_MANAGEMENT
 	const uint32 ResourceManagement::DEFAULT_POOL_BUCKET_NUMBER = 5;

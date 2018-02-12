@@ -10,7 +10,7 @@
 
 #include "Math/Vector2.h"
 #include "Platform/ResourceManagement/UserResource.h"
-#include "Utilities/Size2.h"
+#include "Platform/Utilities/Size2.h"
 
 namespace Graphics
 {

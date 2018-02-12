@@ -14,7 +14,7 @@
 
 #include <cassert>
 #include <iostream>
-#include "Utilities/HelperFunctions.h"
+#include "Platform/Utilities/HelperFunctions.h"
 
 namespace Math
 {

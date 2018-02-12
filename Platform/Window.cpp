@@ -20,6 +20,11 @@ using namespace Input;
 using namespace std;
 using namespace Utilities;
 
+const uint32 Platform::Window::DEFAULT_WIDTH					= 800u;
+const uint32 Platform::Window::DEFAULT_HEIGHT					= 600u;
+const uint16 Platform::Window::DEFAULT_DEPTH_BITS_PER_PIXEL		= 24u;
+const uint16 Platform::Window::DEFAULT_STENCIL_BITS_PER_PIXEL	= 8u;
+
 #ifdef _WINDOWS
 	const char *Window::CLASS_NAME = "BaseProjectWindow";
 #endif // _WINDOWS

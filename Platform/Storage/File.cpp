@@ -11,10 +11,9 @@
 #include "Platform/FailureHandling/FileAccessException.h"
 #include "Platform/FailureHandling/FileVersionException.h"
 #include "Platform/Storage/File.h"
-#include "Utilities/HelperFunctions.h"
+#include "Platform/Utilities/HelperFunctions.h"
 
 using namespace FailureHandling;
-using namespace Platform;
 using namespace Storage;
 using namespace std;
 using namespace Utilities;
@@ -445,7 +444,7 @@ bool File::readTextLine(vector<string> &lineParts, string &textLine, const char 
 	}
 
 	// split the line
-	split(lineParts, textLine, delimeters);
+	Utilities::split(lineParts, textLine, delimeters);
 	return success;
 }
 

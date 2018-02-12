@@ -24,7 +24,6 @@
 
 using namespace FailureHandling;
 using namespace Graphics;
-using namespace Platform;
 using namespace std;
 using namespace Storage;
 using namespace Utilities;

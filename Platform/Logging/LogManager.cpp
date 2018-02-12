@@ -13,6 +13,11 @@ using namespace Platform;
 using namespace std;
 using namespace Logging;
 
+
+// constants
+const char *Platform::LogManager::LOG_FILE_NAME = DATA_DIRECTORY "Application.log";
+
+// static variables
 LogManager LogManager::sInstance = LogManager();
 
 const char *LogManager::convertLogLevelToString(LogLevel level)

@@ -8,8 +8,8 @@
 #ifndef _USER_RESOURCE_H_
 #define _USER_RESOURCE_H_
 
-#include "Resource.h"
-#include "Utilities/HelperFunctions.h"
+#include "Platform/ResourceManagement/Resource.h"
+#include "Platform/Utilities/HelperFunctions.h"
 
 namespace ResourceManagement
 {

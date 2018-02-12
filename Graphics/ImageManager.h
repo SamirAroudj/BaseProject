@@ -9,10 +9,10 @@
 #define _IMAGE_MANAGER_H_
 
 #include <string>
-#include "Platform/Storage/File.h"
 #include "Graphics/TextureHeader.h"
 #include "Patterns/Singleton.h"
-#include "Utilities/Size2.h"
+#include "Platform/Storage/File.h"
+#include "Platform/Utilities/Size2.h"
 
 namespace Graphics
 {

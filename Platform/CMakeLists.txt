@@ -15,38 +15,15 @@ set(failureHandlingPath ${componentPath}/FailureHandling)
 set(inputPath ${componentPath}/Input)
 set(loggingPath ${componentPath}/Logging)
 set(multithreadingPath ${componentPath}/Multithreading)
+set(profilingPath ${componentPath}/Profiling)
 set(resourceManagementPath ${componentPath}/ResourceManagement)
 set(storagePath ${componentPath}/Storage)
+set(timePath ${componentPath}/Timing)
+set(utilitiesPath ${componentPath}/Utilities)
 
 # CMake files
 set(cmakeFiles
 	${componentPath}/CMakeLists.txt
-)
-
-# header files
-set(headerFiles 
-	${componentPath}/Application.h
-	${componentPath}/ApplicationTimer.h
-	${componentPath}/DataTypes.h
-	${componentPath}/FrameRateCalculator.h
-	${componentPath}/IWindowObserver.h
-	${componentPath}/MagicConstants.h
-	${componentPath}/ParametersManager.h
-	${componentPath}/Platform.h
-	${componentPath}/TimePeriod.h
-	${componentPath}/Window.h
-)
-
-# source files
-set(sourceFiles
-	${componentPath}/Application.cpp
-	${componentPath}/ApplicationTimer.cpp
-	${componentPath}/DataTypes.cpp
-	${componentPath}/FrameRateCalculator.cpp
-	${componentPath}/MagicConstants.cpp
-	${componentPath}/ParametersManager.cpp
-	${componentPath}/TimePeriod.cpp
-	${componentPath}/Window.cpp
 )
 
 # failure handling header files
@@ -152,6 +129,49 @@ set(multithreadingSourceFiles
 	${multithreadingPath}/Task.cpp
 )
 
+# platform header files
+set(platformHeaderFiles 
+	${componentPath}/Application.h
+	${componentPath}/DataTypes.h
+	${componentPath}/IWindowObserver.h
+	${componentPath}/Window.h
+)
+
+# platform source files
+set(platformSourceFiles
+	${componentPath}/Application.cpp
+	${componentPath}/DataTypes.cpp
+	${componentPath}/Window.cpp
+)
+
+# profiling header files
+set(profilingHeaderFiles
+	${profilingPath}/FrameRateCalculator.h
+	${profilingPath}/Profiler.h
+	${profilingPath}/TimeMeasurements.h
+)
+
+if (BASE_CUDA)
+	set(profilingHeaderFiles
+		${profilingHeaderFiles}
+		${profilingPath}/CUDAProfiler.h
+	)
+endif (BASE_CUDA)
+
+# profiling source files
+set(profilingSourceFiles
+	${profilingPath}/FrameRateCalculator.cpp
+	${profilingPath}/Profiler.cpp
+	${profilingPath}/TimeMeasurements.cpp
+)
+
+if (BASE_CUDA)
+	set(profilingSourceFiles
+		${profilingSourceFiles}
+		${profilingPath}/CUDAProfiler.cu
+	)
+endif (BASE_CUDA)
+
 # resource management header files
 set(resourceManagementHeaderFiles
 	${resourceManagementPath}/Bucket.h
@@ -175,6 +195,7 @@ set(storageHeaderFiles
 	${storagePath}/Directory.h
 	${storagePath}/File.h
 	${storagePath}/Path.h
+	${storagePath}/Storage.h
 )
 
 # storage source files
@@ -184,23 +205,68 @@ set(storageSourceFiles
 	${storagePath}/Path.cpp
 )
 
+# time header files
+set(timeHeaderFiles
+	${timePath}/ApplicationTimer.h
+	${timePath}/TimePeriod.h
+)
+
+# time source files
+set(timeSourceFiles
+	${timePath}/ApplicationTimer.cpp
+	${timePath}/TimePeriod.cpp
+)
+
+# utilities header files
+set(utilitiesHeaderFiles
+	${utilitiesPath}/Conversions.h
+	${utilitiesPath}/HelperFunctions.h
+	${utilitiesPath}/Licenser.h
+	${utilitiesPath}/PlyFile.h
+	${utilitiesPath}/Size2.h
+	${utilitiesPath}/ParametersManager.h
+	${utilitiesPath}/RandomManager.h
+	${utilitiesPath}/RectanglePacker.h
+	${utilitiesPath}/RegularExpression.h
+	${utilitiesPath}/SVGLoader.h
+)
+
+# utilities source files
+set(utilitiesSourceFiles
+	${utilitiesPath}/Conversions.cpp
+	${utilitiesPath}/HelperFunctions.cpp
+	${utilitiesPath}/Licenser.cpp
+	${utilitiesPath}/PlyFile.cpp
+	${utilitiesPath}/ParametersManager.cpp
+	${utilitiesPath}/RandomManager.cpp
+	${utilitiesPath}/RectanglePacker.cpp
+	${utilitiesPath}/RegularExpression.cpp
+	${utilitiesPath}/SVGLoader.cpp
+)
+
 # get all file groups together
 set(sourceCode
 	${cmakeFiles}
 	${failureHandlingHeaderFiles}
 	${failureHandlingSourceFiles}
-	${headerFiles}
 	${inputHeaderFiles}
 	${inputSourceFiles}
 	${loggingHeaderFiles}
 	${loggingSourceFiles}
 	${multithreadingHeaderFiles}
 	${multithreadingSourceFiles}
+	${platformHeaderFiles}
+	${platformSourceFiles}
+	${profilingHeaderFiles}
+	${profilingSourceFiles}
 	${resourceManagementHeaderFiles}
 	${resourceManagementSourceFiles}
-	${sourceFiles}
 	${storageHeaderFiles}
 	${storageSourceFiles}
+	${timeHeaderFiles}
+	${timeSourceFiles}
+	${utilitiesHeaderFiles}
+	${utilitiesSourceFiles}
 )
 
 if (BASE_CUDA)
@@ -214,19 +280,25 @@ endif (BASE_CUDA)
 source_group("CMake Files" FILES ${cmakeFiles})
 
 # header file groups
-source_group("Header Files" FILES ${headerFiles})
+source_group("Header Files" FILES ${platformHeaderFiles})
 source_group("Header Files\\Failure Handling" FILES ${failureHandlingHeaderFiles})
 source_group("Header Files\\Input" FILES ${inputHeaderFiles})
 source_group("Header Files\\Logging" FILES ${loggingHeaderFiles})
 source_group("Header Files\\Multithreading" FILES ${multithreadingHeaderFiles})
+source_group("Header Files\\Profiling" FILES ${profilingHeaderFiles})
 source_group("Header Files\\Resource Management" FILES ${resourceManagementHeaderFiles})
 source_group("Header Files\\Storage" FILES ${storageHeaderFiles})
+source_group("Header Files\\Time" FILES ${timeHeaderFiles})
+source_group("Header Files\\Utilities" FILES ${utilitiesHeaderFiles})
 
 # source file groups
-source_group("Source Files" FILES ${sourceFiles})
+source_group("Source Files" FILES ${platformSourceFiles})
 source_group("Source Files\\Failure Handling" FILES ${failureHandlingSourceFiles})
 source_group("Source Files\\Input" FILES ${inputSourceFiles})
 source_group("Source Files\\Logging" FILES ${loggingSourceFiles})
 source_group("Source Files\\Multithreading" FILES ${multithreadingSourceFiles})
+source_group("Source Files\\Profiling" FILES ${profilingSourceFiles})
 source_group("Source Files\\Resource Management" FILES ${resourceManagementSourceFiles})
-source_group("SOurce Files\\Storage" FILES ${storageSourceFiles})
+source_group("Source Files\\Storage" FILES ${storageSourceFiles})
+source_group("Source Files\\Time" FILES ${timeSourceFiles})
+source_group("Source Files\\Utilities" FILES ${utilitiesSourceFiles})

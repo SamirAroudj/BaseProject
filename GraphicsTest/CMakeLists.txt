@@ -48,7 +48,6 @@ add_executable(${appName} ${sourceCode})
 set(requiredLibs ${requiredLibs}
 	Graphics
 	Platform
-	Utilities
 	${mathLibName}
 )
 

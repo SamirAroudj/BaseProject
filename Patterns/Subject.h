@@ -10,7 +10,7 @@
 
 #include <cassert>
 #include "Platform/DataTypes.h"
-#include "Utilities/HelperFunctions.h"
+#include "Platform/Utilities/HelperFunctions.h"
 
 namespace Patterns
 {

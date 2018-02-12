@@ -8,10 +8,9 @@
 #ifndef _APPLICATION_H_
 #define _APPLICATION_H_
 
-#include "FrameRateCalculator.h"
-#include "Platform/Input/TextInput.h"
-#include "MagicConstants.h"
 #include "Patterns/Singleton.h"
+#include "Platform/Input/TextInput.h"
+#include "Platform/Profiling/FrameRateCalculator.h"
 #include "Platform/Window.h"
 
 namespace Platform
@@ -122,17 +121,20 @@ namespace Platform
 		/** Application waits at the end of the current frame to restrict the frame rate according to user configuration.
 		   See constructor and configurationFileName. */
 		void wait();
+		
+	public:
+		static const char *DEFAULT_CONFIG_FILE;					/// The default path and name of the configuration file to load and apply
 
 	protected:
-		Input::TextInput mTextInput;				/// This is a representation of what the text the user enters.
-		FrameRateCalculator *mFrameRateCalculator;	/// Is responsible for FPS calculation.
-		Real mWantedFrameTime;						/// Defines how many seconds a frame should take at least. This is used to cap the frame rate.
-													/// Main loop thread sleeps if it actually requires less time to update, render etc.
-		bool mInterpretingTextInput;				/// This value is true if the application is interpreting key strokes by the user as text input.
-													/// startTextInput() has been called but not endTextInput().
-		bool mRunning;								/// The main loop is executed as long as this value is true.
-		bool mRunningSlowly;						/// render() is skipped if this variable is true. This variable is set to true when
-													/// the program runs too slow (delta time >  mWantedFrameTime).
+		Input::TextInput mTextInput;							/// This is a representation of what the text the user enters.
+		Profiling::FrameRateCalculator *mFrameRateCalculator;	/// Is responsible for FPS calculation.
+		Real mWantedFrameTime;									/// Defines how many seconds a frame should take at least. This is used to cap the frame rate.
+																/// Main loop thread sleeps if it actually requires less time to update, render etc.
+		bool mInterpretingTextInput;							/// This value is true if the application is interpreting key strokes by the user as text input.
+																/// startTextInput() has been called but not endTextInput().
+		bool mRunning;											/// The main loop is executed as long as this value is true.
+		bool mRunningSlowly;									/// render() is skipped if this variable is true. This variable is set to true when
+																/// the program runs too slow (delta time >  mWantedFrameTime).
 	};
 }
 

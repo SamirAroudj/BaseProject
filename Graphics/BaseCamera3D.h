@@ -14,7 +14,7 @@
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 #include "Platform/DataTypes.h"
-#include "Utilities/Size2.h"
+#include "Platform/Utilities/Size2.h"
 
 namespace Graphics
 {

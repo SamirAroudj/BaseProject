@@ -1,3 +1,4 @@
 Build/
 *.log
 *.dll
+BaseProject.*

@@ -51,6 +51,4 @@ subdirs(
 	PlatformTest
 	#RazzleDazzle
 	#ServerTest
-	Utilities
-	UtilitiesTest
 )

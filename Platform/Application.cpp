@@ -12,21 +12,26 @@
 #include <chrono>
 #include <thread>
 #include "Platform/Application.h"
-#include "Platform/ApplicationTimer.h"
-#include "Platform/FrameRateCalculator.h"
 #include "Platform/Input/InputManager.h"
 #include "Platform/Multithreading/Manager.h"
-#include "Platform/ParametersManager.h"
+#include "Platform/Profiling/FrameRateCalculator.h"
 #include "Platform/ResourceManagement/MemoryManager.h"
 #include "Platform/Storage/File.h"
+#include "Platform/Storage/Storage.h"
+#include "Platform/Timing/ApplicationTimer.h"
+#include "Platform/Utilities/ParametersManager.h"
+#include "Platform/Utilities/RandomManager.h"
 #include "Platform/Window.h"
-#include "Utilities/RandomManager.h"
 
 using namespace Input;
 using namespace Platform;
+using namespace Profiling;
 using namespace std;
 using namespace Storage;
+using namespace Timing;
 using namespace Utilities;
+
+const char *Platform::Application::DEFAULT_CONFIG_FILE = DATA_DIRECTORY "App.cfg";
 
 Application::Application
 (

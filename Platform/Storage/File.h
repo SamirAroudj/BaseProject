@@ -13,7 +13,6 @@
 #include <string>
 #include <vector>
 #include "Platform/DataTypes.h"
-#include "Platform/MagicConstants.h"
 #include "Platform/Storage/Path.h"
 
 namespace Storage

@@ -6,10 +6,10 @@
  * of the BSD 3-Clause license. See the License.txt file for details.
  */
 #include "Graphics/AnimatedSprite.h"
-#include "Platform/ApplicationTimer.h"
+#include "Platform/Timing/ApplicationTimer.h"
 
 using namespace Graphics;
-using namespace Platform;
+using namespace Timing;
 using namespace Utilities;
 
 AnimatedSprite::AnimatedSprite(const std::string &textureName, uint32 tileIndex, Real timePerTile) :

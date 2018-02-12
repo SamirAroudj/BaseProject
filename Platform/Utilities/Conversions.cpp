@@ -5,9 +5,13 @@
  * This software may be modified and distributed under the terms
  * of the BSD 3-Clause license. See the License.txt file for details.
  */
-#include "Graphics/MagicConstants.h"
-#include "Platform/Storage/Storage.h"
 
-const char *Graphics::PATH_TO_TEXTURES = DATA_DIRECTORY "Textures/";
+#include "Platform/Utilities/Conversions.h"
 
-const Graphics::Color Graphics::BACK_BUFFER_CLEAR_COLOR(0.8f, 0.1f, 0.8f, 0.0f);
+using namespace Utilities;
+using namespace std;
+
+bool Utilities::convertToBoolean(const string &text)
+{
+	return text == "t" || text == "true" || text == "yes" || text == "y" || text == "1";
+}

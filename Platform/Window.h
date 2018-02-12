@@ -22,12 +22,11 @@
 
 #include <cassert>
 #include <string>
-#include "Platform/DataTypes.h"
-#include "Platform/IWindowObserver.h"
-#include "Platform/MagicConstants.h"
 #include "Patterns/Subject.h"
 #include "Patterns/Singleton.h"
-#include "Utilities/Size2.h"
+#include "Platform/DataTypes.h"
+#include "Platform/IWindowObserver.h"
+#include "Platform/Utilities/Size2.h"
 
 /// Provides platform dependent functionality.
 /** This name space contains platform dependent functionality such as window creation, file access and timer functionality.*/
@@ -53,8 +52,8 @@ namespace Platform
 				HINSTANCE applicationHandle,
 			#endif // _WINDOWS
 			const std::string &title, bool fullscreen = false,
-			const Utilities::ImgSize &size = Utilities::ImgSize(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT),
-			uint16 depthBitsPerPixel = WINDOW_DEFAULT_DEPTH_BITS_PER_PIXEL, uint16 stencilBitsPerPixel = WINDOW_DEFAULT_STENCIL_BITS_PER_PIXEL
+			const Utilities::ImgSize &size = Utilities::ImgSize(DEFAULT_WIDTH, DEFAULT_HEIGHT),
+			uint16 depthBitsPerPixel = DEFAULT_DEPTH_BITS_PER_PIXEL, uint16 stencilBitsPerPixel = DEFAULT_STENCIL_BITS_PER_PIXEL
 		);
 
 		/** Frees requested resources. */
@@ -170,7 +169,7 @@ namespace Platform
 		void onActivityChange(bool active);
 
 		#ifdef _WINDOWS
-			/** Registers a description of the window that will be created.
+			/** Registers a description of the window that will be created. */
 			@param applicationHandle A windows handle to identify the application. This handle should be retrieved from WinMain. */
 			void registerWindowType(HINSTANCE applicationHandle) const;
 
@@ -184,6 +183,12 @@ namespace Platform
 			LRESULT CALLBACK windowProcedure(HWND windowHandle, uint32 messageIdentifier, WPARAM wParam, LPARAM lParam);
 		#endif // _WINDOWS
 
+	public:
+		static const uint32 DEFAULT_WIDTH;					/// Standard width of window's client area in pixel if no configuration file is used.
+		static const uint32 DEFAULT_HEIGHT;					/// Standard height of window's client area in pixel if no configuration file is used.
+		static const uint16 DEFAULT_DEPTH_BITS_PER_PIXEL;	/// Standard number of bits per pixel which are used to store depth (z-distance) values of pixels.
+		static const uint16 DEFAULT_STENCIL_BITS_PER_PIXEL;	/// Standard number of bits per pixel which are used to store stencil information.
+			
 	private:
 			static const char *CLASS_NAME; /// Defines window class name for Windows.
 

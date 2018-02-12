@@ -62,9 +62,13 @@ namespace Logging
         @param rhs Operator is forbidden. */
         LogManager &operator =(const LogManager &rhs) { assert(false); return *this; }
 
+	public:
+		static const char *LOG_FILE_NAME;	/// This is the name and path of the file that stores log messages.
+		
     protected:
 		static LogManager	sInstance;		/// this is the one and only instance of this manager
-
+	
+	protected:
 		ConsoleLogOutput	mConsoleOutput;	/// this is the output target that writes to the console
 		FileLogOutput		mFileOutput;	/// this is the output target that writes to a file
 		LogLevel			mLogLevel;		/// minimum log level -> filtering

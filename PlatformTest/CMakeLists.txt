@@ -17,7 +17,6 @@ add_executable(${appName} ${componentPath}/main.cpp)
 # define required internal libraries and do linking stuff
 set(requiredLibs 
 	Platform
-	Utilities
 	${mathLibName}
 )
 

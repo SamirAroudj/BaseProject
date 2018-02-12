@@ -5,12 +5,11 @@
  * This software may be modified and distributed under the terms
  * of the BSD 3-Clause license. See the License.txt file for details.
  */
-#include "Platform/ApplicationTimer.h"
 #include "Graphics/AnimatedSprite.h"
 #include "Graphics/GraphicsManager.h"
 #include "Graphics/ImageManager.h"
 #include "Platform/Input/InputManager.h"
-#include "Platform/MagicConstants.h"
+#include "Platform/Timing/ApplicationTimer.h"
 #include "Math/MathCore.h"
 #include "Math/MathHelper.h"
 #include "MyApp.h"
@@ -20,6 +19,7 @@ using namespace Input;
 using namespace Math;
 using namespace Platform;
 using namespace std;
+using namespace Timing;
 using namespace Utilities;
 
 #ifdef _WINDOWS
@@ -45,8 +45,8 @@ using namespace Utilities;
 
 	mCamera = new Camera2D();
 
-	mSprites		= NULL;
-	mNumOfSprites	= 0;
+	mSprites = NULL;
+	mNumOfSprites = 0;
 
 	// opzen a png image
 	const string fileName = "Data/undist-L3.png";
@@ -135,11 +135,11 @@ void MyApp::render()
 void MyApp::update()
 {
 	// variable definitions																
-	Vector2			relativeCameraMovement;
-	Real			deltaTime		= ApplicationTimer::getSingleton().getDeltaTime();
-	Real			cameraRotation	= 0.0f;	
-	const Mouse		&mouse			= InputManager::getSingleton().getMouse();
-	const Keyboard	&keyboard		= InputManager::getSingleton().getKeyboard();
+	Vector2	relativeCameraMovement;
+	Real deltaTime = ApplicationTimer::getSingleton().getDeltaTime();
+	Real cameraRotation	= 0.0f;	
+	const Mouse &mouse = InputManager::getSingleton().getMouse();
+	const Keyboard &keyboard = InputManager::getSingleton().getKeyboard();
 
 	// quit application?
 	if (keyboard.isKeyDown(KEY_ESCAPE))																

@@ -12,9 +12,8 @@
 	#include <oleauto.h>
 #endif // _WINDOWS
 
-#include "InputManager.h"
 #include "Platform/FailureHandling/InputException.h"
-#include "../MagicConstants.h"
+#include "Platform/Input/InputManager.h"
 #include "Platform/Window.h"
 
 using namespace FailureHandling;

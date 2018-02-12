@@ -14,7 +14,7 @@
 #include "Math/Matrix3x3.h"
 #include "Math/Matrix4x4.h"
 #include "Platform/DataTypes.h"
-#include "Utilities/Size2.h"
+#include "Platform/Utilities/Size2.h"
 
 namespace Graphics
 {
