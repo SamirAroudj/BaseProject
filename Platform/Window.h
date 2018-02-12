@@ -169,7 +169,7 @@ namespace Platform
 		void onActivityChange(bool active);
 
 		#ifdef _WINDOWS
-			/** Registers a description of the window that will be created. */
+			/** Registers a description of the window that will be created.
 			@param applicationHandle A windows handle to identify the application. This handle should be retrieved from WinMain. */
 			void registerWindowType(HINSTANCE applicationHandle) const;
 
