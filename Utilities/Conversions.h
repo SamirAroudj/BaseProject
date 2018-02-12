@@ -135,7 +135,7 @@ namespace Utilities
 			valueEnd = textValues.find(',', valueStart + 1);
 
 			// valid area?
-			if (string::npos == valueEnd)
+			if (std::string::npos == valueEnd)
 				return count;
 
 			// convert the number
