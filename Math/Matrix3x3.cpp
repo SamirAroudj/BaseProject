@@ -453,6 +453,101 @@ Matrix3x3 Matrix3x3::createRotationFromIntrinsicAngles(Real radianX, Real radian
 		sinY,			-cosY * sinX,						cosX * cosY);
 }
 
+void Matrix3x3::addTranslation(const Vector2 &translation)
+{
+	m20 += translation.x;
+	m21 += translation.y;
+}
+
+bool Matrix3x3::equals(const Matrix3x3 &rhs, const Real epsilon) const
+{
+	return	(epsilon > fabsr(m00 - rhs.m00)) &&
+			(epsilon > fabsr(m01 - rhs.m01)) &&
+			(epsilon > fabsr(m02 - rhs.m02)) &&
+
+			(epsilon > fabsr(m10 - rhs.m10)) &&
+			(epsilon > fabsr(m11 - rhs.m11)) &&
+			(epsilon > fabsr(m12 - rhs.m12)) &&
+
+			(epsilon > fabsr(m20 - rhs.m20)) &&
+			(epsilon > fabsr(m21 - rhs.m21)) &&
+			(epsilon > fabsr(m22 - rhs.m22));
+}
+
+Real Matrix3x3::frobeniusProduct(const Matrix3x3 &rhs) const
+{
+	return	m00 * rhs.m00 + m01 * rhs.m01 + m02 * rhs.m02 +
+			m10 * rhs.m10 + m11 * rhs.m11 + m12 * rhs.m12 +
+			m20 * rhs.m20 + m21 * rhs.m21 + m22 * rhs.m22;
+}
+
+void Matrix3x3::getColumnVector(Vector3 &target, uint32 columnVectorIdx) const
+{
+	assert(columnVectorIdx >= 0);
+	assert(columnVectorIdx <= 2);
+
+	target.x = values[0][columnVectorIdx];
+	target.y = values[1][columnVectorIdx];
+	target.z = values[2][columnVectorIdx];
+}
+
+Real Matrix3x3::getDeterminant() const
+{
+	return	 m00 * (m11 * m22 - m21 * m12)
+			-m10 * (m01 * m22 - m21 * m02)
+			+m20 * (m01 * m12 - m11 * m02);
+}
+
+void Matrix3x3::getExtrinsicRotationAngles(Real &x, Real &y, Real &z) const
+{
+	Real sinY = -m02;
+	Real cosY = sqrtr(1.0f - sinY * sinY);
+	if (fabsr(cosY) < EPSILON)
+	{
+		x = acosr(m20);
+		y = HALF_PI;
+		z = 0.0f;
+		return;
+	}
+
+	Real cosX = m22 / cosY;
+	Real cosZ = m00 / cosY;
+
+	x = acosr(cosX);
+	y = asinr(sinY);
+	z = acosr(cosZ);
+}
+
+void Matrix3x3::getIntrinsicRotationAngles(Real &x, Real &y, Real &z) const
+{
+	Real sinY = m20;
+	Real cosY = sqrtr(1.0f - sinY * sinY);
+	if (fabsr(cosY) < EPSILON)
+	{
+		x = acosr(m11);
+		y = HALF_PI;
+		z = 0.0f;
+		return;
+	}
+
+	Real cosX = m22 / cosY;
+	Real cosZ = m00 / cosY;
+
+	x = acosr(cosX);
+	y = asinr(sinY);
+	z = acosr(cosZ);
+}
+
+void Matrix3x3::getRowVector(Vector3 &target, uint32 rowVectorIdx) const
+{
+	assert(rowVectorIdx >= 0);
+	assert(rowVectorIdx <= 2);
+
+	target.x = values[rowVectorIdx][0];
+	target.y = values[rowVectorIdx][1];
+	target.z = values[rowVectorIdx][2];
+}
+
 Matrix3x3 &Matrix3x3::operator =(const Matrix3x3 &rhs)
 {
 	m00 = rhs.m00;
@@ -486,21 +581,6 @@ Matrix3x3 &Matrix3x3::operator =(const Matrix3x3 &rhs)
 
 	return *this;
 }*/
-
-bool Matrix3x3::equals(const Matrix3x3 &rhs, const Real epsilon) const
-{
-	return	(epsilon > fabsr(m00 - rhs.m00)) &&
-			(epsilon > fabsr(m01 - rhs.m01)) &&
-			(epsilon > fabsr(m02 - rhs.m02)) &&
-
-			(epsilon > fabsr(m10 - rhs.m10)) &&
-			(epsilon > fabsr(m11 - rhs.m11)) &&
-			(epsilon > fabsr(m12 - rhs.m12)) &&
-
-			(epsilon > fabsr(m20 - rhs.m20)) &&
-			(epsilon > fabsr(m21 - rhs.m21)) &&
-			(epsilon > fabsr(m22 - rhs.m22));
-}
 
 Matrix3x3 Matrix3x3::operator +(const Matrix3x3 &rhs) const
 {
@@ -569,76 +649,6 @@ Matrix3x3 Matrix3x3::operator *(const Matrix3x3 &b) const
 	return Matrix3x3(	m00 * b.m00 + m01 * b.m10 + m02 * b.m20,	m00 * b.m01 + m01 * b.m11 + m02 * b.m21,	m00 * b.m02 + m01 * b.m12 + m02 * b.m22,
 						m10 * b.m00 + m11 * b.m10 + m12 * b.m20,	m10 * b.m01 + m11 * b.m11 + m12 * b.m21,	m10 * b.m02 + m11 * b.m12 + m12 * b.m22, 
 						m20 * b.m00 + m21 * b.m10 + m22 * b.m20,	m20 * b.m01 + m21 * b.m11 + m22 * b.m21,	m20 * b.m02 + m21 * b.m12 + m22 * b.m22);
-}
-
-void Matrix3x3::addTranslation(const Vector2 &translation)
-{
-	m20 += translation.x;
-	m21 += translation.y;
-}
-
-Real Matrix3x3::frobeniusProduct(const Matrix3x3 &rhs) const
-{
-	return	m00 * rhs.m00 + m01 * rhs.m01 + m02 * rhs.m02 +
-			m10 * rhs.m10 + m11 * rhs.m11 + m12 * rhs.m12 +
-			m20 * rhs.m20 + m21 * rhs.m21 + m22 * rhs.m22;
-}
-
-Real Matrix3x3::getDeterminant() const
-{
-	return	 m00 * (m11 * m22 - m21 * m12)
-			-m10 * (m01 * m22 - m21 * m02)
-			+m20 * (m01 * m12 - m11 * m02);
-}
-
-void Matrix3x3::getIntrinsicRotationAngles(Real &x, Real &y, Real &z) const
-{
-	Real sinY = m20;
-	Real cosY = sqrtr(1.0f - sinY * sinY);
-	if (fabsr(cosY) < EPSILON)
-	{
-		x = acosr(m11);
-		y = HALF_PI;
-		z = 0.0f;
-		return;
-	}
-
-	Real cosX = m22 / cosY;
-	Real cosZ = m00 / cosY;
-
-	x = acosr(cosX);
-	y = asinr(sinY);
-	z = acosr(cosZ);
-}
-
-void Matrix3x3::getRowVector(Vector3 &target, uint32 rowVectorIdx) const
-{
-	assert(rowVectorIdx >= 0);
-	assert(rowVectorIdx <= 2);
-
-	target.x = values[rowVectorIdx][0];
-	target.y = values[rowVectorIdx][1];
-	target.z = values[rowVectorIdx][2];
-}
-
-void Matrix3x3::getExtrinsicRotationAngles(Real &x, Real &y, Real &z) const
-{
-	Real sinY = -m02;
-	Real cosY = sqrtr(1.0f - sinY * sinY);
-	if (fabsr(cosY) < EPSILON)
-	{
-		x = acosr(m20);
-		y = HALF_PI;
-		z = 0.0f;
-		return;
-	}
-
-	Real cosX = m22 / cosY;
-	Real cosZ = m00 / cosY;
-
-	x = acosr(cosX);
-	y = asinr(sinY);
-	z = acosr(cosZ);
 }
 
 ostream &operator <<(ostream &os, const Matrix3x3 &m)

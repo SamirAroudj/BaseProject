@@ -30,11 +30,9 @@ namespace Math
 	{
 	public:
 
-		/** Creates a matrix that does not change vectors by multiplication since the diagonal is filed with ones and all other values are 0. */
-		Matrix3x3()
-		{
-			setToIdentity();
-		}
+		/** Creates the identity matrix.
+			The identity does not change vectors by multiplication since the diagonal is filed with ones and all other values are 0. */
+		inline Matrix3x3();
 
 		/** That is the copy constructor which creates a new matrix which is equal to the matrix which is used as a parameter for the constructor.
 		@param rhs The values of this matrix are equally used in the newly created matrix. */
@@ -140,13 +138,73 @@ namespace Math
 		@param radianZ Defines the angle (radian measure) which is required for the third rotation which rotates a vector around the z-axis (relative to the original coordinate system).*/
 		static Matrix3x3 createRotationFromExtrinsicAngles(Real radianX, Real radianY, Real radianZ);
 
-		
 		/** Creates a transformation which encapsulates three rotations around the three axis of the coordinate system (result = vx * rotZ * rotY * rotX, vx is a row vector).
 		Each rotation is relative to the rotated coordinate system which is the result of the previous rotation. ( = "rotation around object axis")
 		@param radianX Defines the angle (radian measure) which is used for the first rotation which rotates a vector around the x-axis (relative to the world / rotated coordinate system).
 		@param radianY Specifies the angle (radian measure) which is necessary for the second rotation which rotates a vector around the y-axis (relative to the rotated coordinate system).
 		@param radianZ Defines the angle (radian measure) which is required for the third rotation which rotates a vector around the z-axis (relative to the rotated coordinate system).*/
 		static Matrix3x3 createRotationFromIntrinsicAngles(Real radianX, Real radianY, Real radianZ);
+
+		/** Adds a relative x-y-translation to the matrix which is applied after the transformation which is already contained by the matrix.
+		@param translation If a homogenous 3D vector is multiplied with this matrix then this added 2D translation is applied to the vector after the transformation already contained by the matrix. */
+		void addTranslation(const Vector2 &translation);
+		
+		/** Compares two matrices to check for equality.
+		@param rhs The left-hand side matrix is compared to rhs.
+		@param epsilon Set this to define the threshold until which two floating point numbers are considered to be equal.
+		@returns The operator returns true if all entries of this matrix are approximately equal to corresponding the elements of rhs.  (see Math::EPSILON)*/
+		bool equals(const Matrix3x3 &rhs, const Real epsilon = EPSILON) const;
+
+		/** Computes the Frobenius inner product of the two matrices which is analogous to the inner product of two vectors. (= sum of pairwise component products)
+		@param rhs Computes the Frobenius inner product of rhs and the left hand side matrix. The Frobenius inner product is commutative.
+		@return The Frobenius inner product (~= skalar product of both matrices) is returned. */
+		Real frobeniusProduct(const Matrix3x3 &rhs) const;
+
+		/** Returns a specific column vector of this matrix. For example, 0th column vector = (m00, m10, m20) for columnVectorIdx = 0.
+		@param target Is filled with the specified matrix column entries. For example, column vector 2 (m02, m12, m22) for columnVectorIdx = 2.
+		@param columnVectorIdx Specifies which column vector is returned. For this Matrix3x3 object only values in { 0, 1, 2 } make sense. */
+		void getColumnVector(Vector3 &target, uint32 columnVectorIdx) const;
+
+		/** Computes and returns the determinant of the matrix.
+		@returns The resulted value is the determinant of the matrix. (If it is 0 then the matrix is singular as there exist no inverse matrix. */
+		Real getDeterminant() const;
+
+		/** Returns the entries of the matrix which are stored in row major order (one row after another in the array, DirectX convention).
+		@returns The returned value points to an array which contains the rows of the matrix (one after another). */
+		inline const Real *getData() const;
+
+		/** Takes a symmetric, real 3x3 matrix and finds its three real values e[0], e[1], e[2]
+			with e[0] >= e[1] >= e[2] and A * v0 = e[0] * v[0], A * v[1] = e[1] * v[1], A * v[2] = e[2] * v[2].
+		@param eigenvalues Contains the three sorted real eigenvalues with e[0] >= e[1] >= e[2]. They must exist for a 3x3 real symmmetric matrix.
+		@param symmetricA The algorithm assumes that symmetricA is a symmetric, real 3x3 matrix.
+		@note Function is based on:\n
+			  http://en.wikipedia.org/wiki/Eigenvalue_algorithm#3.C3.973_matrices */
+		static void getEigenvaluesFromSymmetric(Real eigenvalues[3], const Matrix3x3 &symmetricA);
+
+		/** Returns the rotation angles of the three rotations around the coordinate axis which are encapsulated by this matrix.
+		(result = vx * rotX * rotY * rotZ, vx is a row vector)
+		All rotation angles are relative to the original coordinate system.
+		@param x The angle of the first rotation which revolves a vector around the x axis (relative to the original coordinate system).
+		@param y The angle of the second rotation which revolves a vector around the y axis (relative to the original coordinate system).
+		@param z The angle of the third rotation which revolves a vector around the z axis (relative to the original coordinate system). */
+		void getExtrinsicRotationAngles(Real &x, Real &y, Real &z) const;
+
+		/** Returns the rotation angles of the three rotations around the coordinate axis which are encapsulated by this matrix.
+		(result = vx * rotZ * rotY * rotX, vx is a row vector)
+		All rotation angles are relative to the rotated coordinate system which is the result of the previous rotation.
+		@param x The angle of the first rotation which revolves a vector around the x axis (relative to the original / rotated coordinate system).
+		@param y The angle of the second rotation which revolves a vector around the y axis (relative to the rotated coordinate system).
+		@param z The angle of the third rotation which revolves a vector around the z axis (relative to the rotated coordinate system). */
+		void getIntrinsicRotationAngles(Real &x, Real &y, Real &z) const;
+
+		/** Returns a specific row vector of this matrix. For example, 0th row vector = (m00, m01, m02) for rowVectorIdx = 0.
+		@param target Is filled with the specified matrix row entries. For example, row vector 2 (m20, m21, m22) for rowVectorIdx = 2.
+		@param rowVectorIdx Specifies which row vector is returned. For this Matrix3x3 object only values in { 0, 1, 2 } make sense. */
+		void getRowVector(Vector3 &target, uint32 rowVectorIdx) const;
+
+		/** Returns the trace of the matrix. The trace of a matrix is the sum of its diagonal elements.
+		@return Returns the trace of the matrix. The trace of a matrix is the sum of its diagonal elements.*/
+		inline Real getTrace() const;
 
 		/** Sets the value of this matrix to the values of rhs.
 		@param rhs The values of rhs are copied into the left-hand side matrix.
@@ -157,24 +215,12 @@ namespace Math
 		/** Compares two matrices to check for equality.
 		@param rhs The left-hand side matrix is compared to rhs.
 		@returns The operator returns true if all entries of this matrix are approximately equal to corresponding the elements of rhs.  (see Math::EPSILON)*/
-		inline bool operator ==(const Matrix3x3 &rhs) const
-		{
-			return this->equals(rhs);
-		}
-
-		/** Compares two matrices to check for equality.
-		@param rhs The left-hand side matrix is compared to rhs.
-		@param epsilon Set this to define the threshold until which two floating point numbers are considered to be equal.
-		@returns The operator returns true if all entries of this matrix are approximately equal to corresponding the elements of rhs.  (see Math::EPSILON)*/
-		bool equals(const Matrix3x3 &rhs, const Real epsilon = EPSILON) const;
+		inline bool operator ==(const Matrix3x3 &rhs) const;
 
 		/** Compares two matrices to check for disparity.
 		@param rhs The left-hand side matrix is compared to rhs.
 		@returns The operator returns false if all entries of this matrix are approximately equal to the corresponding elements of rhs.  (see Math::EPSILON)*/
-		bool operator !=(const Matrix3x3 &rhs) const
-		{
-			return !(*this == rhs);
-		}
+		inline bool operator !=(const Matrix3x3 &rhs) const;
 
 		/** Adds two matrices and returns the result. The addition is done componentwise: result(i, j) = this(i, j) + rhs(i, j)
 		@param rhs The result is rhs + this.
@@ -214,98 +260,23 @@ namespace Math
 		/** Accesses an entry of the matrix (first value indicates the row and the second value indicates the column).
 		@param row Determines the row of the element which is returned.
 		@param column Denomniates the column of the element which is returned. */
-		Real &operator()(unsigned short int row, unsigned short int column)
-		{
-			assert(row < 3 && column < 3);
-			return values[row][column];
-		}
+		inline Real &operator()(unsigned short int row, unsigned short int column);
 
 		/** Accesses an entry of the matrix (first value indicates the row and the second value indicates the column).
 		@param row Determines the row of the element which is returned.
 		@param column Denomniates the column of the element which is returned. */
-		Real operator()(unsigned short int row, unsigned short int column) const
-		{
-			assert(row < 3 && column < 3);
-			return values[row][column];
-		}
-
-		/** Adds a relative x-y-translation to the matrix which is applied after the transformation which is already contained by the matrix.
-		@param translation If a homogenous 3D vector is multiplied with this matrix then this added 2D translation is applied to the vector after the transformation already contained by the matrix. */
-		void addTranslation(const Vector2 &translation);
-
-		/** Computes the Frobenius inner product of the two matrices which is analogous to the inner product of two vectors. (= sum of pairwise component products)
-		@param rhs Computes the Frobenius inner product of rhs and the left hand side matrix. The Frobenius inner product is commutative.
-		@return The Frobenius inner product (~= skalar product of both matrices) is returned. */
-		Real frobeniusProduct(const Matrix3x3 &rhs) const;
-
-		/** Computes and returns the determinant of the matrix.
-		@returns The resulted value is the determinant of the matrix. (If it is 0 then the matrix is singular as there exist no inverse matrix. */
-		Real getDeterminant() const;
-
-		/** Returns the entries of the matrix which are stored in row major order (one row after another in the array, DirectX convention).
-		@returns The returned value points to an array which contains the rows of the matrix (one after another). */
-		const Real *getData() const { return *values; }
-
-		/** Takes a symmetric, real 3x3 matrix and finds its three real values e[0], e[1], e[2]
-			with e[0] >= e[1] >= e[2] and A * v0 = e[0] * v[0], A * v[1] = e[1] * v[1], A * v[2] = e[2] * v[2].
-		@param eigenvalues Contains the three sorted real eigenvalues with e[0] >= e[1] >= e[2]. They must exist for a 3x3 real symmmetric matrix.
-		@param symmetricA The algorithm assumes that symmetricA is a symmetric, real 3x3 matrix.
-		@note Function is based on:\n
-			  http://en.wikipedia.org/wiki/Eigenvalue_algorithm#3.C3.973_matrices */
-		static void getEigenvaluesFromSymmetric(Real eigenvalues[3], const Matrix3x3 &symmetricA);
-
-		/** Returns the rotation angles of the three rotations around the coordinate axis which are encapsulated by this matrix.
-		(result = vx * rotX * rotY * rotZ, vx is a row vector)
-		All rotation angles are relative to the original coordinate system.
-		@param x The angle of the first rotation which revolves a vector around the x axis (relative to the original coordinate system).
-		@param y The angle of the second rotation which revolves a vector around the y axis (relative to the original coordinate system).
-		@param z The angle of the third rotation which revolves a vector around the z axis (relative to the original coordinate system). */
-		void getExtrinsicRotationAngles(Real &x, Real &y, Real &z) const;
-
-		/** Returns the rotation angles of the three rotations around the coordinate axis which are encapsulated by this matrix.
-		(result = vx * rotZ * rotY * rotX, vx is a row vector)
-		All rotation angles are relative to the rotated coordinate system which is the result of the previous rotation.
-		@param x The angle of the first rotation which revolves a vector around the x axis (relative to the original / rotated coordinate system).
-		@param y The angle of the second rotation which revolves a vector around the y axis (relative to the rotated coordinate system).
-		@param z The angle of the third rotation which revolves a vector around the z axis (relative to the rotated coordinate system). */
-		void getIntrinsicRotationAngles(Real &x, Real &y, Real &z) const;
-
-		/** Returns a specific row vector of this matrix. For example, 0th row vector = (m00, m01, m02) for rowVectorIdx = 0.
-		@param target Is filled with the specified matrix row entries. For example, row vector 2 (m20, m21, m22) for rowVectorIdx = 2.
-		@param rowVectorIdx Specifies which row vector is returned. For this Matrix3x3 object only values in { 0, 1, 2 } make sense. */
-		void getRowVector(Vector3 &target, uint32 rowVectorIdx) const;
-
-		/** Returns the trace of the matrix. The trace of a matrix is the sum of its diagonal elements.
-		@return Returns the trace of the matrix. The trace of a matrix is the sum of its diagonal elements.*/
-		Real getTrace() const { return m00 + m11 + m22;  }
+		inline Real operator()(unsigned short int row, unsigned short int column) const;
 
 		/** Changes the matrix to the identity matrix.
 			This means that the diagonal consists of ones and all other entries are set to 0.*/
-		void setToIdentity()
-		{
-			m00 = m11 = m22 = 1.0f;
-			m01 = m02 = 0.0f;
-			m10 = m12 = 0.0f;
-			m20 = m21 = 0.0f;
-		}
+		inline void setToIdentity();
 
 		/** Sets every matrix component to zero. */
-		void setToZero()
-		{
-			m00 = m01 = m02 = 0.0f;
-			m10 = m11 = m12 = 0.0f;
-			m20 = m21 = m22 = 0.0f;
-		}
+		inline void setToZero();
 
 		/** Swaps rows and columns, every row becomes a column with the same number.
 			(= Every column becomes a row, for i != j swaps mij and mji.) */
-		void transpose()
-		{
-			// m00, m11, m22 don't change
-			Utilities::swap(m01, m10);
-			Utilities::swap(m02, m20);
-			Utilities::swap(m12, m21);
-		}
+		inline void transpose();
 
 	private:
 		/** Returns the normalized row vector of A * B which was the largest vector in A * B.
@@ -329,6 +300,69 @@ namespace Math
 			};
 		};
 	};
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///   inline function definitions   ////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	inline Matrix3x3::Matrix3x3()
+	{
+		setToIdentity();
+	}
+
+	inline const Real *Matrix3x3::getData() const
+	{
+		return *values; 
+	}
+
+	inline Real Matrix3x3::getTrace() const
+	{
+		return m00 + m11 + m22;
+	}
+
+	inline bool Matrix3x3::operator ==(const Matrix3x3 &rhs) const
+	{
+		return this->equals(rhs);
+	}
+
+	inline bool Matrix3x3::operator !=(const Matrix3x3 &rhs) const
+	{
+		return !(*this == rhs);
+	}
+
+	inline Real &Matrix3x3::operator()(unsigned short int row, unsigned short int column)
+	{
+		assert(row < 3 && column < 3);
+		return values[row][column];
+	}
+
+	inline Real Matrix3x3::operator()(unsigned short int row, unsigned short int column) const
+	{
+		assert(row < 3 && column < 3);
+		return values[row][column];
+	}
+
+	inline void Matrix3x3::setToIdentity()
+	{
+		m00 = m11 = m22 = 1.0f;
+		m01 = m02 = 0.0f;
+		m10 = m12 = 0.0f;
+		m20 = m21 = 0.0f;
+	}
+
+	inline void Matrix3x3::setToZero()
+	{
+		m00 = m01 = m02 = 0.0f;
+		m10 = m11 = m12 = 0.0f;
+		m20 = m21 = m22 = 0.0f;
+	}
+
+	inline void Matrix3x3::transpose()
+	{
+		// m00, m11, m22 don't change
+		Utilities::swap(m01, m10);
+		Utilities::swap(m02, m20);
+		Utilities::swap(m12, m21);
+	}
 
 	/** Write the values of a 3x3 matrix to an output stream.
 	@param os The matrix information is written to this stream.
