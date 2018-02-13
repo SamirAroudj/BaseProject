@@ -56,8 +56,8 @@ using namespace Utilities;
 		// convert 2 sub matches to Real data types
 		string n0 = matches.str(1);
 		string n1 = matches.str(2);
-		r1 = convert<float>(n0);
-		r2 = convert<float>(n1);
+		r1 = Converter::to<float>(n0);
+		r2 = Converter::to<float>(n1);
 
 		return (uint32) (matches.prefix().length() + matches.length(0));
 	}

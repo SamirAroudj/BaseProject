@@ -42,6 +42,15 @@ enum Encoding
 	@see Encoding */
 extern const char *EncodingStrings[ENCODING_COUNT];
 
+/** Enumeration for identification of integer bases, e.g., hexadecimal numbers like F1A3BD26 (32 bit). */
+enum IntegerBase
+{
+	INTEGER_BASE_DECIMAL,		/// decimal numbers, base 10 -> allowed characters 0 - 9
+	INTEGER_BASE_HEXADECIMAL,	/// hexadecimal numbers, base 16, allowed characters 0 - 9, A - F
+	INTEGER_BASE_OCTAL,			/// octal numbers, base 16, allowed characters 0 - 7
+	INTERGER_BASE_COUNT
+};
+
 // conversion functions needed for integers due to different encoding (little and big endian)
 /** Converts an integer with big endian encoding to an integer with this machine's encoding.
 @param bigEndianInt Set this to the big endian integer you want to convert.

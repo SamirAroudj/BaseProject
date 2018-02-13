@@ -11,7 +11,7 @@
 using namespace Utilities;
 using namespace std;
 
-bool Utilities::convertToBoolean(const string &text)
+bool Converter::toBoolean(const string &text)
 {
 	return text == "t" || text == "true" || text == "yes" || text == "y" || text == "1";
 }

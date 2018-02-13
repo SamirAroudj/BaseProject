@@ -80,21 +80,21 @@ void ParametersManager::loadParameter(const std::string &type, const std::string
 {
 	// booleans
 	if (type == "bool")
-		set(convertToBoolean(paramAsText), name);
+		set(Converter::toBoolean(paramAsText), name);
 
 	// signed integers
 	else if (type == "int8")
-		set(convert<int8>(paramAsText), name);
+		set(Converter::to<int8>(paramAsText), name);
 	else if (type == "int16")
-		set(convert<int16>(paramAsText), name);
+		set(Converter::to<int16>(paramAsText), name);
 	else if (type == "int32")
-		set(convert<int32>(paramAsText), name);
+		set(Converter::to<int32>(paramAsText), name);
 	else if (type == "int64")
-		set(convert<int64>(paramAsText), name);
+		set(Converter::to<int64>(paramAsText), name);
 
 	// floating point parameters
 	else if (type == "Real")
-		set(convert<Real>(paramAsText), name);
+		set(Converter::to<Real>(paramAsText), name);
 
 	// text
 	else if (type == "string")
@@ -102,31 +102,31 @@ void ParametersManager::loadParameter(const std::string &type, const std::string
 
 	// unsigned integers
 	else if (type == "uint8")
-		set(convert<uint8>(paramAsText), name);
+		set(Converter::to<uint8>(paramAsText), name);
 	else if (type == "uint16")
-		set(convert<uint16>(paramAsText), name);
+		set(Converter::to<uint16>(paramAsText), name);
 	else if (type == "uint32")
-		set(convert<uint32>(paramAsText), name);
+		set(Converter::to<uint32>(paramAsText), name);
 	else if (type == "uint64")
-		set(convert<uint64>(paramAsText), name);
+		set(Converter::to<uint64>(paramAsText), name);
 
 	// (math) vectors
 	else if (type == "Vector2")
 	{
 		Vector2 temp;
-		convert<Real>(&temp.x, 2, paramAsText);
+		Converter::to<Real>(&temp.x, 2, paramAsText);
 		set(temp, name);
 	}
 	else if (type == "Vector3")
 	{
 		Vector3 temp;
-		convert<Real>(&temp.x, 3, paramAsText);
+		Converter::to<Real>(&temp.x, 3, paramAsText);
 		set(temp, name);
 	}
 	else if (type == "Vector4")
 	{
 		Vector4 temp;
-		convert<Real>(&temp.x, 4, paramAsText);
+		Converter::to<Real>(&temp.x, 4, paramAsText);
 		set(temp, name);
 	}
 	else
