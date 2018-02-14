@@ -12,9 +12,11 @@ using namespace Graphics;
 using namespace Math;
 using namespace Utilities;
 
-PinholeCamera::PinholeCamera(const Quaternion &orientation, const Vector4 &positionWS, const Real focalLength, const Vector2 &principalPoint, const Real pixelAspectRatio) :
+PinholeCamera::PinholeCamera(const Quaternion &orientation, const Vector4 &positionWS,
+	const Real focalLength, const Vector2 &principalPoint, const Real pixelAspectRatio,
+	const Real distortion[2]) :
 	BaseCamera3D(Matrix4x4::createProjectionRealWorld(focalLength, pixelAspectRatio), pixelAspectRatio),
-	mPrincipalPoint(principalPoint), mFocalLength(focalLength)
+	mPrincipalPoint(principalPoint), mFocalLength(focalLength), mDistortion{distortion[0], distortion[1]}
 {
 	setOrientation(orientation);
 	setPosition(positionWS.x, positionWS.y, positionWS.z, positionWS.w);

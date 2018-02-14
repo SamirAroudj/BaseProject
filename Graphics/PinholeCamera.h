@@ -24,8 +24,11 @@ namespace Graphics
 		@param positionWS Set this to world space coordiantes of the camera center.
 		@param focalLength Set this to the focal length of the camera.
 		@param principalPoint Defines the camera center w.r.t. projected 2D coordinates \in [0, 1]^2. (Defines where the camera z-axis hits the image plane. Usually (0.5, 0.5).
-		@param pixelAspectRatio Set this to the ratio of pixel width to pixel height of the pinhole camera. pixelAspectRatio = pixel width / pixel height. */
-		PinholeCamera(const Math::Quaternion &orientation, const Math::Vector4 &positionWS, const Real focalLength, const Math::Vector2 &principalPoint, const Real pixelAspectRatio);
+		@param pixelAspectRatio Set this to the ratio of pixel width to pixel height of the pinhole camera. pixelAspectRatio = pixel width / pixel height.
+		@param distortion Set this to the camera lens distortion parameters. This model uses two parameters.*/
+		PinholeCamera(const Math::Quaternion &orientation, const Math::Vector4 &positionWS,
+			const Real focalLength, const Math::Vector2 &principalPoint, const Real pixelAspectRatio,
+			const Real distortion[2]);
 
 		/** Destroys the camera. */
 		virtual ~PinholeCamera();
@@ -54,6 +57,10 @@ namespace Graphics
 		@return Returns a matrix which transforms world space coordiantes into non normalized pixel coordinates relative to the camera's viewport of resolution imageSize.*/
 		virtual Math::Matrix4x4 computeWorldSpaceToPixelSpaceMatrix(const Utilities::ImgSize &imageSize, const bool considerPixelCenterOffset = true) const;
 
+		/** Returns camera lens distortion parameters. This model uses two parameters.
+		@return Returns an array containing two lens distortion parameters. */
+		inline const Real *getDistortion() const;
+
 		/** Returns the focal length of the camera.
 		@return The focal length of the camera is returned. */
 		inline Real getFocalLength() const;
@@ -65,6 +72,12 @@ namespace Graphics
 		/** Set camera's pixel aspect ratio = pixel width / pixel height.
 		@param pixelAspectRatio This is the ratio of pixel width to pixel height w.r.t. the camera image sensor.  Must be positive.*/
 		virtual void setAspectRatio(const Real pixelAspectRatio);
+
+		/** Set the lens distortion parameters of this camera.
+		@param distortion Set this to the two parameters modeling this camera's distortion.
+			{0.0f, 0.0f} represents no distortion.
+			todo: better comment*/
+		inline void setDistortion(const Real distortion[2]);
 
 		/** Replaces the focal length of the camera. Must be positive.
 		@param focalLength Set this to the new focal length value which must be positive. */
@@ -81,6 +94,7 @@ namespace Graphics
 
 	private:		
 		Math::Vector2 mPrincipalPoint;	/// Defines the principal point which is used to define the center of the image for mWSToPS.
+		Real mDistortion[2];			/// Stores lens distortion parameters. {0.0f, 0.0f} represents no distortion.
 		Real mFocalLength;				/// Contains the focal length of the camera.
 	};
 
@@ -88,6 +102,11 @@ namespace Graphics
 	///   inline function definitions   ////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	inline const Real *PinholeCamera::getDistortion() const
+	{
+		return mDistortion;
+	}
+
 	inline Real PinholeCamera::getFocalLength() const
 	{
 		return mFocalLength;
@@ -96,6 +115,12 @@ namespace Graphics
 	inline const Math::Vector2 &PinholeCamera::getPrincipalPoint() const
 	{
 		return mPrincipalPoint;
+	}
+
+	inline void PinholeCamera::setDistortion(const Real distortion[2])
+	{
+		mDistortion[0] = distortion[0];
+		mDistortion[1] = distortion[1];
 	}
 
 	inline void PinholeCamera::setFocalLength(const Real focalLength)
