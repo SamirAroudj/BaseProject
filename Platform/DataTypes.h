@@ -43,11 +43,11 @@ enum Encoding
 extern const char *EncodingStrings[ENCODING_COUNT];
 
 /** Enumeration for identification of integer bases, e.g., hexadecimal numbers like F1A3BD26 (32 bit). */
-enum IntegerBase
+enum NumberBase
 {
-	INTEGER_BASE_DECIMAL,		/// decimal numbers, base 10 -> allowed characters 0 - 9
-	INTEGER_BASE_HEXADECIMAL,	/// hexadecimal numbers, base 16, allowed characters 0 - 9, A - F
-	INTEGER_BASE_OCTAL,			/// octal numbers, base 16, allowed characters 0 - 7
+	NUMBER_BASE_DECIMAL,		/// decimal numbers, base 10 -> allowed characters 0 - 9
+	NUMBER_BASE_HEXADECIMAL,	/// hexadecimal numbers, base 16, allowed characters 0 - 9, A - F
+	NUMBER_BASE_OCTAL,			/// octal numbers, base 16, allowed characters 0 - 7
 	INTERGER_BASE_COUNT
 };
 

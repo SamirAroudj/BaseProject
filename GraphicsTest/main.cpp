@@ -27,10 +27,6 @@ using namespace Platform;
 	int main(int argc, char *argv[])
 #endif // _WINDOWS
 {
-	std::string test1 = Utilities::Converter::from<uint8, INTEGER_BASE_HEXADECIMAL>(12);
-	std::string test2 = Utilities::Converter::from<uint8>(12);
-	std::string test3 = Utilities::Converter::from<int8>(-8);
-
 	{
 		#ifdef _WINDOWS
 			MyApp application(applicationHandle);
