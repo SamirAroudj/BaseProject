@@ -12,6 +12,13 @@ using namespace Graphics;
 using namespace Math;
 using namespace Utilities;
 
+PinholeCamera::PinholeCamera() :
+	BaseCamera3D(Matrix4x4::createProjectionRealWorld(1.0f, 1.0f), 1.0f),
+	mPrincipalPoint(0.5f, 0.5f), mDistortion{0.0f, 0.0f}, mFocalLength(1.0f)
+{
+	lookAt(Vector3(), Vector3(-1.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f));
+}
+
 PinholeCamera::PinholeCamera(const Quaternion &orientation, const Vector4 &positionWS,
 	const Real focalLength, const Vector2 &principalPoint, const Real pixelAspectRatio,
 	const Real distortion[2]) :

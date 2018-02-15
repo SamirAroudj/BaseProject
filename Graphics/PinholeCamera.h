@@ -18,6 +18,9 @@ namespace Graphics
 	class PinholeCamera : public BaseCamera3D
 	{
 	public:
+		/** Creates a pinhole camera with no distortion, a principle point at (0.5, 0.5), a focal length of 1.0 and a pixel aspect ratio of 1 at the origin looking along the x-axis. */
+		PinholeCamera();
+
 		/** Initializes the camera to be at world origin and its projection matrix with the entered values.
 		@param orientation Sets the camera orientation according to the entered quaternion which must represent an orientation / rotation.
 			Must be a right handed unit quaternion. (length = 1).
