@@ -9,7 +9,7 @@
 #define _USER_RESOURCE_H_
 
 #include "Platform/ResourceManagement/Resource.h"
-#include "Platform/Utilities/HelperFunctions.h"
+#include "Platform/Utilities/Array.h"
 
 namespace ResourceManagement
 {
@@ -103,7 +103,7 @@ namespace ResourceManagement
 		if (0 < resource->getNumOfUsers())
 			return;
 
-		Utilities::deleteFirstBySwapWithBack<T *>(Resource<T>::msResources, resource);
+		Array<T *>::deleteFirstBySwapWithBack(Resource<T>::msResources, resource);
 		delete resource;
 		resource = NULL;
 	}

@@ -7,7 +7,7 @@
  */
 
 #include "Graphics/RenderGroup.h"
-#include "Platform/Utilities/HelperFunctions.h"
+#include "Platform/Utilities/Array.h"
 
 using namespace Graphics;
 using namespace std;
@@ -29,7 +29,7 @@ void RenderGroup::add(const IRenderable &renderable)
 
 void RenderGroup::remove(const IRenderable &renderable)
 {
-	const size_t idx = deleteFirstBySwapWithBack<const IRenderable *>(mMembers, &renderable);
+	const size_t idx = Array<const IRenderable *>::deleteFirstBySwapWithBack(mMembers, &renderable);
 	assert(idx != ((size_t) -1));
 }
 

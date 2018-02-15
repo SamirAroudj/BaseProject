@@ -10,7 +10,7 @@
 
 #include <cassert>
 #include "Platform/DataTypes.h"
-#include "Platform/Utilities/HelperFunctions.h"
+#include "Platform/Utilities/Array.h"
 
 namespace Patterns
 {
@@ -84,7 +84,7 @@ namespace Patterns
 	void Subject<T>::deregisterObserver(T *observer)
 	{	
 		const size_t size = mObservers.size();
-		const size_t idx = Utilities::deleteFirstBySwapWithBack<T *>(mObservers, observer, 0);
+		const size_t idx = Utilities::Array<T *>::deleteFirstBySwapWithBack(mObservers, observer, 0);
 		if (idx < size)
 			return;
 		

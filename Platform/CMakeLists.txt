@@ -219,6 +219,7 @@ set(timeSourceFiles
 
 # utilities header files
 set(utilitiesHeaderFiles
+	${utilitiesPath}/Array.h
 	${utilitiesPath}/Conversions.h
 	${utilitiesPath}/HelperFunctions.h
 	${utilitiesPath}/Licenser.h
