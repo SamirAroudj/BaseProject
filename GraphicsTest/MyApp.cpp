@@ -52,7 +52,7 @@ using namespace Utilities;
 	const string fileName = "Data/undist-L3.png";
 	ImgSize size;
 	Texture::Format format;
-	uint8 *pixels = imageManager->loadPNG(size, format, fileName);
+	uint8 *pixels = imageManager->loadPNG(size, format, fileName, false);
 
 	// clean up pixels
 	delete [] pixels;

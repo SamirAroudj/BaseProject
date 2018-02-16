@@ -39,8 +39,10 @@ namespace Graphics
 		@param size Is set to the png image size (width and height in pixels).
 		@param format Is set according to the PNG files format, e.g. RGB for an image without transparency.
 		@param fileName Set this to the complete path to the file including its name.
+		@param mirrorAlongY Set this to true to mirror the pixel colors along the y axis, e.g., the last row becomes the first row and so on.
 		@return Returns a pointer providing access to the raw image data formatted according to header. */
-		uint8 *loadPNG(Utilities::ImgSize &size, Texture::Format &format, const Storage::Path &fileName) const;
+		uint8 *loadPNG(Utilities::ImgSize &size, Texture::Format &format,
+			const Storage::Path &fileName, const bool mirrorAlongY) const;
 
 		/** Loads and creates an OpenGL texture from a tile texture file.
 		@param textureFileName	This is the name of the texture without path and without extension.

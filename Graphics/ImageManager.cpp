@@ -90,7 +90,7 @@ ImageManager::~ImageManager()
 	glDeleteTextures(1, &identifier);
 }*/
 
-uint8 *ImageManager::loadPNG(ImgSize &size, Texture::Format &format, const Path &fileName) const
+uint8 *ImageManager::loadPNG(ImgSize &size, Texture::Format &format, const Path &fileName, const bool mirrorAlongY) const
 {
 	// initialize output parameters
 	size.set(0, 0);
@@ -178,9 +178,14 @@ uint8 *ImageManager::loadPNG(ImgSize &size, Texture::Format &format, const Path 
 			memset(pixels, 0, sizeof(uint8) * pixelCount * channelCount);
 			
 			// finally, read the color data row by row
+			const uint32 componentsPerRow = size[0] * channelCount;
 			rowPointers = new png_bytep[size[1]];
-			for (uint32 rowIdx = 0; rowIdx < size[1]; ++rowIdx)
-				rowPointers[rowIdx] = pixels + size[0] * channelCount * rowIdx;
+			if (mirrorAlongY)
+				for (uint32 rowIdx = 0; rowIdx < size[1]; ++rowIdx)
+					rowPointers[size[1] - rowIdx - 1] = pixels + componentsPerRow * rowIdx;
+			else
+				for (uint32 rowIdx = 0; rowIdx < size[1]; ++rowIdx)
+					rowPointers[rowIdx] = pixels + componentsPerRow * rowIdx;
 			png_read_image(pngData, rowPointers);
 
 			// clean up
