@@ -74,19 +74,44 @@ namespace Utilities
 		@param maximum Is set to the largest element in elements or min<T> if elementCount is zero.
 		@param elements Set this to the unordered array of elements you want to search through.
 		@param elementCount Set this to the number of elements in elements you want to search through. */
-		static void findExtrema(T &minimum, T &maximum, const T *elements, const size_t elementCount);
+		static void findExtrema(T &minimum, T &maximum, const T *elements, const size_t &elementCount);
 
 		/** Finds the maximum value in an unordered array of values.
 		@param maximum Is set to the largest element in elements or min<T> if elementCount is zero.
 		@param elements Set this to the unordered array of elements you want to search through.
 		@param elementCount Set this to the number of elements in elements you want to search through. */
-		static void findMaximum(T &maximum, const T *elements, const size_t elementCount);
+		static void findMaximum(T &maximum, const T *elements, const size_t &elementCount);
 
 		/** Finds the minimum value in an unordered array of values.
 		@param minimum Is set to the smallest element in elements or max<T> if elementCount is zero.
 		@param elements Set this to the unordered array of elements you want to search through.
 		@param elementCount Set this to the number of elements in elements you want to search through. */
-		static void findMinimum(T &minimum, const T *elements, const size_t elementCount);
+		static void findMinimum(T &minimum, const T *elements, const size_t &elementCount);
+
+		/** Computes the postfix sum of sourceBuffer and stores it in targetBuffer.
+			That means: targetBuffer[0] = sourceBuffer[0], targetBuffer[1] = sourceBuffer[0] + sourceBuffer[1], targetBuffer[2] = ..., targetBuffer[elementCount - 1] = total sum.
+			targetBuffer and sourceBuffer can refer to the same memory.
+		@param targetBuffer This buffer is filled with the summed values according to postfix sum.
+			It must have space for elementCount values.
+		@param sourceBuffer The values in this buffer are summed and the intermediate sums are stored in targetBuffer.
+			It must have space for elementCount values.
+		@param elementCount Defines the length (number of T objects) of the two arrays targetBuffer and sourceBuffer. */
+		static void postfixSum(T *targetBuffer, const T *sourceBuffer, const size_t &elementCount);
+
+		/** Computes the prefix sum of sourceBuffer and stores it in targetBuffer. That means:
+			targetBuffer[0] = 0, targetBuffer[1] = sourceBuffer[0], targetBuffer[2] = sourceBuffer[0] + sourceBuffer[1], ..., targetBuffer[elementCount - 1] = total sum - sourceBuffer[elementCount - 1]
+			and targetBuffer[elementCount] = total sum if totalSumAtElementCount is set to true.
+			targetBuffer and sourceBuffer can refer to the same memory.
+		@param targetBuffer This buffer is filled with the summed values according to prefix sum.
+			It must have space for elementCount values if totalSumAtElementCount is set to false.
+			It must have space for elementCount + 1 values if totalSumAtElementCount is set to true.
+		@param sourceBuffer The values in this buffer are summed and the intermediate sums are stored in targetBuffer.
+			It must contain elementCount values.
+		@param elementCount Defines the length (number of T objects) of the two arrays targetBuffer and sourceBuffer except that
+			targetBuffer must have space for elementCount + 1 sums of T values if totalSumAtElementCount is set to true.
+		@param totalSumAtElementCount Set this to true if you have a targetBuffer of size (elementCount + 1) and
+			if you want to have the total sum stored at the end of targetBuffer. (targetBuffer[elementCount] = total sum if totalSumAtElementCount == true) */
+		static void prefixSum(T *targetBuffer, const T *sourceBuffer, const size_t &elementCount, const bool totalSumAtElementCount);
 
 		/** Sorts the elements and removes dupblicates.
 		@elements Upon return elements are sorted and each element \in elments is unique.*/
@@ -221,7 +246,7 @@ namespace Utilities
 	}
 
 	template <class T>
-	void Array<T>::findExtrema(T &minimum, T &maximum, const T *elements, const size_t elementCount)
+	void Array<T>::findExtrema(T &minimum, T &maximum, const T *elements, const size_t &elementCount)
 	{
 		minimum = (std::numeric_limits<T>::max)();
 		maximum = std::numeric_limits<T>::lowest();
@@ -236,7 +261,7 @@ namespace Utilities
 	}
 	
 	template <class T>
-	void Array<T>::findMaximum(T &maximum, const T *elements, const size_t elementCount)
+	void Array<T>::findMaximum(T &maximum, const T *elements, const size_t &elementCount)
 	{
 		maximum = std::numeric_limits<T>::lowest();
 
@@ -246,7 +271,34 @@ namespace Utilities
 	}
 
 	template <class T>
-	void Array<T>::findMinimum(T &minimum, const T *elements, const size_t elementCount)
+	void Array<T>::postfixSum(T *targetBuffer, const T *sourceBuffer, const size_t &eleCount)
+	{
+		T sum = 0;
+		for (uint32 eleIdx = 0; eleIdx < eleCount; ++eleIdx)
+		{
+			const T &value = sourceBuffer[eleIdx];
+			sum += value;
+			targetBuffer[eleIdx] = sum;
+		}
+	}
+
+	template <class T>
+	void Array<T>::prefixSum(T *targetBuffer, const T *sourceBuffer, const size_t &eleCount, const bool totalSumAtElementCount)
+	{
+		T sum = 0;
+		for (uint32 eleIdx = 0; eleIdx < eleCount; ++eleIdx)
+		{
+			const T &value = sourceBuffer[eleIdx];
+			targetBuffer[eleIdx] = sum;
+			sum += value;
+		}
+
+		if (totalSumAtElementCount)
+			targetBuffer[eleCount] = sum;
+	}
+
+	template <class T>
+	void Array<T>::findMinimum(T &minimum, const T *elements, const size_t &elementCount)
 	{
 		minimum = (std::numeric_limits<T>::max)();
 
