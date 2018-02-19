@@ -187,10 +187,15 @@ Math::Vector3 Math::getAABBCorner(const Math::Vector3 &AABBMin, const Math::Vect
 
 void Math::getXYProjectionScaleFactors(Real &sX, Real &sY, const Real f, const Real aspectRatio)
 {
+	sX = f;
+	sY = f;
+
 	// always scale smaller side length coordinates according to aspect ratio
 	const bool landscape = (aspectRatio >= 1.0f); // if width >= height: landscape | if height > width: portrait
-	sX = (landscape ? f : f / aspectRatio);
-	sY = (landscape ? f * aspectRatio : f);
+	if (landscape) // stretch image along y-axis to make it square
+		sY *= aspectRatio;
+	else // stretch image along x-axis to make it square
+		sX /= aspectRatio;
 }
 
 Real Math::normalizeAngle(Real radian)

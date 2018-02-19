@@ -76,8 +76,8 @@ namespace Math
 			which maps view space camera coordinates to homogenous (no z-division) device coordinates (non normalized device coordinates).
 			If you also apply the z-division and transformation to your wanted viewport then you get pixel coordinates, e.g., for an undistorted image.
 		@param focalLength Set this to the focalLength with which the target image was captured.
-		@param pixelAspectRatio Set this to the ratio of the general pixel width to pixel height. Must be positive. */
-		static Matrix4x4 createProjectionRealWorld(const Real focalLength, const Real pixelAspectRatio);
+		@param aspectRatio Set this to the ratio of the image width to image height. Must be positive. */
+		static Matrix4x4 createProjectionRealWorld(const Real focalLength, const Real aspectRatio);
 
 		static Matrix4x4 createRotationX(const Real radian);
 		static Matrix4x4 createRotationY(const Real radian);

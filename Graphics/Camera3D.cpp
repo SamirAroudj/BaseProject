@@ -36,26 +36,26 @@ Matrix3x3 Camera3D::computeInverseProjectionMatrix() const
 	return Matrix3x3::createInverseProjectionFovRH(mFoVY, mAspectRatio);
 }
 
-Matrix3x3 Camera3D::computeHPSToNNRayDirWS(const ImgSize &imageSize, const bool addPixelCenterOffset) const
+Matrix3x3 Camera3D::computeHPSToNNRayDirWS(const uint32 &viewportHeight, const bool addPixelCenterOffset) const
 {
 	// default rendering camera setup
 	const Vector2 principalPoint(0.5f, 0.5f);
 	const Real sizeOfNDCCube = 2.0f;
 
 	// pixel space -> normalized device space -> view space -> world space
-	const Matrix3x3 invViewport = Viewport::computeInverseMatrix(imageSize, addPixelCenterOffset, principalPoint, sizeOfNDCCube);
+	const Matrix3x3 invViewport = Viewport::computeInverseMatrix(mAspectRatio, viewportHeight, addPixelCenterOffset, principalPoint, sizeOfNDCCube);
 	const Matrix3x3 invProj = computeInverseProjectionMatrix();
 	const Matrix3x3 invView = computeInverseRotationMatrix();
 
 	return invViewport * invProj * invView;
 }
 
-Matrix4x4 Camera3D::computeWorldSpaceToPixelSpaceMatrix(const ImgSize &imageSize, const bool considerPixelCenterOffset) const
+Matrix4x4 Camera3D::computeWorldSpaceToPixelSpaceMatrix(const uint32 &viewportHeight, const bool considerPixelCenterOffset) const
 {
 	// default rendering camera setup
 	const Vector2 principalPoint(0.5f, 0.5f);
 	const Real sizeOfNDCCube = 2.0f;
-	const Matrix4x4 viewport = Viewport::computeMatrix(imageSize, considerPixelCenterOffset, principalPoint, sizeOfNDCCube);
+	const Matrix4x4 viewport = Viewport::computeMatrix(mAspectRatio, viewportHeight, considerPixelCenterOffset, principalPoint, sizeOfNDCCube);
 
 	return mView * mProjection * viewport;
 }
@@ -72,10 +72,10 @@ void Camera3D::setProjectionProperties(Real fovY, Real aspectRatio, Real zNear, 
 	assert(zNear > 0.0f);
 	assert(zFar > zNear);
 
-	mFoVY			= fovY;
-	mAspectRatio	= aspectRatio;
-	mZNear			= zNear;
-	mZFar			= zFar;
+	mFoVY = fovY;
+	mAspectRatio = aspectRatio;
+	mZNear = zNear;
+	mZFar = zFar;
 
 	mProjection = Matrix4x4::createProjectionFovRHOpenGL(fovY, aspectRatio, zNear, zFar);
 }

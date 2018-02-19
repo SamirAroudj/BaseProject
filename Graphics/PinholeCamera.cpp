@@ -20,9 +20,9 @@ PinholeCamera::PinholeCamera() :
 }
 
 PinholeCamera::PinholeCamera(const Quaternion &orientation, const Vector4 &positionWS,
-	const Real focalLength, const Vector2 &principalPoint, const Real pixelAspectRatio,
+	const Real focalLength, const Vector2 &principalPoint, const Real aspectRatio,
 	const Real distortion[2]) :
-	BaseCamera3D(Matrix4x4::createProjectionRealWorld(focalLength, pixelAspectRatio), pixelAspectRatio),
+	BaseCamera3D(Matrix4x4::createProjectionRealWorld(focalLength, aspectRatio), aspectRatio),
 	mPrincipalPoint(principalPoint), mFocalLength(focalLength), mDistortion{distortion[0], distortion[1]}
 {
 	setOrientation(orientation);
@@ -38,33 +38,33 @@ Matrix3x3 PinholeCamera::computeInverseProjectionMatrix() const
 	return Matrix3x3::createInverseProjectionRealWorld(mFocalLength, mAspectRatio);
 }
 
-Matrix3x3 PinholeCamera::computeHPSToNNRayDirWS(const ImgSize &imageSize, const bool addPixelCenterOffset) const
+Matrix3x3 PinholeCamera::computeHPSToNNRayDirWS(const uint32 &viewportHeight, const bool addPixelCenterOffset) const
 {
 	// pixel space -> normalized device space -> view space -> world space
-	const Matrix3x3 invViewport = computeInverseViewportMatrix(imageSize, addPixelCenterOffset);
+	const Matrix3x3 invViewport = computeInverseViewportMatrix(viewportHeight, addPixelCenterOffset);
 	const Matrix3x3 invProj = computeInverseProjectionMatrix();
 	const Matrix3x3 invView = computeInverseRotationMatrix();
 
 	return invViewport * invProj * invView;
 }
 
-Matrix3x3 PinholeCamera::computeInverseViewportMatrix(const ImgSize &imageSize, const bool addPixelCenterOffset) const
+Matrix3x3 PinholeCamera::computeInverseViewportMatrix(const uint32 &viewportHeight, const bool addPixelCenterOffset) const
 {
 	const Real sizeOfNDCCube = 1.0f;
-	return Viewport::computeInverseMatrix(imageSize, addPixelCenterOffset, mPrincipalPoint, sizeOfNDCCube);
+	return Viewport::computeInverseMatrix(mAspectRatio, viewportHeight, addPixelCenterOffset, mPrincipalPoint, sizeOfNDCCube);
 }
 
-Matrix4x4 PinholeCamera::computeWorldSpaceToPixelSpaceMatrix(const ImgSize &imageSize, const bool considerPixelCenterOffset) const
+Matrix4x4 PinholeCamera::computeWorldSpaceToPixelSpaceMatrix(const uint32 &viewportHeight, const bool considerPixelCenterOffset) const
 {
 	const Real sizeOfNDCCube = 1.0f;
-	const Matrix4x4 viewport = Viewport::computeMatrix(imageSize, considerPixelCenterOffset, mPrincipalPoint, sizeOfNDCCube);
+	const Matrix4x4 viewport = Viewport::computeMatrix(mAspectRatio, viewportHeight, considerPixelCenterOffset, mPrincipalPoint, sizeOfNDCCube);
 
 	return mView * mProjection * viewport;
 }
 
-void PinholeCamera::setAspectRatio(const Real pixelAspectRatio)
+void PinholeCamera::setAspectRatio(const Real aspectRatio)
 {
-	assert(pixelAspectRatio > 0.0f);
-	mAspectRatio = pixelAspectRatio;
+	assert(aspectRatio > 0.0f);
+	mAspectRatio = aspectRatio;
 	mProjection = Matrix4x4::createProjectionRealWorld(mFocalLength, mAspectRatio);
 }

@@ -43,19 +43,19 @@ namespace Graphics
 
 		/** Computes a matrix that converts a homogenous pixel position (px, py, z = 1) \in ([0, viewport width], [0, viewport height], 1) to a
 			non-normalized ray direction in world space coordinates.
-		@param imageSize Defines the width ([0]) and height ([1]) of the viewport for which the returned matrix computes ray directions.
+		@param viewportHeight Set this to the height of the viewport for which you want to have rays (number of pixels in a column).
 		@param addPixelCenterOffset If this is set to true then integer pixel coordinates refer to pixel centers since an offset of half a pixel is added to the coordinates.
 			If the parameter is set to false then rays for the upper left pixel corner are returned. 
 		@return Returns a matrix M which converts homogeneours (3D) pixel coordinates to non-normalized ray directions (||rayDir|| is not necessarily 1) posHPS * M = rayDirWS. */
-		virtual Math::Matrix3x3 computeHPSToNNRayDirWS(const Utilities::ImgSize &imageSize, const bool addPixelCenterOffset = true) const;
+		virtual Math::Matrix3x3 computeHPSToNNRayDirWS(const uint32 &viewportheight, const bool addPixelCenterOffset = true) const;
 			
 		/** Computes and returns the matrix which transforms coordinates relative to the world space coordinate system into the pixel coordinate system of this camera for some resolution.
 			The pixel coordinates are not normalized! You must perform the perspective division after the matrix has been applied.
-		@param imageSize Defines the width ([0]) and height ([1]) of the viewport for which the returned matrix computes pixel coordinates.
+		@param viewportHeight Set this to the height of the target viewport to project into (number of pixels in a column).
 		@param considerPixelCenterOffset Set this to true if you want to get coordinates refering to pixel centers instead of lower left corners.
 			E.g., a point at the lower left camera frustum edge is mapped to the pixel coordinates (0.5, 0.5) if this is set to true (instead of (0, 0)). 
 		@return Returns a matrix which transforms world space coordiantes into non normalized pixel coordinates relative to the camera's viewport of resolution imageSize.*/
-		virtual Math::Matrix4x4 computeWorldSpaceToPixelSpaceMatrix(const Utilities::ImgSize &imageSize, const bool considerPixelCenterOffset = true) const;
+		virtual Math::Matrix4x4 computeWorldSpaceToPixelSpaceMatrix(const uint32 &viewportHeight, const bool considerPixelCenterOffset = true) const;
 
 		/** Returns the absolute distance (w.r.t the camera center) of the far clipping plane used for the projection matrix of the camera.
 		@param Returns the absolute distance (w.r.t the camera center) of the far clipping plane used for the projection matrix of the camera.*/

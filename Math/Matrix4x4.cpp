@@ -192,10 +192,10 @@ Matrix4x4 Matrix4x4::createProjectionFovRHOpenGL(const Real fovY, const Real asp
 					 0.0f,	0.0f,	2 * zNear * zFar * temp,	 0.0f);
 }
 
-Matrix4x4 Matrix4x4::createProjectionRealWorld(const Real f, const Real pixelAspectRatio)
+Matrix4x4 Matrix4x4::createProjectionRealWorld(const Real f, const Real aspectRatio)
 {	
 	Real sX, sY;
-	getXYProjectionScaleFactors(sX, sY, f, pixelAspectRatio);
+	getXYProjectionScaleFactors(sX, sY, f, aspectRatio);
 
 	return Matrix4x4(sX,	0.0f,	0.0f,	0.0f,
 					 0.0f,	sY,		0.0f,	0.0f,

@@ -22,11 +22,12 @@ using namespace Utilities;
 const Viewport *Viewport::sActiveViewport = NULL;
 const Real Viewport::MAX_DEPTH = 1.0f;
 
-Matrix3x3 Viewport::computeInverseMatrix(const ImgSize &viewportSize, const bool considerPixelCenterOffset, const Vector2 &principalPoint, const Real sizeOfNDCCube)
+Matrix3x3 Viewport::computeInverseMatrix(const Real &aspectRatio, const uint32 &height, const bool considerPixelCenterOffset, const Vector2 &principalPoint, const Real sizeOfNDCCube)
 {
+	ImgSize viewportSize(aspectRatio * height, height);
 	Matrix3x3 invM;
 
-	// map ([0, viewPortSize[0]] x [0, viewPortSize[1]]) to (sizeOfNDCCube * [-pp.x, 1 - pp.x] x [-pp.y, 1 - pp.y]) 
+	// map ([0, viewportSize[0]] x [0, viewportSize[1]]) to (sizeOfNDCCube * [-pp.x, 1 - pp.x] x [-pp.y, 1 - pp.y]) 
 	invM.m00 = sizeOfNDCCube / viewportSize[0];
 	invM.m20 = -sizeOfNDCCube * principalPoint.x;
 
@@ -45,8 +46,9 @@ Matrix3x3 Viewport::computeInverseMatrix(const ImgSize &viewportSize, const bool
 	return invM;
 }
 
-Matrix4x4 Viewport::computeMatrix(const ImgSize &viewportSize, const bool considerPixelCenterOffset, const Vector2 &principalPoint, const Real sizeOfNDCCube)
+Matrix4x4 Viewport::computeMatrix(const Real &aspectRatio, const uint32 &height, const bool considerPixelCenterOffset, const Vector2 &principalPoint, const Real sizeOfNDCCube)
 {
+	ImgSize viewportSize(aspectRatio * height, height);
 	const Real invSize = 1.0f / sizeOfNDCCube;
 	Matrix4x4 M;
 
