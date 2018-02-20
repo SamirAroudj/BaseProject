@@ -32,6 +32,17 @@ Path Texture::Resource<Texture>::msResourcePath(PATH_TO_TEXTURES);
 template <>
 vector<Texture *> Texture::Resource<Texture>::msResources(0);
 
+uint32 Texture::getChannelCount(const Texture::Format &format)
+{
+	switch (format)
+	{
+	case FORMAT_RGB: return 3;
+	case FORMAT_RGBA: return 4;
+
+	default: assert(false); return 0;
+	}
+}
+
 uint32 Texture::getOpenGLMagFilter(const MagFiltering magFilter)
 {
 	switch (magFilter)

@@ -57,6 +57,10 @@ namespace Graphics
 
 	public:
 
+		/** Returns the number of channels (texel components) for a specific format, e.g., 3 for RGB.
+		@return Returns the number of channels (texel components) for a specific texture format, e.g., 4 for RGBA. */
+		static uint32 getChannelCount(const Format &format);
+
 		/** Converts a platform independent texture magnification technique identifier to its corresponding OpenGL value.
 		@param magFilter Set this to the platform indipendent magnification filter technique value you want to get the corresponding OpenGL value for.
 		@return Returns the OpenGL value which corresponds to magFilter. */
