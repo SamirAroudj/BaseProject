@@ -36,26 +36,27 @@ Matrix3x3 Camera3D::computeInverseProjectionMatrix() const
 	return Matrix3x3::createInverseProjectionFovRH(mFoVY, mAspectRatio);
 }
 
-Matrix3x3 Camera3D::computeHPSToNNRayDirWS(const uint32 &viewportHeight, const bool addPixelCenterOffset) const
+Matrix3x3 Camera3D::computeHPSToNNRayDirWS(const ImgSize &viewportSize, const bool addPixelCenterOffset) const
 {
 	// default rendering camera setup
 	const Vector2 principalPoint(0.5f, 0.5f);
 	const Real sizeOfNDCCube = 2.0f;
 
+
 	// pixel space -> normalized device space -> view space -> world space
-	const Matrix3x3 invViewport = Viewport::computeInverseMatrix(mAspectRatio, viewportHeight, addPixelCenterOffset, principalPoint, sizeOfNDCCube);
+	const Matrix3x3 invViewport = Viewport::computeInverseMatrix(viewportSize, addPixelCenterOffset, principalPoint, sizeOfNDCCube);
 	const Matrix3x3 invProj = computeInverseProjectionMatrix();
 	const Matrix3x3 invView = computeInverseRotationMatrix();
 
 	return invViewport * invProj * invView;
 }
 
-Matrix4x4 Camera3D::computeWorldSpaceToPixelSpaceMatrix(const uint32 &viewportHeight, const bool considerPixelCenterOffset) const
+Matrix4x4 Camera3D::computeWorldSpaceToPixelSpaceMatrix(const ImgSize &viewportSize, const bool considerPixelCenterOffset) const
 {
 	// default rendering camera setup
 	const Vector2 principalPoint(0.5f, 0.5f);
 	const Real sizeOfNDCCube = 2.0f;
-	const Matrix4x4 viewport = Viewport::computeMatrix(mAspectRatio, viewportHeight, considerPixelCenterOffset, principalPoint, sizeOfNDCCube);
+	const Matrix4x4 viewport = Viewport::computeMatrix(viewportSize, considerPixelCenterOffset, principalPoint, sizeOfNDCCube);
 
 	return mView * mProjection * viewport;
 }

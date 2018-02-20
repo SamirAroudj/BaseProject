@@ -25,7 +25,7 @@ namespace Graphics
 	public:
 		/** Computes and returns a matrix V which maps normalized device coordinates to pixel space coordinates
 			z values are mapped from [-1, 1] (OpenGL convention) to [0, 1].
-		@param aspectRatio Defines the ratio of width (number of pixels in a row) to height (number of pixels in a column). (aspect ratio = viewport image width / viewport image height)
+		@param size Set this to the viewport width and height in pixels (number of pixels in a row and column).
 		@param height Set this to the viewport height in pixels (number of pixels in a column).
 		@param considerPixelCenterOffset If this is set to true then central pixel rays refer to integer pixel coordinates since an offset of half a pixel is subtracted from the pixel coordinates.
 		@param principalPoint Defines which normalized coordinates (x, y) map to the viewport center. (Defines where the principal axis of the camera hits the camera plane.)
@@ -33,12 +33,11 @@ namespace Graphics
 		@param sizeOfNDCCube Defines the size of the normalized device coordinates cube.
 			Usually set to 2 (NDC coords within sizeOfNDCCube * [-0.5, 0.5]^2 are mapped to [0, width] x [0, height] if pp = (0.5, 0.5).
 		@return Computes and returns a matrix V which maps maps normalized device coordinates to pixel space cordinates. */
-		static Math::Matrix4x4 computeMatrix(const Real &aspectRatio, const uint32 &height, const bool considerPixelCenterOffset = true,
+		static Math::Matrix4x4 computeMatrix(const Utilities::ImgSize &size, const bool considerPixelCenterOffset = true,
 			const Math::Vector2 &principalPoint = Math::Vector2(0.5f, 0.5f), const Real sizeOfNDCCube = 2);
 		
 		/** Computes and returns a matrix V^-1 that maps normalized homogenous pixel space (z = 1) cordinates to normalized device coordinates.
-		@param aspectRatio Defines the ratio of width (number of pixels in a row) to height (number of pixels in a column). (aspect ratio = viewport image width / viewport image height)
-		@param height Set this to the viewport height in pixels (number of pixels in a column).
+		@param size Set this to the viewport width and height in pixels (number of pixels in a row and column).
 		@param considerPixelCenterOffset If this is set to true then integer pixel coordinates refer to pixel centers since an offset of half a pixel is added to the pixel coordinates.
 			If the parameter is set to false then integer coordinates refer to upper left pixel corners. 
 		@param principalPoint Defines which normalized coordinates (x, y) map to the viewport center. (Defines where the principal axis of the camera hits the camera plane.)
@@ -46,7 +45,7 @@ namespace Graphics
 		@param sizeOfNDCCube Defines the size of the normalized device coordinates cube.
 		Usually set to 2 (-> inverse of (NDC coords within sizeOfNDCCube * [-0.5, 0.5]^2 are mapped to [0, width] x [0, height] if pp = (0.5, 0.5))).
 		@return Computes and returns a matrix V^-1 that maps normalized homogenous pixel space cordinates (z = 1) to normalized device coordinates. */
-		static Math::Matrix3x3 computeInverseMatrix(const Real &aspectRatio, const uint32 &height, const bool considerPixelCenterOffset = true,
+		static Math::Matrix3x3 computeInverseMatrix(const Utilities::ImgSize &size, const bool considerPixelCenterOffset = true,
 			const Math::Vector2 &principalPoint = Math::Vector2(0.5f, 0.5f), const Real sizeOfNDCCube = 2);
 
 		/** Provides access to the viewport that is currently the target of render calls that change the back / depth-stencil buffer.

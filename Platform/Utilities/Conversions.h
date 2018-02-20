@@ -97,7 +97,7 @@ namespace Utilities
 	template <typename T, NumberBase base>
 	inline std::string Converter::from(const T &value, const uint32 &length)
 	{
-		not implemented;
+		static_assert(false, "template <typename T> std::string Utilities::Converter::from(const T &, const uint32 &) is not generally implemented.");
 	}
 
 	// specialize / allow Converter::from for double (decimal or hexadecimal)
@@ -253,7 +253,7 @@ namespace Utilities
 	template <typename T, NumberBase base>
 	inline const char *Converter::getFormat()
 	{
-		not implemented;
+		static_assert(false, "template <typename T, NumberBase base> const char *Utilities::Converter::getFormat() is not generally implemented.");
 	}
 
 	// double format strings
@@ -400,7 +400,7 @@ namespace Utilities
 	template <typename T>
 	inline T Converter::to(const std::string &textValue)
 	{
-		not implemented;
+		static_assert(false, "template <typename T> T Utilities::Converter::to(const std::string &) is not generally implemented.");
 	}
 
 	template <>
