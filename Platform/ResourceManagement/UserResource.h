@@ -103,7 +103,7 @@ namespace ResourceManagement
 		if (0 < resource->getNumOfUsers())
 			return;
 
-		Array<T *>::deleteFirstBySwapWithBack(Resource<T>::msResources, resource);
+		Utilities::Array<T *>::deleteFirstBySwapWithBack(Resource<T>::msResources, resource);
 		delete resource;
 		resource = NULL;
 	}

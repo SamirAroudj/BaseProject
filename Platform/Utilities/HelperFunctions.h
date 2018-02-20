@@ -9,8 +9,6 @@
 #ifndef _UTILITIES_HELPER_FUNCTIONS_H_
 #define _UTILITIES_HELPER_FUNCTIONS_H_
 
-#include <algorithm>
-#include <limits>
 #include <vector>
 #include "Platform/DataTypes.h"
 #include "Platform/Utilities/Conversions.h"

@@ -9,6 +9,8 @@
 #ifndef _UTILITIES_ARRAY_H_
 #define _UTILITIES_ARRAY_H_
 
+#include <algorithm>
+#include <limits>
 #include <vector>
 
 namespace Utilities

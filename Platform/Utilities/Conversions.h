@@ -9,6 +9,7 @@
 #ifndef _UTILITIES_CONVERSIONS_H_
 #define _UTILITIES_CONVERSIONS_H_
 
+#include <cassert>
 #include <string>
 #include "Platform/DataTypes.h"
 #include "Platform/FailureHandling/Exception.h"
@@ -97,7 +98,12 @@ namespace Utilities
 	template <typename T, NumberBase base>
 	inline std::string Converter::from(const T &value, const uint32 &length)
 	{
-		static_assert(false, "template <typename T> std::string Utilities::Converter::from(const T &, const uint32 &) is not generally implemented.");
+		#ifdef _LINUX
+			assert(false);
+			throw FailureHandling::Exception("template <typename T> std::string Utilities::Converter::from(const T &, const uint32 &) is not generally implemented.");
+		#else
+			static_assert(false, "template <typename T> std::string Utilities::Converter::from(const T &, const uint32 &) is not generally implemented.");
+		#endif // _LINUX
 	}
 
 	// specialize / allow Converter::from for double (decimal or hexadecimal)
@@ -253,7 +259,11 @@ namespace Utilities
 	template <typename T, NumberBase base>
 	inline const char *Converter::getFormat()
 	{
-		static_assert(false, "template <typename T, NumberBase base> const char *Utilities::Converter::getFormat() is not generally implemented.");
+		#ifdef _LINUX
+			throw FailureHandling::Exception("template <typename T, NumberBase base> const char *Utilities::Converter::getFormat() is not generally implemented.");
+		#else
+			static_assert(false, "template <typename T, NumberBase base> const char *Utilities::Converter::getFormat() is not generally implemented.");
+		#endif // _LINUX
 	}
 
 	// double format strings
@@ -400,7 +410,11 @@ namespace Utilities
 	template <typename T>
 	inline T Converter::to(const std::string &textValue)
 	{
-		static_assert(false, "template <typename T> T Utilities::Converter::to(const std::string &) is not generally implemented.");
+		#ifdef _LINUX
+			throw FailureHandling::Exception("template <typename T> T Utilities::Converter::to(const std::string &) is not generally implemented.");
+		#else
+			static_assert(false, "template <typename T> T Utilities::Converter::to(const std::string &) is not generally implemented.");
+		#endif // _LINUX
 	}
 
 	template <>
