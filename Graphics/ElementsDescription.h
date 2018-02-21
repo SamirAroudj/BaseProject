@@ -48,6 +48,7 @@ namespace Graphics
 		virtual void add(const TYPES type, const uint32 semantic);
 
 		inline Encoding getEncoding() const;
+		inline uint32 getPropertyCount() const;
 		inline const std::vector<uint32> &getSemantics() const;
 		inline const std::vector<TYPES> &getTypeStructure() const;
 		inline uint32 getElementCount() const;
@@ -87,6 +88,11 @@ namespace Graphics
 	inline uint32 ElementsDescription::getElementCount() const
 	{
 		return mElementCount;
+	}
+
+	inline uint32 ElementsDescription::getPropertyCount() const
+	{
+		return (uint32) mTypes.size();
 	}
 
 	inline void ElementsDescription::setElementCount(const uint32 elementCount)
