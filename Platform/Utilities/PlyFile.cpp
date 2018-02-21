@@ -241,7 +241,7 @@ void PlyFile::loadTriangles(vector<uint32> &indices, const FacesDescription &fac
 	const ElementsSyntax &types = facesFormat.getTypeStructure();
 	const ElementsSemantics &semantics = facesFormat.getSemantics();
 	const uint32 faceCount = facesFormat.getElementCount();
-	const uint32 propertyCount = (uint32) types.size();
+	const uint32 propertyCount = facesFormat.getPropertyCount();
 
 	// reserve memory
 	const uint32 maxTriangles = faceCount * 3 * 2; // file potentially contains quads
