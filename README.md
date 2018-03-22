@@ -1,6 +1,12 @@
 # BaseProject
 Provides basic features, such as window creation, memory management, math stuff, user input handling etc.
 
+# Conventions
+- coordinate systems are right-handed. Let b0, b1, b2 be coordinate system base vectors, then b2 = b0 x b1 holds.
+- triangle normals follow the right-hand rule. For triangle t = (p0, p1, p2), its normal is parallel to o = (p1 - p0) x (p2 - p0).
+- cameras look along the negative z-axis. The x-axis goes to the right-hand side and the y-axis goes up (right-handed camera systems).
+- vectors are considered to be in row layout. Matrices are correspondingly build for multiplication by row vectors (DirectX convention). This is in contrast to OpenGL and university linear algebra. If you are used to v' = M * N * v, here it is: v' = v * N^t * M^t with matrices M, N, their transposes M^t, N^t and  original and result vectors v and v'.
+
 # Required Tools and Libraries
 BaseProjects requires the following libraries for building:
 
