@@ -9,6 +9,9 @@
 # OpenGL specific cmake functionality
 
 # OpenGL			
+if (${LINUX})
+	set(OpenGL_GL_PREFERENCE GLVND)
+endif (${LINUX})
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIR})
 
