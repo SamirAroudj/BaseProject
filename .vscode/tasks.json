@@ -1,0 +1,115 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": 
+    [
+        {
+            "label": "cmake debug",
+            "type": "shell",
+            "command": "cmake",
+            "args":
+            [
+                "${workspaceFolder}"    
+            ],
+            "group": 
+            {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options":
+            {
+                "cwd": "${workspaceFolder}/Build/Debug"    
+            }
+        },
+        {
+            "label": "make debug",
+            "type": "shell",
+            "command": "make",
+            "args": ["-j"],
+            "group": 
+            {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options":
+            {
+                "cwd": "${workspaceFolder}/Build/Debug"    
+            },
+            "dependsOn": ["cmake debug"],
+            "problemMatcher": ["$gcc"]
+        },
+
+        {
+            "label": "cmake release",
+            "type": "shell",
+            "command": "cmake",
+            "args":
+            [
+                "${workspaceFolder}"    
+            ],
+            "group": 
+            {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options":
+            {
+                "cwd": "${workspaceFolder}/Build/Release"    
+            }
+        },
+        {
+            "label": "make release",
+            "type": "shell",
+            "command": "make",
+            "args": ["-j"],
+            "group": 
+            {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options":
+            {
+                "cwd": "${workspaceFolder}/Build/Release"    
+            },
+            "dependsOn": ["cmake release"],
+            "problemMatcher": ["$gcc"]
+        },
+
+        {
+            "label": "cmake relWithDebInfo",
+            "type": "shell",
+            "command": "cmake",
+            "args":
+            [
+                "${workspaceFolder}"    
+            ],
+            "group": 
+            {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options":
+            {
+                "cwd": "${workspaceFolder}/Build/RelWithDebInfo"    
+            }
+        },
+        {
+            "label": "make relWithDebInfo",
+            "type": "shell",
+            "command": "make",
+            "args": ["-j"],
+            "group": 
+            {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options":
+            {
+                "cwd": "${workspaceFolder}/Build/RelWithDebInfo"    
+            },
+            "dependsOn": ["cmake relWithDebInfo"],
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}
