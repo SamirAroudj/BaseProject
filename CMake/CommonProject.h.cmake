@@ -18,6 +18,10 @@ option(BASE_DOUBLE_PRECISION "Enables either double or single precision floating
 option(BASE_CUDA "Enables CUDA code if set to true. (Some alternatives like OpenCL might be possible later.)" off)
 option(BASE_GIT "Enables generation of git.cpp which can be used with git.h to automatically include git data in the code, e.g.,working branch, commit hash, etc" on)
 
+# where to find built 3rd party dendencies
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
+set(CMAKE_INSTALL_PREFIX CACHE PATH "Path to custom built dependencies.")
+
 # common user defined build paths
 if (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
 	set(BASE_PROJECT_BUILD_DIR "<path>/SpecificBaseProjectBuild/" CACHE PATH "Path to BaseProject build directory containing build type (release, debug) folders with libraries.")
