@@ -410,11 +410,7 @@ namespace Utilities
 	template <typename T>
 	inline T Converter::to(const std::string &textValue)
 	{
-		#ifdef _LINUX
-			throw FailureHandling::Exception("template <typename T> T Utilities::Converter::to(const std::string &) is not generally implemented.");
-		#else
-			static_assert(false, "template <typename T> T Utilities::Converter::to(const std::string &) is not generally implemented.");
-		#endif // _LINUX
+		throw FailureHandling::Exception("template <typename T> T Utilities::Converter::to(const std::string &) is not generally implemented.");
 	}
 
 	template <>
