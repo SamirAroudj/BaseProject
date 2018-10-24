@@ -1,0 +1,34 @@
+{
+    "buildType":
+    {
+      "default": "Debug",
+      "description": "build type",
+      "choices":
+      {
+        "Debug":
+        {
+          "short": "Debug",
+          "long": "Include all debug symbols, no optimization.",
+          "buildType": "Debug"
+        },
+        "Release":
+        {
+          "short": "Release",
+          "long": "Enable optimizations, no debug symbols.",
+          "buildType": "Release"
+        },
+        "MinSizeRel":
+        {
+          "short": "MinSizeRel",
+          "long": "Optimize for small executable.",
+          "buildType": "MinSizeRel"
+        },
+        "RelWithDebInfo":
+        {
+          "short": "RelWithDebInfo",
+          "long": "Perform optimizations and include debug symbols.",
+          "buildType": "RelWithDebInfo"
+        }
+      }
+    }
+  }
