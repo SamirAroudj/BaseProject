@@ -8,14 +8,26 @@
 
 # Do CMake stuff which is generally done in projects
 
-# common user options
-option(BASE_PROFILING "Enables or disables profiling functionality." on)
+# user options
 option(BASE_MEMORY_MANAGEMENT "Enables or disables the custom memory management of the base project." off)
+mark_as_advanced(BASE_MEMORY_MANAGEMENT)
+
 option(BASE_ACTIVE_MEMORY_DESTRUCTION "Enables overwriting of released memory with an uncommon pattern. Only works if MEMORY_MANAGEMENT is turned on." on)
+mark_as_advanced(BASE_ACTIVE_MEMORY_DESTRUCTION)
+
 option(BASE_CORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK "Enables checking of correct usage of delete and delete [] and heap array bounds overwrite detection. Only works if MEMORY_MANAGEMENT is turned on." on)
+mark_as_advanced(BASE_CORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK)
+
+option(BASE_PROFILING "Enables or disables profiling functionality." on)
+mark_as_advanced(BASE_PROFILING)
+
 option(BASE_LOGGING "Enables BASE_LOGGING" off)
-option(BASE_DOUBLE_PRECISION "Enables either double or single precision floating point variables." on)
+mark_as_advanced(BASE_LOGGING)
+
 option(BASE_CUDA "Enables CUDA code if set to true. (Some alternatives like OpenCL might be possible later.)" off)
+mark_as_advanced(BASE_CUDA)
+
+option(BASE_DOUBLE_PRECISION "Enables either double or single precision floating point variables." on)
 option(BASE_GIT "Enables generation of git.cpp which can be used with git.h to automatically include git data in the code, e.g.,working branch, commit hash, etc" on)
 
 # where to find built 3rd party dendencies
@@ -23,10 +35,13 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
 set(CMAKE_INSTALL_PREFIX CACHE PATH "Path to custom built dependencies.")
 
 # common user defined build paths
-if (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
-	set(BASE_PROJECT_BUILD_DIR "<path>/SpecificBaseProjectBuild/" CACHE PATH "Path to BaseProject build directory containing build type (release, debug) folders with libraries.")
-endif (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
 set(BASE_BUILD_OUTPUT_DIR "${PROJECT_SOURCE_DIR}/Build" CACHE FILEPATH "Path to the folder defining where to put Release, Debug, etc, folders with binaries.")
+
+if (CMAKE_PROJECT_NAME STREQUAL BaseProject)
+	# do nothing, BASE_PROJECT_BUILD_DIR is same as BASE_BUILD_OUTPUT_DIR
+else (CMAKE_PROJECT_NAME STREQUAL BaseProject)
+	set(BASE_PROJECT_BUILD_DIR "<path>/SpecificBaseProjectBuild/" CACHE PATH "Path to where you have placed the BaseProject build directory containing all builds (Release, Debug, etc.).")
+endif (CMAKE_PROJECT_NAME STREQUAL BaseProject)
 
 # inferred build path settings
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BASE_BUILD_OUTPUT_DIR}/${CMAKE_BUILD_TYPE})
@@ -66,7 +81,7 @@ endif (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
 
 # include internal project source files and libraries
 include_directories(${PROJECT_SOURCE_DIR})
-link_directories(${PROJECT_SOURCE_DIR}/Build/${CMAKE_BUILD_TYPE})
+link_directories(${BASE_BUILD_OUTPUT_DIR}/${CMAKE_BUILD_TYPE})
 
 # common preprocessor flags
 add_definitions(-DUNICODE)

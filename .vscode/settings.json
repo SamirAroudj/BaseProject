@@ -1,4 +1,9 @@
 {
-    "cmake.configureOnOpen": true,
+    "cmake.configureOnOpen": false,
+    "cmake.configureSettings":
+    {
+        "BASE_BUILD_OUTPUT_DIR": "C://Users//samaroud//Repos//BaseProject//Build",
+        "BASE_DOUBLE_PRECISION": true 
+    },
     "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools"
 }

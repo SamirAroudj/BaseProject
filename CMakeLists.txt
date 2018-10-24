@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 2.8)
 
 # Project definition
 project(BaseProject)
-set(BASE_PROJECT_DIR ${PROJECT_SOURCE_DIR} CACHE PATH "Path to BaseProject root directory.")
+set(BASE_PROJECT_DIR ${PROJECT_SOURCE_DIR})
 
 # extra CMake functionality
 include(${PROJECT_SOURCE_DIR}/CMake/CommonProject.h.cmake)
