@@ -19,12 +19,12 @@ option(BASE_CUDA "Enables CUDA code if set to true. (Some alternatives like Open
 option(BASE_GIT "Enables generation of git.cpp which can be used with git.h to automatically include git data in the code, e.g.,working branch, commit hash, etc" on)
 
 # where to find built 3rd party dendencies
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
+list(APPEND CMAKE_MODULE_PATH ${BASE_PROJECT_DIR}/CMake)
 set(CMAKE_INSTALL_PREFIX CACHE PATH "Path to custom built dependencies.")
 
 # common user defined build paths
 if (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
-	set(BASE_PROJECT_BUILD_DIR "<path>/SpecificBaseProjectBuild/" CACHE PATH "Path to BaseProject build directory containing build type (release, debug) folders with libraries.")
+	set(BASE_PROJECT_BUILD_DIR "${BASE_PROJECT_DIR}/Build" CACHE PATH "Path to BaseProject build directory containing build type (release, debug) folders with libraries.")
 endif (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
 set(BASE_BUILD_OUTPUT_DIR "${PROJECT_SOURCE_DIR}/Build" CACHE FILEPATH "Path to the folder defining where to put Release, Debug, etc, folders with binaries.")
 
