@@ -9,14 +9,21 @@
 # Do CMake stuff which is generally done in projects
 
 # common user options
-option(BASE_PROFILING "Enables or disables profiling functionality." on)
-option(BASE_MEMORY_MANAGEMENT "Enables or disables the custom memory management of the base project." off)
-option(BASE_ACTIVE_MEMORY_DESTRUCTION "Enables overwriting of released memory with an uncommon pattern. Only works if MEMORY_MANAGEMENT is turned on." on)
-option(BASE_CORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK "Enables checking of correct usage of delete and delete [] and heap array bounds overwrite detection. Only works if MEMORY_MANAGEMENT is turned on." on)
-option(BASE_LOGGING "Enables BASE_LOGGING" off)
 option(BASE_DOUBLE_PRECISION "Enables either double or single precision floating point variables." on)
 option(BASE_CUDA "Enables CUDA code if set to true. (Some alternatives like OpenCL might be possible later.)" off)
 option(BASE_GIT "Enables generation of git.cpp which can be used with git.h to automatically include git data in the code, e.g.,working branch, commit hash, etc" on)
+
+option(BASE_LOGGING "Enables BASE_LOGGING" off)
+mark_as_advanced(BASE_LOGGING)
+
+option(BASE_PROFILING "Enables or disables profiling functionality." on)
+mark_as_advanced(BASE_PROFILING)
+
+# memory management user options
+option(BASE_MEMORY_MANAGEMENT "Enables or disables the custom memory management of the base project." off)
+option(BASE_MEMORY_MANAGEMENT_ACTIVE_MEMORY_DESTRUCTION "Enables overwriting of released memory with an uncommon pattern. Only works if MEMORY_MANAGEMENT is turned on." on)
+option(BASE_MEMORY_MANAGEMENT_CORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK "Enables checking of correct usage of delete and delete [] and heap array bounds overwrite detection. Only works if MEMORY_MANAGEMENT is turned on." on)
+mark_as_advanced(BASE_MEMORY_MANAGEMENT BASE_MEMORY_MANAGEMENT_ACTIVE_MEMORY_DESTRUCTION BASE_MEMORY_MANAGEMENT_CORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK)
 
 # where to find built 3rd party dendencies
 list(APPEND CMAKE_MODULE_PATH ${BASE_PROJECT_DIR}/CMake)
@@ -80,13 +87,13 @@ if (BASE_MEMORY_MANAGEMENT)
 	add_definitions(-DMEMORY_MANAGEMENT)
 endif (BASE_MEMORY_MANAGEMENT)
 
-if (BASE_ACTIVE_MEMORY_DESTRUCTION)
-	add_definitions(-DACTIVE_MEMORY_DESTRUCTION)
-endif (BASE_ACTIVE_MEMORY_DESTRUCTION)
+if (BASE_MEMORY_MANAGEMENT_ACTIVE_MEMORY_DESTRUCTION)
+	add_definitions(-DMEMORY_MANAGEMENT_ACTIVE_MEMORY_DESTRUCTION)
+endif (BASE_MEMORY_MANAGEMENT_ACTIVE_MEMORY_DESTRUCTION)
 
-if (BASE_CORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK)
+if (BASE_MEMORY_MANAGEMENT_CORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK)
 	add_definitions(-DCORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK)
-endif (BASE_CORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK)
+endif (BASE_MEMORY_MANAGEMENT_CORRECT_DELETE_OPERATOR_AND_BOUNDS_CHECK)
 
 if (BASE_LOGGING)
 	add_definitions(-DBASE_LOGGING)
