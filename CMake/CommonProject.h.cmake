@@ -29,11 +29,17 @@ mark_as_advanced(BASE_MEMORY_MANAGEMENT BASE_MEMORY_MANAGEMENT_ACTIVE_MEMORY_DES
 list(APPEND CMAKE_MODULE_PATH ${BASE_PROJECT_DIR}/CMake)
 set(CMAKE_INSTALL_PREFIX CACHE PATH "Path to custom built dependencies.")
 
-# common user defined build paths
+# BASE_PROJECT_BUILD_DIR: defines where the build stuff of the base project is to be used for the current project 
 if (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
 	set(BASE_PROJECT_BUILD_DIR "${BASE_PROJECT_DIR}/Build" CACHE PATH "Path to BaseProject build directory containing build type (release, debug) folders with libraries.")
 endif (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
+if (CMAKE_PROJECT_NAME STREQUAL BaseProject)
+	unset(BASE_PROJECT_BUILD_DIR)
+endif (CMAKE_PROJECT_NAME STREQUAL BaseProject)
+
+# BASE_BUILD_OUTPUT_DIR: where to put the build results of the current project
 set(BASE_BUILD_OUTPUT_DIR "${PROJECT_SOURCE_DIR}/Build" CACHE FILEPATH "Path to the folder defining where to put Release, Debug, etc, folders with binaries.")
+mark_as_advanced(BASE_BUILD_OUTPUT_DIR)
 
 # inferred build path settings
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BASE_BUILD_OUTPUT_DIR}/${CMAKE_BUILD_TYPE})
