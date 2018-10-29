@@ -77,9 +77,13 @@ if (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
 	link_directories(${BASE_PROJECT_BUILD_DIR}/${CMAKE_BUILD_TYPE})
 endif (NOT(CMAKE_PROJECT_NAME STREQUAL BaseProject))
 
-# include internal project source files and libraries
+# include internal project header files and libs 
 include_directories(${PROJECT_SOURCE_DIR})
 link_directories(${PROJECT_SOURCE_DIR}/Build/${CMAKE_BUILD_TYPE})
+
+# include external projects/header files and libs
+include_directories(${CMAKE_INSTALL_PREFIX}/include)
+link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
 # common preprocessor flags
 add_definitions(-DUNICODE)

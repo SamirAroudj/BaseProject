@@ -7,15 +7,14 @@
 
 # add stuff required for using Intel's ray tracing framework  embree
 
-find_package(embree 3.0.0 REQUIRED)
-
-include_directories(${EMBREE_INCLUDE_DIR})
+find_package(EMBREE 2.17.6 REQUIRED)
 
 set(EMBREE_INCLUDE_DIR "${EMBREE_INCLUDE_DIRS}" CACHE PATH "Path to the embree include directory.")
-set(EMBREE_LIBRARY_DEBUG "${EMBREE_LIBRARY}" CACHE FILEPATH "Path to the embree debug library.")
-set(EMBREE_LIBRARY_RELEASE "${EMBREE_LIBRARY}" CACHE FILEPATH "Path to the embree release library.")
-
+set(EMBREE_LIBRARY_DEBUG "${EMBREE_LIBRARY}" CACHE FILEPATH "Full name of the embree debug library, e.g., /usr/lib/embreed.so")
+set(EMBREE_LIBRARY_RELEASE "${EMBREE_LIBRARY}" CACHE FILEPATH "Full name of the embree release library, e.g., /usr/lib/embree.so")
 mark_as_advanced(EMBREE_INCLUDE_DIR EMBREE_LIBRARY_DEBUG EMBREE_LIBRARY_RELEASE)
+
+include_directories(${EMBREE_INCLUDE_DIR})
 
 macro(addEmbreeLibs libs)
 	set(${libs}
@@ -24,4 +23,6 @@ macro(addEmbreeLibs libs)
 		"optimized ${EMBREE_LIBRARY_RELEASE}"
 	)
 endmacro(addEmbreeLibs)
+
+unset(EMBREE_DIR CACHE)
 
