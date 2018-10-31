@@ -13,6 +13,7 @@ set(EMBREE_INCLUDE_DIR "${EMBREE_INCLUDE_DIRS}" CACHE PATH "Path to the embree i
 set(EMBREE_LIBRARY_DEBUG "${EMBREE_LIBRARY}" CACHE FILEPATH "Full name of the embree debug library, e.g., /usr/lib/embreed.so")
 set(EMBREE_LIBRARY_RELEASE "${EMBREE_LIBRARY}" CACHE FILEPATH "Full name of the embree release library, e.g., /usr/lib/embree.so")
 mark_as_advanced(EMBREE_INCLUDE_DIR EMBREE_LIBRARY_DEBUG EMBREE_LIBRARY_RELEASE)
+mark_as_advanced(EMBREE_DIR)
 
 include_directories(${EMBREE_INCLUDE_DIR})
 
@@ -23,6 +24,4 @@ macro(addEmbreeLibs libs)
 		"optimized ${EMBREE_LIBRARY_RELEASE}"
 	)
 endmacro(addEmbreeLibs)
-
-unset(EMBREE_DIR CACHE)
 
